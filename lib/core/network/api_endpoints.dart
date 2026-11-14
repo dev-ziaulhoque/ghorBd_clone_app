@@ -59,4 +59,6 @@ class ApiEndpoints {
   static String questionDetail(String idOrSlug) => '/qa/questions/$idOrSlug';
   static String questionAnswers(String questionId) => '/qa/questions/$questionId/answers';
   static const String myQuestions = '/qa/my-questions';
+  // Plans & Pricing (API-061)
+  static const String pricing = '/content/pricing';
 }

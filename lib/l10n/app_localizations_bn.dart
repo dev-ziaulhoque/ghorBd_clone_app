@@ -769,4 +769,37 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get readMore => 'আরও পড়ুন';
+
+  @override
+  String get pricingTitle => 'সাবস্ক্রিপশন প্ল্যান';
+
+  @override
+  String get pricingSubtitle => 'আপনার চাহিদামতো সেরা প্যাকেজটি বেছে নিন';
+
+  @override
+  String get vatExclusionNotice => 'সকল দাম ভ্যাট ছাড়া';
+
+  @override
+  String get mostPopular => 'জনপ্রিয়';
+
+  @override
+  String get currentPlan => 'বর্তমান প্ল্যান';
+
+  @override
+  String get choosePlan => 'প্ল্যান নির্বাচন করুন';
+
+  @override
+  String get contactSales => 'সেলস টিমের সাথে যোগাযোগ করুন';
+
+  @override
+  String get oneTime => 'এককালীন';
+
+  @override
+  String get freePrice => 'বিনামূল্যে';
+
+  @override
+  String get pricingFeaturesIncluded => 'সুবিধাসমূহ';
+
+  @override
+  String get unlimitedListings => 'সীমাহীন বিজ্ঞাপন';
 }

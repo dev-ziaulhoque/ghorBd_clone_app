@@ -772,4 +772,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get readMore => 'Read More';
+
+  @override
+  String get pricingTitle => 'Subscription Plans';
+
+  @override
+  String get pricingSubtitle => 'Choose the best plan tailored to your needs';
+
+  @override
+  String get vatExclusionNotice => 'All prices exclude VAT';
+
+  @override
+  String get mostPopular => 'Most Popular';
+
+  @override
+  String get currentPlan => 'Current Plan';
+
+  @override
+  String get choosePlan => 'Choose Plan';
+
+  @override
+  String get contactSales => 'Contact Sales';
+
+  @override
+  String get oneTime => 'One-time';
+
+  @override
+  String get freePrice => 'Free';
+
+  @override
+  String get pricingFeaturesIncluded => 'Features Included';
+
+  @override
+  String get unlimitedListings => 'Unlimited Listings';
 }

@@ -101,10 +101,10 @@ All requirements (REQ-001 to REQ-045) mapped to concrete Screens (SCR) and verif
 | REQ-028 | SCR-012, 013 | API-025, API-026, API-027 | CreateListingBloc, OwnerDashboardBloc | owner_test.dart | Done |
 | REQ-029 | SCR-006, 013 | API-040, API-041, API-042, API-043 | VerificationBloc | owner_test.dart | Done |
 | REQ-030 | SCR-008 | API-029, API-044, API-045, API-046, API-047 | ContactBloc | contact_test.dart | Done |
-| REQ-031 | SCR-014 | API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
-| REQ-032 | SCR-013, 014 | API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
-| REQ-033 | SCR-013 | API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
-| REQ-034 | SCR-014, 023 | API-053, API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
+| REQ-031 | SCR-014 | API-061 | PricingBloc | plans_test.dart | Done |
+| REQ-032 | SCR-013, 014 | API-061 | PricingBloc | plans_test.dart | Done |
+| REQ-033 | SCR-013 | API-061 | PricingBloc | plans_test.dart | Done |
+| REQ-034 | SCR-014, 023 | API-053, API-061 | PricingBloc | plans_test.dart | Done |
 | REQ-035 | SCR-015, 016 | API-054, API-055, API-056, API-057, API-058, API-059, API-060 | BlogBloc | content_test.dart | Done |
 | REQ-036 | SCR-017, 018, 019 | API-062, API-063, API-064, API-065, API-066, API-067, API-068, API-069 | QaBloc | content_test.dart | Done |
 | REQ-037 | SCR-020 | API-051, API-052, API-053 | StaticContentBloc | content_test.dart | Done |

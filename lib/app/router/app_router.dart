@@ -26,6 +26,7 @@ import '../../features/content/presentation/pages/guides_page.dart';
 import '../../features/content/presentation/pages/qa_page.dart';
 import '../../features/content/presentation/pages/question_detail_page.dart';
 import '../../features/content/presentation/pages/static_content_page.dart';
+import '../../features/plans/presentation/pages/pricing_page.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
@@ -56,6 +57,7 @@ class AppRoutes {
   static const String privacy = '/privacy';
   static const String terms = '/terms';
   static const String help = '/help';
+  static const String pricing = '/pricing';
 
   static const Set<String> protectedRoutes = {
     dashboard,
@@ -329,6 +331,11 @@ class AppRouter {
         path: AppRoutes.help,
         name: 'help',
         builder: (context, state) => const StaticContentPage(slug: 'help'),
+      ),
+      GoRoute(
+        path: AppRoutes.pricing,
+        name: 'pricing',
+        builder: (context, state) => const PricingPage(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

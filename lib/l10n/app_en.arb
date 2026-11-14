@@ -241,5 +241,17 @@
   "comments": "Comments",
   "writeComment": "Write a comment...",
   "postComment": "Post Comment",
-  "readMore": "Read More"
+  "readMore": "Read More",
+  "pricingTitle": "Subscription Plans",
+  "pricingSubtitle": "Choose the best plan tailored to your needs",
+  "vatExclusionNotice": "All prices exclude VAT",
+  "mostPopular": "Most Popular",
+  "currentPlan": "Current Plan",
+  "choosePlan": "Choose Plan",
+  "contactSales": "Contact Sales",
+  "perMonth": "/month",
+  "oneTime": "One-time",
+  "freePrice": "Free",
+  "pricingFeaturesIncluded": "Features Included",
+  "unlimitedListings": "Unlimited Listings"
 }

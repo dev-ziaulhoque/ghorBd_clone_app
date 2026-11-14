@@ -241,5 +241,17 @@
   "comments": "মন্তব্য",
   "writeComment": "একটি মন্তব্য লিখুন...",
   "postComment": "মন্তব্য করুন",
-  "readMore": "আরও পড়ুন"
+  "readMore": "আরও পড়ুন",
+  "pricingTitle": "সাবস্ক্রিপশন প্ল্যান",
+  "pricingSubtitle": "আপনার চাহিদামতো সেরা প্যাকেজটি বেছে নিন",
+  "vatExclusionNotice": "সকল দাম ভ্যাট ছাড়া",
+  "mostPopular": "জনপ্রিয়",
+  "currentPlan": "বর্তমান প্ল্যান",
+  "choosePlan": "প্ল্যান নির্বাচন করুন",
+  "contactSales": "সেলস টিমের সাথে যোগাযোগ করুন",
+  "perMonth": "/মাস",
+  "oneTime": "এককালীন",
+  "freePrice": "বিনামূল্যে",
+  "pricingFeaturesIncluded": "সুবিধাসমূহ",
+  "unlimitedListings": "সীমাহীন বিজ্ঞাপন"
 }

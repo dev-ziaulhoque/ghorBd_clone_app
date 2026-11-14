@@ -1543,6 +1543,72 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'আরও পড়ুন'**
   String get readMore;
+
+  /// No description provided for @pricingTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'সাবস্ক্রিপশন প্ল্যান'**
+  String get pricingTitle;
+
+  /// No description provided for @pricingSubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার চাহিদামতো সেরা প্যাকেজটি বেছে নিন'**
+  String get pricingSubtitle;
+
+  /// No description provided for @vatExclusionNotice.
+  ///
+  /// In bn, this message translates to:
+  /// **'সকল দাম ভ্যাট ছাড়া'**
+  String get vatExclusionNotice;
+
+  /// No description provided for @mostPopular.
+  ///
+  /// In bn, this message translates to:
+  /// **'জনপ্রিয়'**
+  String get mostPopular;
+
+  /// No description provided for @currentPlan.
+  ///
+  /// In bn, this message translates to:
+  /// **'বর্তমান প্ল্যান'**
+  String get currentPlan;
+
+  /// No description provided for @choosePlan.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্ল্যান নির্বাচন করুন'**
+  String get choosePlan;
+
+  /// No description provided for @contactSales.
+  ///
+  /// In bn, this message translates to:
+  /// **'সেলস টিমের সাথে যোগাযোগ করুন'**
+  String get contactSales;
+
+  /// No description provided for @oneTime.
+  ///
+  /// In bn, this message translates to:
+  /// **'এককালীন'**
+  String get oneTime;
+
+  /// No description provided for @freePrice.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিনামূল্যে'**
+  String get freePrice;
+
+  /// No description provided for @pricingFeaturesIncluded.
+  ///
+  /// In bn, this message translates to:
+  /// **'সুবিধাসমূহ'**
+  String get pricingFeaturesIncluded;
+
+  /// No description provided for @unlimitedListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'সীমাহীন বিজ্ঞাপন'**
+  String get unlimitedListings;
 }
 
 class _AppLocalizationsDelegate

@@ -66,6 +66,11 @@ import '../../features/content/domain/usecases/content_usecases.dart';
 import '../../features/content/presentation/bloc/blog_bloc.dart';
 import '../../features/content/presentation/bloc/qa_bloc.dart';
 import '../../features/content/presentation/bloc/static_content_bloc.dart';
+import '../../features/plans/data/datasources/pricing_remote_data_source.dart';
+import '../../features/plans/data/repositories/pricing_repository_impl.dart';
+import '../../features/plans/domain/repositories/pricing_repository.dart';
+import '../../features/plans/domain/usecases/get_pricing_plans_usecase.dart';
+import '../../features/plans/presentation/bloc/pricing_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -562,6 +567,28 @@ Future<void> configureDependencies() async {
         getGuideDetailUseCase: sl<GetGuideDetailUseCase>(),
         getStaticPageUseCase: sl<GetStaticPageUseCase>(),
       ),
+    );
+  }
+
+  // Plans & Pricing (API-061)
+  if (!sl.isRegistered<PricingRemoteDataSource>()) {
+    sl.registerLazySingleton<PricingRemoteDataSource>(
+      () => PricingRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<PricingRepository>()) {
+    sl.registerLazySingleton<PricingRepository>(
+      () => PricingRepositoryImpl(remoteDataSource: sl<PricingRemoteDataSource>()),
+    );
+  }
+  if (!sl.isRegistered<GetPricingPlansUseCase>()) {
+    sl.registerLazySingleton<GetPricingPlansUseCase>(
+      () => GetPricingPlansUseCase(sl<PricingRepository>()),
+    );
+  }
+  if (!sl.isRegistered<PricingBloc>()) {
+    sl.registerFactory<PricingBloc>(
+      () => PricingBloc(getPricingPlansUseCase: sl<GetPricingPlansUseCase>()),
     );
   }
 }
