@@ -152,5 +152,10 @@
   "addedToFavoritesSuccess": "Saved to favorites",
   "removedFromFavoritesSuccess": "Removed from favorites",
   "loginToFavorite": "Please log in to save favorites",
-  "browseListings": "Browse Listings"
+  "browseListings": "Browse Listings",
+  "mapTitle": "Map View",
+  "searchPlaceHint": "Search place or address...",
+  "selectedLocation": "Selected Location",
+  "nearbyListings": "Nearby Listings",
+  "noLocationListings": "No listings found in this area"
 }

@@ -499,4 +499,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get browseListings => 'Browse Listings';
+
+  @override
+  String get mapTitle => 'Map View';
+
+  @override
+  String get searchPlaceHint => 'Search place or address...';
+
+  @override
+  String get selectedLocation => 'Selected Location';
+
+  @override
+  String get nearbyListings => 'Nearby Listings';
+
+  @override
+  String get noLocationListings => 'No listings found in this area';
 }

@@ -32,4 +32,8 @@ class ApiEndpoints {
   // Favorites (API-031 to API-033)
   static const String favorites = '/listings/favorites';
   static String listingFavorite(String id) => '/listings/$id/favorite';
+
+  // Geo & Map endpoints (API-049, API-050)
+  static const String geoSearch = '/geo/search';
+  static const String geoReverse = '/geo/reverse';
 }

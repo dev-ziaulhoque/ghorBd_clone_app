@@ -42,6 +42,11 @@ import '../../features/favorites/data/repositories/favorites_repository_impl.dar
 import '../../features/favorites/domain/repositories/favorites_repository.dart';
 import '../../features/favorites/domain/usecases/favorites_usecases.dart';
 import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
+import '../../features/map/data/datasources/map_remote_data_source.dart';
+import '../../features/map/data/repositories/map_repository_impl.dart';
+import '../../features/map/domain/repositories/map_repository.dart';
+import '../../features/map/domain/usecases/map_usecases.dart';
+import '../../features/map/presentation/bloc/map_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -291,6 +296,42 @@ Future<void> configureDependencies() async {
     sl.registerFactory<ReportBloc>(
       () => ReportBloc(
         reportListingUseCase: sl<ReportListingUseCase>(),
+      ),
+    );
+  }
+
+  // Map Feature
+  if (!sl.isRegistered<MapRemoteDataSource>()) {
+    sl.registerLazySingleton<MapRemoteDataSource>(
+      () => MapRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<MapRepository>()) {
+    sl.registerLazySingleton<MapRepository>(
+      () => MapRepositoryImpl(remoteDataSource: sl<MapRemoteDataSource>()),
+    );
+  }
+  if (!sl.isRegistered<SearchPlacesUseCase>()) {
+    sl.registerLazySingleton<SearchPlacesUseCase>(
+      () => SearchPlacesUseCase(sl<MapRepository>()),
+    );
+  }
+  if (!sl.isRegistered<ReverseGeocodeUseCase>()) {
+    sl.registerLazySingleton<ReverseGeocodeUseCase>(
+      () => ReverseGeocodeUseCase(sl<MapRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetMapListingsUseCase>()) {
+    sl.registerLazySingleton<GetMapListingsUseCase>(
+      () => GetMapListingsUseCase(sl<MapRepository>()),
+    );
+  }
+  if (!sl.isRegistered<MapBloc>()) {
+    sl.registerFactory<MapBloc>(
+      () => MapBloc(
+        searchPlacesUseCase: sl<SearchPlacesUseCase>(),
+        reverseGeocodeUseCase: sl<ReverseGeocodeUseCase>(),
+        getMapListingsUseCase: sl<GetMapListingsUseCase>(),
       ),
     );
   }

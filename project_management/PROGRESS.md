@@ -36,7 +36,7 @@
 ## Feature Orders (Journey Order)
 - [x] **5** Browse & Search: Home, Listings, Filters, Detail (`API-022`, `API-023`, `API-034`, `API-048`).
 - [x] **6** Contact (phone reveal, inquiry message), Favorites, Report (`API-028`–`033`).
-- [ ] **7** Map & Geocoding (`API-022`, `API-049`, `API-050`).
+- [x] **7** Map & Geocoding (`API-022`, `API-049`, `API-050`).
 - [ ] **8** Land Marketplace (`API-022`).
 - [ ] **9** Owner Ad Management: create/edit listing, photo upload, dashboard (`API-024`–`027`, `API-035`–`043`).
 - [ ] **10** Content: Blog, Q&A, Help, Guides, Static pages (`API-051`–`060`, `API-062`–`069`).

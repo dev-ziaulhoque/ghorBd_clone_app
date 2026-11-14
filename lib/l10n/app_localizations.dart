@@ -1009,6 +1009,36 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'বিজ্ঞাপন দেখুন'**
   String get browseListings;
+
+  /// No description provided for @mapTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'মানচিত্র'**
+  String get mapTitle;
+
+  /// No description provided for @searchPlaceHint.
+  ///
+  /// In bn, this message translates to:
+  /// **'স্থান বা ঠিকানা খুঁজুন...'**
+  String get searchPlaceHint;
+
+  /// No description provided for @selectedLocation.
+  ///
+  /// In bn, this message translates to:
+  /// **'নির্বাচিত এলাকা'**
+  String get selectedLocation;
+
+  /// No description provided for @nearbyListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'আশেপাশের বিজ্ঞাপন'**
+  String get nearbyListings;
+
+  /// No description provided for @noLocationListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি'**
+  String get noLocationListings;
 }
 
 class _AppLocalizationsDelegate

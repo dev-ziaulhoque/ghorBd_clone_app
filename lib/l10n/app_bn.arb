@@ -152,5 +152,10 @@
   "addedToFavoritesSuccess": "পছন্দ তালিকায় যুক্ত হয়েছে",
   "removedFromFavoritesSuccess": "পছন্দ তালিকা থেকে সরানো হয়েছে",
   "loginToFavorite": "বিজ্ঞাপন সেভ করতে লগইন করুন",
-  "browseListings": "বিজ্ঞাপন দেখুন"
+  "browseListings": "বিজ্ঞাপন দেখুন",
+  "mapTitle": "মানচিত্র",
+  "searchPlaceHint": "স্থান বা ঠিকানা খুঁজুন...",
+  "selectedLocation": "নির্বাচিত এলাকা",
+  "nearbyListings": "আশেপাশের বিজ্ঞাপন",
+  "noLocationListings": "এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি"
 }

@@ -14,6 +14,7 @@ import '../../features/browse/presentation/pages/home_page.dart';
 import '../../features/browse/presentation/pages/listing_detail_page.dart';
 import '../../features/browse/presentation/pages/listings_page.dart';
 import '../../features/favorites/presentation/pages/favorites_page.dart';
+import '../../features/map/presentation/pages/map_page.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
@@ -150,8 +151,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.map,
         name: 'map',
-        builder: (context, state) =>
-            const _PlaceholderScreen(title: 'Map View (SCR-004)'),
+        builder: (context, state) => const MapPage(),
       ),
       GoRoute(
         path: AppRoutes.land,

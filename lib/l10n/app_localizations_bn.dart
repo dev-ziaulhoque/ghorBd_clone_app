@@ -496,4 +496,19 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get browseListings => 'বিজ্ঞাপন দেখুন';
+
+  @override
+  String get mapTitle => 'মানচিত্র';
+
+  @override
+  String get searchPlaceHint => 'স্থান বা ঠিকানা খুঁজুন...';
+
+  @override
+  String get selectedLocation => 'নির্বাচিত এলাকা';
+
+  @override
+  String get nearbyListings => 'আশেপাশের বিজ্ঞাপন';
+
+  @override
+  String get noLocationListings => 'এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি';
 }
