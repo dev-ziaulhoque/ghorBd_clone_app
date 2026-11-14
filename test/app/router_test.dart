@@ -5,6 +5,7 @@ import 'package:ghorbad_clone_app/app/router/app_router.dart';
 import 'package:ghorbad_clone_app/features/auth/presentation/pages/login_page.dart';
 import 'package:ghorbad_clone_app/features/browse/presentation/pages/home_page.dart';
 import 'package:ghorbad_clone_app/features/browse/presentation/pages/listings_page.dart';
+import 'package:ghorbad_clone_app/features/owner/presentation/pages/owner_dashboard_page.dart';
 
 void main() {
   setUpAll(() async {
@@ -48,7 +49,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Dashboard: My Listings (SCR-013)'), findsWidgets);
+      expect(find.byType(OwnerDashboardPage), findsOneWidget);
     });
 
     testWidgets('authenticated user navigating to login is redirected to home',

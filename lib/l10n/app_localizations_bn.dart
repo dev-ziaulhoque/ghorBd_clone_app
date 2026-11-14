@@ -563,4 +563,144 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get noLandListings => 'কোনো জমির বিজ্ঞাপন পাওয়া যায়নি';
+
+  @override
+  String get dashboardTitle => 'ড্যাশবোর্ড';
+
+  @override
+  String get myListings => 'আমার বিজ্ঞাপন';
+
+  @override
+  String get postNewAd => 'বিজ্ঞাপন দিন';
+
+  @override
+  String get editListing => 'বিজ্ঞাপন সম্পাদনা';
+
+  @override
+  String get createListingTitle => 'নতুন বিজ্ঞাপন দিন';
+
+  @override
+  String get listingTitle => 'বিজ্ঞাপনের শিরোনাম';
+
+  @override
+  String get listingDescription => 'বিস্তারিত বর্ণনা';
+
+  @override
+  String get purpose => 'উদ্দেশ্য';
+
+  @override
+  String get city => 'শহর';
+
+  @override
+  String get area => 'এলাকা';
+
+  @override
+  String get unitNumber => 'ইউনিট নম্বর';
+
+  @override
+  String get bedrooms => 'বেডরুম';
+
+  @override
+  String get bathrooms => 'বাথরুম';
+
+  @override
+  String get size => 'আয়তন (বর্গফুট)';
+
+  @override
+  String get priceRent => 'ভাড়া / দাম (টাকা)';
+
+  @override
+  String get contactPhone => 'যোগাযোগের ফোন নম্বর';
+
+  @override
+  String get allowDirectContact => 'সরাসরি ফোন যোগাযোগের অনুমতি দিন';
+
+  @override
+  String get photos => 'ছবি';
+
+  @override
+  String get uploadPhotos => 'ছবি যোগ করুন';
+
+  @override
+  String get submitListing => 'বিজ্ঞাপন পোস্ট করুন';
+
+  @override
+  String get updateListing => 'পরিবর্তন সংরক্ষণ করুন';
+
+  @override
+  String get listingCreatedSuccess => 'বিজ্ঞাপন সফলভাবে তৈরি হয়েছে!';
+
+  @override
+  String get listingUpdatedSuccess => 'বিজ্ঞাপন সফলভাবে আপডেট হয়েছে!';
+
+  @override
+  String get totalListings => 'মোট বিজ্ঞাপন';
+
+  @override
+  String get activeListings => 'সক্রিয়';
+
+  @override
+  String get pendingListings => 'অপেক্ষমান';
+
+  @override
+  String get archivedListings => 'আর্কাইভ';
+
+  @override
+  String get views => 'ভিউ';
+
+  @override
+  String get saved => 'সেভ করা';
+
+  @override
+  String get status => 'অবস্থা';
+
+  @override
+  String get statusActive => 'সক্রিয়';
+
+  @override
+  String get statusPending => 'অপেক্ষমান';
+
+  @override
+  String get statusDraft => 'খসড়া';
+
+  @override
+  String get statusArchived => 'আর্কাইভকৃত';
+
+  @override
+  String get statusWithdrawn => 'প্রত্যাহারকৃত';
+
+  @override
+  String get actionSubmit => 'জমা দিন';
+
+  @override
+  String get actionWithdraw => 'প্রত্যাহার করুন';
+
+  @override
+  String get actionArchive => 'আর্কাইভ করুন';
+
+  @override
+  String get actionEdit => 'সম্পাদনা';
+
+  @override
+  String get verificationTitle => 'অ্যাকাউন্ট ভেরিফিকেশন';
+
+  @override
+  String get verificationSubtitle =>
+      'যাচাইকৃত ব্যাজ পেতে আপনার জাতীয় পরিচয়পত্র বা ইউটিলিটি বিল আপলোড করুন';
+
+  @override
+  String get uploadDocument => 'ডকুমেন্ট আপলোড করুন';
+
+  @override
+  String get documentUploadedSuccess => 'ডকুমেন্ট সফলভাবে আপলোড হয়েছে';
+
+  @override
+  String get noDocumentsUploaded => 'কোনো ডকুমেন্ট আপলোড করা হয়নি';
+
+  @override
+  String get noOwnerListings => 'আপনার কোনো বিজ্ঞাপন নেই';
+
+  @override
+  String get noOwnerListingsSubtitle =>
+      'আপনার সম্পত্তি দ্রুত ভাড়া বা বিক্রি করতে এখনই নতুন বিজ্ঞাপন পোস্ট করুন।';
 }

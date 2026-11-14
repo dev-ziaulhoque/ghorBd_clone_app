@@ -1135,6 +1135,282 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'কোনো জমির বিজ্ঞাপন পাওয়া যায়নি'**
   String get noLandListings;
+
+  /// No description provided for @dashboardTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'ড্যাশবোর্ড'**
+  String get dashboardTitle;
+
+  /// No description provided for @myListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'আমার বিজ্ঞাপন'**
+  String get myListings;
+
+  /// No description provided for @postNewAd.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপন দিন'**
+  String get postNewAd;
+
+  /// No description provided for @editListing.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপন সম্পাদনা'**
+  String get editListing;
+
+  /// No description provided for @createListingTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'নতুন বিজ্ঞাপন দিন'**
+  String get createListingTitle;
+
+  /// No description provided for @listingTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপনের শিরোনাম'**
+  String get listingTitle;
+
+  /// No description provided for @listingDescription.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিস্তারিত বর্ণনা'**
+  String get listingDescription;
+
+  /// No description provided for @purpose.
+  ///
+  /// In bn, this message translates to:
+  /// **'উদ্দেশ্য'**
+  String get purpose;
+
+  /// No description provided for @city.
+  ///
+  /// In bn, this message translates to:
+  /// **'শহর'**
+  String get city;
+
+  /// No description provided for @area.
+  ///
+  /// In bn, this message translates to:
+  /// **'এলাকা'**
+  String get area;
+
+  /// No description provided for @unitNumber.
+  ///
+  /// In bn, this message translates to:
+  /// **'ইউনিট নম্বর'**
+  String get unitNumber;
+
+  /// No description provided for @bedrooms.
+  ///
+  /// In bn, this message translates to:
+  /// **'বেডরুম'**
+  String get bedrooms;
+
+  /// No description provided for @bathrooms.
+  ///
+  /// In bn, this message translates to:
+  /// **'বাথরুম'**
+  String get bathrooms;
+
+  /// No description provided for @size.
+  ///
+  /// In bn, this message translates to:
+  /// **'আয়তন (বর্গফুট)'**
+  String get size;
+
+  /// No description provided for @priceRent.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাড়া / দাম (টাকা)'**
+  String get priceRent;
+
+  /// No description provided for @contactPhone.
+  ///
+  /// In bn, this message translates to:
+  /// **'যোগাযোগের ফোন নম্বর'**
+  String get contactPhone;
+
+  /// No description provided for @allowDirectContact.
+  ///
+  /// In bn, this message translates to:
+  /// **'সরাসরি ফোন যোগাযোগের অনুমতি দিন'**
+  String get allowDirectContact;
+
+  /// No description provided for @photos.
+  ///
+  /// In bn, this message translates to:
+  /// **'ছবি'**
+  String get photos;
+
+  /// No description provided for @uploadPhotos.
+  ///
+  /// In bn, this message translates to:
+  /// **'ছবি যোগ করুন'**
+  String get uploadPhotos;
+
+  /// No description provided for @submitListing.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপন পোস্ট করুন'**
+  String get submitListing;
+
+  /// No description provided for @updateListing.
+  ///
+  /// In bn, this message translates to:
+  /// **'পরিবর্তন সংরক্ষণ করুন'**
+  String get updateListing;
+
+  /// No description provided for @listingCreatedSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপন সফলভাবে তৈরি হয়েছে!'**
+  String get listingCreatedSuccess;
+
+  /// No description provided for @listingUpdatedSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপন সফলভাবে আপডেট হয়েছে!'**
+  String get listingUpdatedSuccess;
+
+  /// No description provided for @totalListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'মোট বিজ্ঞাপন'**
+  String get totalListings;
+
+  /// No description provided for @activeListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'সক্রিয়'**
+  String get activeListings;
+
+  /// No description provided for @pendingListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'অপেক্ষমান'**
+  String get pendingListings;
+
+  /// No description provided for @archivedListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'আর্কাইভ'**
+  String get archivedListings;
+
+  /// No description provided for @views.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভিউ'**
+  String get views;
+
+  /// No description provided for @saved.
+  ///
+  /// In bn, this message translates to:
+  /// **'সেভ করা'**
+  String get saved;
+
+  /// No description provided for @status.
+  ///
+  /// In bn, this message translates to:
+  /// **'অবস্থা'**
+  String get status;
+
+  /// No description provided for @statusActive.
+  ///
+  /// In bn, this message translates to:
+  /// **'সক্রিয়'**
+  String get statusActive;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In bn, this message translates to:
+  /// **'অপেক্ষমান'**
+  String get statusPending;
+
+  /// No description provided for @statusDraft.
+  ///
+  /// In bn, this message translates to:
+  /// **'খসড়া'**
+  String get statusDraft;
+
+  /// No description provided for @statusArchived.
+  ///
+  /// In bn, this message translates to:
+  /// **'আর্কাইভকৃত'**
+  String get statusArchived;
+
+  /// No description provided for @statusWithdrawn.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রত্যাহারকৃত'**
+  String get statusWithdrawn;
+
+  /// No description provided for @actionSubmit.
+  ///
+  /// In bn, this message translates to:
+  /// **'জমা দিন'**
+  String get actionSubmit;
+
+  /// No description provided for @actionWithdraw.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রত্যাহার করুন'**
+  String get actionWithdraw;
+
+  /// No description provided for @actionArchive.
+  ///
+  /// In bn, this message translates to:
+  /// **'আর্কাইভ করুন'**
+  String get actionArchive;
+
+  /// No description provided for @actionEdit.
+  ///
+  /// In bn, this message translates to:
+  /// **'সম্পাদনা'**
+  String get actionEdit;
+
+  /// No description provided for @verificationTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'অ্যাকাউন্ট ভেরিফিকেশন'**
+  String get verificationTitle;
+
+  /// No description provided for @verificationSubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'যাচাইকৃত ব্যাজ পেতে আপনার জাতীয় পরিচয়পত্র বা ইউটিলিটি বিল আপলোড করুন'**
+  String get verificationSubtitle;
+
+  /// No description provided for @uploadDocument.
+  ///
+  /// In bn, this message translates to:
+  /// **'ডকুমেন্ট আপলোড করুন'**
+  String get uploadDocument;
+
+  /// No description provided for @documentUploadedSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'ডকুমেন্ট সফলভাবে আপলোড হয়েছে'**
+  String get documentUploadedSuccess;
+
+  /// No description provided for @noDocumentsUploaded.
+  ///
+  /// In bn, this message translates to:
+  /// **'কোনো ডকুমেন্ট আপলোড করা হয়নি'**
+  String get noDocumentsUploaded;
+
+  /// No description provided for @noOwnerListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার কোনো বিজ্ঞাপন নেই'**
+  String get noOwnerListings;
+
+  /// No description provided for @noOwnerListingsSubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার সম্পত্তি দ্রুত ভাড়া বা বিক্রি করতে এখনই নতুন বিজ্ঞাপন পোস্ট করুন।'**
+  String get noOwnerListingsSubtitle;
 }
 
 class _AppLocalizationsDelegate

@@ -52,6 +52,13 @@ import '../../features/map/data/repositories/map_repository_impl.dart';
 import '../../features/map/domain/repositories/map_repository.dart';
 import '../../features/map/domain/usecases/map_usecases.dart';
 import '../../features/map/presentation/bloc/map_bloc.dart';
+import '../../features/owner/data/datasources/owner_remote_data_source.dart';
+import '../../features/owner/data/repositories/owner_repository_impl.dart';
+import '../../features/owner/domain/repositories/owner_repository.dart';
+import '../../features/owner/domain/usecases/owner_usecases.dart';
+import '../../features/owner/presentation/bloc/create_listing_bloc.dart';
+import '../../features/owner/presentation/bloc/owner_dashboard_bloc.dart';
+import '../../features/owner/presentation/bloc/verification_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -361,6 +368,84 @@ Future<void> configureDependencies() async {
     sl.registerFactory<LandBloc>(
       () => LandBloc(
         getLandListingsUseCase: sl<GetLandListingsUseCase>(),
+      ),
+    );
+  }
+
+  // Owner Feature
+  if (!sl.isRegistered<OwnerRemoteDataSource>()) {
+    sl.registerLazySingleton<OwnerRemoteDataSource>(
+      () => OwnerRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<OwnerRepository>()) {
+    sl.registerLazySingleton<OwnerRepository>(
+      () => OwnerRepositoryImpl(remoteDataSource: sl<OwnerRemoteDataSource>()),
+    );
+  }
+  if (!sl.isRegistered<GetOwnerDashboardStatsUseCase>()) {
+    sl.registerLazySingleton<GetOwnerDashboardStatsUseCase>(
+      () => GetOwnerDashboardStatsUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetMyListingsUseCase>()) {
+    sl.registerLazySingleton<GetMyListingsUseCase>(
+      () => GetMyListingsUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<CreateListingUseCase>()) {
+    sl.registerLazySingleton<CreateListingUseCase>(
+      () => CreateListingUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<UpdateListingUseCase>()) {
+    sl.registerLazySingleton<UpdateListingUseCase>(
+      () => UpdateListingUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<TransitionListingStatusUseCase>()) {
+    sl.registerLazySingleton<TransitionListingStatusUseCase>(
+      () => TransitionListingStatusUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<UploadMediaUseCase>()) {
+    sl.registerLazySingleton<UploadMediaUseCase>(
+      () => UploadMediaUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetVerificationDocumentsUseCase>()) {
+    sl.registerLazySingleton<GetVerificationDocumentsUseCase>(
+      () => GetVerificationDocumentsUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<UploadVerificationDocumentUseCase>()) {
+    sl.registerLazySingleton<UploadVerificationDocumentUseCase>(
+      () => UploadVerificationDocumentUseCase(sl<OwnerRepository>()),
+    );
+  }
+  if (!sl.isRegistered<OwnerDashboardBloc>()) {
+    sl.registerFactory<OwnerDashboardBloc>(
+      () => OwnerDashboardBloc(
+        getDashboardStatsUseCase: sl<GetOwnerDashboardStatsUseCase>(),
+        getMyListingsUseCase: sl<GetMyListingsUseCase>(),
+        transitionListingStatusUseCase: sl<TransitionListingStatusUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<CreateListingBloc>()) {
+    sl.registerFactory<CreateListingBloc>(
+      () => CreateListingBloc(
+        createListingUseCase: sl<CreateListingUseCase>(),
+        updateListingUseCase: sl<UpdateListingUseCase>(),
+        uploadMediaUseCase: sl<UploadMediaUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<VerificationBloc>()) {
+    sl.registerFactory<VerificationBloc>(
+      () => VerificationBloc(
+        getDocumentsUseCase: sl<GetVerificationDocumentsUseCase>(),
+        uploadDocumentUseCase: sl<UploadVerificationDocumentUseCase>(),
       ),
     );
   }

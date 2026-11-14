@@ -566,4 +566,144 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noLandListings => 'No land listings found';
+
+  @override
+  String get dashboardTitle => 'Dashboard';
+
+  @override
+  String get myListings => 'My Listings';
+
+  @override
+  String get postNewAd => 'Post New Ad';
+
+  @override
+  String get editListing => 'Edit Listing';
+
+  @override
+  String get createListingTitle => 'Post a New Listing';
+
+  @override
+  String get listingTitle => 'Listing Title';
+
+  @override
+  String get listingDescription => 'Detailed Description';
+
+  @override
+  String get purpose => 'Purpose';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get area => 'Area';
+
+  @override
+  String get unitNumber => 'Unit Number';
+
+  @override
+  String get bedrooms => 'Bedrooms';
+
+  @override
+  String get bathrooms => 'Bathrooms';
+
+  @override
+  String get size => 'Size (sqft)';
+
+  @override
+  String get priceRent => 'Rent / Price (BDT)';
+
+  @override
+  String get contactPhone => 'Contact Phone';
+
+  @override
+  String get allowDirectContact => 'Allow Direct Contact';
+
+  @override
+  String get photos => 'Photos';
+
+  @override
+  String get uploadPhotos => 'Add Photos';
+
+  @override
+  String get submitListing => 'Post Listing';
+
+  @override
+  String get updateListing => 'Save Changes';
+
+  @override
+  String get listingCreatedSuccess => 'Listing posted successfully!';
+
+  @override
+  String get listingUpdatedSuccess => 'Listing updated successfully!';
+
+  @override
+  String get totalListings => 'Total Ads';
+
+  @override
+  String get activeListings => 'Active';
+
+  @override
+  String get pendingListings => 'Pending';
+
+  @override
+  String get archivedListings => 'Archived';
+
+  @override
+  String get views => 'Views';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get statusActive => 'Active';
+
+  @override
+  String get statusPending => 'Pending';
+
+  @override
+  String get statusDraft => 'Draft';
+
+  @override
+  String get statusArchived => 'Archived';
+
+  @override
+  String get statusWithdrawn => 'Withdrawn';
+
+  @override
+  String get actionSubmit => 'Submit';
+
+  @override
+  String get actionWithdraw => 'Withdraw';
+
+  @override
+  String get actionArchive => 'Archive';
+
+  @override
+  String get actionEdit => 'Edit';
+
+  @override
+  String get verificationTitle => 'Account Verification';
+
+  @override
+  String get verificationSubtitle =>
+      'Upload your NID or utility bill to get the verified badge';
+
+  @override
+  String get uploadDocument => 'Upload Document';
+
+  @override
+  String get documentUploadedSuccess => 'Document uploaded successfully';
+
+  @override
+  String get noDocumentsUploaded => 'No documents uploaded';
+
+  @override
+  String get noOwnerListings => 'You have no listings yet';
+
+  @override
+  String get noOwnerListingsSubtitle =>
+      'Post a new ad now to quickly rent or sell your property.';
 }

@@ -95,11 +95,11 @@ All requirements (REQ-001 to REQ-045) mapped to concrete Screens (SCR) and verif
 | REQ-022 | SCR-009 | API-031, API-032, API-033 | FavoritesBloc | favorites_test.dart | Done |
 | REQ-023 | SCR-010 | API-010, API-011, API-012, API-013, API-014, API-015, API-016 | AuthBloc | auth_bloc_test.dart | Done |
 | REQ-024 | SCR-011 | API-005, API-006, API-007 | RegisterBloc | register_bloc_test.dart | Done |
-| REQ-025 | SCR-012 | API-024, API-049 | CreateListingBloc | create_listing_bloc_test.dart | Todo |
-| REQ-026 | SCR-012 | API-038 | MediaUploadBloc | media_upload_bloc_test.dart | Todo |
-| REQ-027 | SCR-013 | API-027, API-035, API-036, API-037 | MyListingsBloc, DashboardBloc | dashboard_bloc_test.dart | Todo |
-| REQ-028 | SCR-012, 013 | API-025, API-026, API-027 | EditListingBloc | edit_listing_bloc_test.dart | Todo |
-| REQ-029 | SCR-006, 013 | API-040, API-041, API-042, API-043 | VerificationBloc | verification_bloc_test.dart | Todo |
+| REQ-025 | SCR-012 | API-024, API-049 | CreateListingBloc | owner_test.dart | Done |
+| REQ-026 | SCR-012 | API-038 | CreateListingBloc | owner_test.dart | Done |
+| REQ-027 | SCR-013 | API-027, API-035, API-036, API-037 | OwnerDashboardBloc | owner_test.dart | Done |
+| REQ-028 | SCR-012, 013 | API-025, API-026, API-027 | CreateListingBloc, OwnerDashboardBloc | owner_test.dart | Done |
+| REQ-029 | SCR-006, 013 | API-040, API-041, API-042, API-043 | VerificationBloc | owner_test.dart | Done |
 | REQ-030 | SCR-008 | API-029, API-044, API-045, API-046, API-047 | ContactBloc | contact_test.dart | Done |
 | REQ-031 | SCR-014 | API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
 | REQ-032 | SCR-013, 014 | API-061 | PricingBloc | pricing_bloc_test.dart | Todo |

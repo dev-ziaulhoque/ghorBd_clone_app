@@ -36,4 +36,14 @@ class ApiEndpoints {
   // Geo & Map endpoints (API-049, API-050)
   static const String geoSearch = '/geo/search';
   static const String geoReverse = '/geo/reverse';
+
+  // Owner & Listing Management (API-024, API-025, API-027, API-035 to API-043)
+  static String listingTransition(String id) => '/listings/$id/transition';
+  static const String myListings = '/listings/mine';
+  static const String ownerDashboard = '/owner/dashboard';
+  static const String ownerListings = '/owner/listings';
+  static const String mediaUpload = '/media/upload';
+  static const String mediaDelete = '/media';
+  static const String documents = '/documents';
+  static String documentFile(String id) => '/documents/$id/file';
 }

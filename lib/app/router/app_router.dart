@@ -16,6 +16,8 @@ import '../../features/browse/presentation/pages/listings_page.dart';
 import '../../features/favorites/presentation/pages/favorites_page.dart';
 import '../../features/land/presentation/pages/land_page.dart';
 import '../../features/map/presentation/pages/map_page.dart';
+import '../../features/owner/presentation/pages/create_edit_listing_page.dart';
+import '../../features/owner/presentation/pages/owner_dashboard_page.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
@@ -33,6 +35,7 @@ class AppRoutes {
   static const String dashboard = '/dashboard';
   static const String favorites = '/favorites';
   static const String createListing = '/listings/new';
+  static const String editListing = '/listings/:id/edit';
 
   static const Set<String> protectedRoutes = {
     dashboard,
@@ -92,8 +95,15 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.createListing,
         name: 'create_listing',
-        builder: (context, state) =>
-            const _PlaceholderScreen(title: 'Create Listing (SCR-012)'),
+        builder: (context, state) => const CreateEditListingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.editListing,
+        name: 'edit_listing',
+        builder: (context, state) {
+          final id = state.pathParameters['id'];
+          return CreateEditListingPage(listingId: id);
+        },
       ),
       GoRoute(
         path: AppRoutes.listings,
@@ -223,8 +233,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.dashboard,
         name: 'dashboard',
-        builder: (context, state) =>
-            const _PlaceholderScreen(title: 'Dashboard: My Listings (SCR-013)'),
+        builder: (context, state) => const OwnerDashboardPage(),
       ),
       GoRoute(
         path: AppRoutes.favorites,
@@ -241,6 +250,7 @@ class AppRouter {
   );
 }
 
+// ignore: unused_element
 class _PlaceholderScreen extends StatelessWidget {
   final String title;
   const _PlaceholderScreen({required this.title});
