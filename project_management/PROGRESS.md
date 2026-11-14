@@ -39,6 +39,6 @@
 - [x] **7** Map & Geocoding (`API-022`, `API-049`, `API-050`).
 - [x] **8** Land Marketplace (`API-022`).
 - [x] **9** Owner Ad Management: create/edit listing, photo upload, dashboard (`API-024`–`027`, `API-035`–`043`).
-- [ ] **10** Content: Blog, Q&A, Help, Guides, Static pages (`API-051`–`060`, `API-062`–`069`).
+- [x] **10** Content: Blog, Q&A, Help, Guides, Static pages (`API-051`–`060`, `API-062`–`069`).
 - [ ] **11** Plans (Display comparison table only, `API-061`).
 - [ ] **12** Final Polish: widget tests for key screens, verify no hardcoded strings (all through ARB), verify security checklist table in `IMPLEMENTATION_GUIDE.md` section 6, run final `flutter analyze` + `flutter test`, summary of REQs done / not done.

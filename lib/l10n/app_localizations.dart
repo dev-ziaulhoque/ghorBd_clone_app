@@ -1411,6 +1411,138 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'আপনার সম্পত্তি দ্রুত ভাড়া বা বিক্রি করতে এখনই নতুন বিজ্ঞাপন পোস্ট করুন।'**
   String get noOwnerListingsSubtitle;
+
+  /// No description provided for @blogTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'ব্লগ'**
+  String get blogTitle;
+
+  /// No description provided for @qaTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রশ্নোত্তর'**
+  String get qaTitle;
+
+  /// No description provided for @askQuestion.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রশ্ন করুন'**
+  String get askQuestion;
+
+  /// No description provided for @myQuestions.
+  ///
+  /// In bn, this message translates to:
+  /// **'আমার প্রশ্ন'**
+  String get myQuestions;
+
+  /// No description provided for @answers.
+  ///
+  /// In bn, this message translates to:
+  /// **'উত্তর'**
+  String get answers;
+
+  /// No description provided for @writeAnswer.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার উত্তর লিখুন'**
+  String get writeAnswer;
+
+  /// No description provided for @postAnswer.
+  ///
+  /// In bn, this message translates to:
+  /// **'উত্তর পোস্ট করুন'**
+  String get postAnswer;
+
+  /// No description provided for @guidesTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'গাইড'**
+  String get guidesTitle;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'আমাদের সম্পর্কে'**
+  String get aboutTitle;
+
+  /// No description provided for @contactUsTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'যোগাযোগ'**
+  String get contactUsTitle;
+
+  /// No description provided for @privacyTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রাইভেসি পলিসি'**
+  String get privacyTitle;
+
+  /// No description provided for @termsTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'শর্তাবলী'**
+  String get termsTitle;
+
+  /// No description provided for @helpTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'হেল্প সেন্টার'**
+  String get helpTitle;
+
+  /// No description provided for @infoServicesTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'তথ্য সেবা'**
+  String get infoServicesTitle;
+
+  /// No description provided for @questionTitleLabel.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রশ্নের শিরোনাম'**
+  String get questionTitleLabel;
+
+  /// No description provided for @questionBodyLabel.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিস্তারিত বিবরণ'**
+  String get questionBodyLabel;
+
+  /// No description provided for @categoryLabel.
+  ///
+  /// In bn, this message translates to:
+  /// **'ক্যাটাগরি'**
+  String get categoryLabel;
+
+  /// No description provided for @submitQuestion.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রশ্ন জমা দিন'**
+  String get submitQuestion;
+
+  /// No description provided for @comments.
+  ///
+  /// In bn, this message translates to:
+  /// **'মন্তব্য'**
+  String get comments;
+
+  /// No description provided for @writeComment.
+  ///
+  /// In bn, this message translates to:
+  /// **'একটি মন্তব্য লিখুন...'**
+  String get writeComment;
+
+  /// No description provided for @postComment.
+  ///
+  /// In bn, this message translates to:
+  /// **'মন্তব্য করুন'**
+  String get postComment;
+
+  /// No description provided for @readMore.
+  ///
+  /// In bn, this message translates to:
+  /// **'আরও পড়ুন'**
+  String get readMore;
 }
 
 class _AppLocalizationsDelegate

@@ -105,12 +105,12 @@ All requirements (REQ-001 to REQ-045) mapped to concrete Screens (SCR) and verif
 | REQ-032 | SCR-013, 014 | API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
 | REQ-033 | SCR-013 | API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
 | REQ-034 | SCR-014, 023 | API-053, API-061 | PricingBloc | pricing_bloc_test.dart | Todo |
-| REQ-035 | SCR-015, 016 | API-054, API-055, API-056, API-057, API-058, API-059, API-060 | BlogBloc | blog_bloc_test.dart | Todo |
-| REQ-036 | SCR-017, 018, 019 | API-062, API-063, API-064, API-065, API-066, API-067, API-068, API-069 | QaBloc | qa_bloc_test.dart | Todo |
-| REQ-037 | SCR-020 | API-051, API-052, API-053 | ContentBloc | content_bloc_test.dart | Todo |
-| REQ-038 | SCR-021 | API-051, API-052 | GuidesBloc | guides_bloc_test.dart | Todo |
-| REQ-039 | SCR-022 to 025 | API-053 | StaticPageBloc | static_page_bloc_test.dart | Todo |
-| REQ-040 | SCR-001 | none (external browser links) | n/a (url_launcher) | n/a | Todo |
+| REQ-035 | SCR-015, 016 | API-054, API-055, API-056, API-057, API-058, API-059, API-060 | BlogBloc | content_test.dart | Done |
+| REQ-036 | SCR-017, 018, 019 | API-062, API-063, API-064, API-065, API-066, API-067, API-068, API-069 | QaBloc | content_test.dart | Done |
+| REQ-037 | SCR-020 | API-051, API-052, API-053 | StaticContentBloc | content_test.dart | Done |
+| REQ-038 | SCR-021 | API-051, API-052 | StaticContentBloc | content_test.dart | Done |
+| REQ-039 | SCR-022 to 025 | API-053 | StaticContentBloc | content_test.dart | Done |
+| REQ-040 | SCR-001 | none (external browser links) | InfoServicesSheet | content_test.dart | Done |
 | REQ-041 | global | API-048 | Locale | l10n_test.dart | Done |
 | REQ-042 | global | none (client-side ARB) | Locale | l10n_test.dart | Done |
 | REQ-043 | global | none (client theme) | Theme | theme_test.dart | Done |

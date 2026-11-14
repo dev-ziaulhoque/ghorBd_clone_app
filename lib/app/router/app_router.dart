@@ -18,6 +18,14 @@ import '../../features/land/presentation/pages/land_page.dart';
 import '../../features/map/presentation/pages/map_page.dart';
 import '../../features/owner/presentation/pages/create_edit_listing_page.dart';
 import '../../features/owner/presentation/pages/owner_dashboard_page.dart';
+import '../../features/content/presentation/pages/ask_question_page.dart';
+import '../../features/content/presentation/pages/blog_detail_page.dart';
+import '../../features/content/presentation/pages/blog_page.dart';
+import '../../features/content/presentation/pages/guide_detail_page.dart';
+import '../../features/content/presentation/pages/guides_page.dart';
+import '../../features/content/presentation/pages/qa_page.dart';
+import '../../features/content/presentation/pages/question_detail_page.dart';
+import '../../features/content/presentation/pages/static_content_page.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
@@ -36,11 +44,24 @@ class AppRoutes {
   static const String favorites = '/favorites';
   static const String createListing = '/listings/new';
   static const String editListing = '/listings/:id/edit';
+  static const String blog = '/blog';
+  static const String blogDetail = '/blog/:slug';
+  static const String qa = '/qa';
+  static const String qaAsk = '/qa/ask';
+  static const String qaDetail = '/qa/:id';
+  static const String guides = '/guides';
+  static const String guideDetail = '/guides/:slug';
+  static const String about = '/about';
+  static const String contact = '/contact';
+  static const String privacy = '/privacy';
+  static const String terms = '/terms';
+  static const String help = '/help';
 
   static const Set<String> protectedRoutes = {
     dashboard,
     favorites,
     createListing,
+    qaAsk,
   };
 }
 
@@ -239,6 +260,75 @@ class AppRouter {
         path: AppRoutes.favorites,
         name: 'favorites',
         builder: (context, state) => const FavoritesPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.blog,
+        name: 'blog',
+        builder: (context, state) => const BlogPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.blogDetail,
+        name: 'blog_detail',
+        builder: (context, state) {
+          final slug = state.pathParameters['slug'] ?? '';
+          return BlogDetailPage(slug: slug);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.qa,
+        name: 'qa',
+        builder: (context, state) => const QaPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.qaAsk,
+        name: 'qa_ask',
+        builder: (context, state) => const AskQuestionPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.qaDetail,
+        name: 'qa_detail',
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return QuestionDetailPage(id: id);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.guides,
+        name: 'guides',
+        builder: (context, state) => const GuidesPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.guideDetail,
+        name: 'guide_detail',
+        builder: (context, state) {
+          final slug = state.pathParameters['slug'] ?? '';
+          return GuideDetailPage(slug: slug);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.about,
+        name: 'about',
+        builder: (context, state) => const StaticContentPage(slug: 'about'),
+      ),
+      GoRoute(
+        path: AppRoutes.contact,
+        name: 'contact',
+        builder: (context, state) => const StaticContentPage(slug: 'contact'),
+      ),
+      GoRoute(
+        path: AppRoutes.privacy,
+        name: 'privacy',
+        builder: (context, state) => const StaticContentPage(slug: 'privacy'),
+      ),
+      GoRoute(
+        path: AppRoutes.terms,
+        name: 'terms',
+        builder: (context, state) => const StaticContentPage(slug: 'terms'),
+      ),
+      GoRoute(
+        path: AppRoutes.help,
+        name: 'help',
+        builder: (context, state) => const StaticContentPage(slug: 'help'),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

@@ -706,4 +706,70 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noOwnerListingsSubtitle =>
       'Post a new ad now to quickly rent or sell your property.';
+
+  @override
+  String get blogTitle => 'Blog';
+
+  @override
+  String get qaTitle => 'Q&A Community';
+
+  @override
+  String get askQuestion => 'Ask Question';
+
+  @override
+  String get myQuestions => 'My Questions';
+
+  @override
+  String get answers => 'Answers';
+
+  @override
+  String get writeAnswer => 'Write your answer';
+
+  @override
+  String get postAnswer => 'Post Answer';
+
+  @override
+  String get guidesTitle => 'Guides';
+
+  @override
+  String get aboutTitle => 'About Us';
+
+  @override
+  String get contactUsTitle => 'Contact Us';
+
+  @override
+  String get privacyTitle => 'Privacy Policy';
+
+  @override
+  String get termsTitle => 'Terms of Service';
+
+  @override
+  String get helpTitle => 'Help Center';
+
+  @override
+  String get infoServicesTitle => 'Information Services';
+
+  @override
+  String get questionTitleLabel => 'Question Title';
+
+  @override
+  String get questionBodyLabel => 'Question Details';
+
+  @override
+  String get categoryLabel => 'Category';
+
+  @override
+  String get submitQuestion => 'Submit Question';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get writeComment => 'Write a comment...';
+
+  @override
+  String get postComment => 'Post Comment';
+
+  @override
+  String get readMore => 'Read More';
 }

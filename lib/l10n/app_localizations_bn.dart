@@ -703,4 +703,70 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get noOwnerListingsSubtitle =>
       'আপনার সম্পত্তি দ্রুত ভাড়া বা বিক্রি করতে এখনই নতুন বিজ্ঞাপন পোস্ট করুন।';
+
+  @override
+  String get blogTitle => 'ব্লগ';
+
+  @override
+  String get qaTitle => 'প্রশ্নোত্তর';
+
+  @override
+  String get askQuestion => 'প্রশ্ন করুন';
+
+  @override
+  String get myQuestions => 'আমার প্রশ্ন';
+
+  @override
+  String get answers => 'উত্তর';
+
+  @override
+  String get writeAnswer => 'আপনার উত্তর লিখুন';
+
+  @override
+  String get postAnswer => 'উত্তর পোস্ট করুন';
+
+  @override
+  String get guidesTitle => 'গাইড';
+
+  @override
+  String get aboutTitle => 'আমাদের সম্পর্কে';
+
+  @override
+  String get contactUsTitle => 'যোগাযোগ';
+
+  @override
+  String get privacyTitle => 'প্রাইভেসি পলিসি';
+
+  @override
+  String get termsTitle => 'শর্তাবলী';
+
+  @override
+  String get helpTitle => 'হেল্প সেন্টার';
+
+  @override
+  String get infoServicesTitle => 'তথ্য সেবা';
+
+  @override
+  String get questionTitleLabel => 'প্রশ্নের শিরোনাম';
+
+  @override
+  String get questionBodyLabel => 'বিস্তারিত বিবরণ';
+
+  @override
+  String get categoryLabel => 'ক্যাটাগরি';
+
+  @override
+  String get submitQuestion => 'প্রশ্ন জমা দিন';
+
+  @override
+  String get comments => 'মন্তব্য';
+
+  @override
+  String get writeComment => 'একটি মন্তব্য লিখুন...';
+
+  @override
+  String get postComment => 'মন্তব্য করুন';
+
+  @override
+  String get readMore => 'আরও পড়ুন';
 }

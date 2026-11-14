@@ -46,4 +46,17 @@ class ApiEndpoints {
   static const String mediaDelete = '/media';
   static const String documents = '/documents';
   static String documentFile(String id) => '/documents/$id/file';
+
+  // Content & Community endpoints (API-051 to API-060, API-062 to API-069)
+  static const String guides = '/content/guides';
+  static String guideDetail(String slug) => '/content/guides/$slug';
+  static String staticPage(String slug) => '/content/pages/$slug';
+  static const String blogPosts = '/content/posts';
+  static String blogPostDetail(String slug) => '/content/posts/$slug';
+  static String postComments(String postId) => '/content/posts/$postId/comments';
+  static const String qaStats = '/qa/stats';
+  static const String qaQuestions = '/qa/questions';
+  static String questionDetail(String idOrSlug) => '/qa/questions/$idOrSlug';
+  static String questionAnswers(String questionId) => '/qa/questions/$questionId/answers';
+  static const String myQuestions = '/qa/my-questions';
 }

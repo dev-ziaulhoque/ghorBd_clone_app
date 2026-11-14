@@ -59,6 +59,13 @@ import '../../features/owner/domain/usecases/owner_usecases.dart';
 import '../../features/owner/presentation/bloc/create_listing_bloc.dart';
 import '../../features/owner/presentation/bloc/owner_dashboard_bloc.dart';
 import '../../features/owner/presentation/bloc/verification_bloc.dart';
+import '../../features/content/data/datasources/content_remote_data_source.dart';
+import '../../features/content/data/repositories/content_repository_impl.dart';
+import '../../features/content/domain/repositories/content_repository.dart';
+import '../../features/content/domain/usecases/content_usecases.dart';
+import '../../features/content/presentation/bloc/blog_bloc.dart';
+import '../../features/content/presentation/bloc/qa_bloc.dart';
+import '../../features/content/presentation/bloc/static_content_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -446,6 +453,114 @@ Future<void> configureDependencies() async {
       () => VerificationBloc(
         getDocumentsUseCase: sl<GetVerificationDocumentsUseCase>(),
         uploadDocumentUseCase: sl<UploadVerificationDocumentUseCase>(),
+      ),
+    );
+  }
+
+  // Content Feature (Guides, Static Pages, Blog, Q&A)
+  if (!sl.isRegistered<ContentRemoteDataSource>()) {
+    sl.registerLazySingleton<ContentRemoteDataSource>(
+      () => ContentRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<ContentRepository>()) {
+    sl.registerLazySingleton<ContentRepository>(
+      () => ContentRepositoryImpl(remoteDataSource: sl<ContentRemoteDataSource>()),
+    );
+  }
+  if (!sl.isRegistered<GetGuidesUseCase>()) {
+    sl.registerLazySingleton<GetGuidesUseCase>(
+      () => GetGuidesUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetGuideDetailUseCase>()) {
+    sl.registerLazySingleton<GetGuideDetailUseCase>(
+      () => GetGuideDetailUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetStaticPageUseCase>()) {
+    sl.registerLazySingleton<GetStaticPageUseCase>(
+      () => GetStaticPageUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetBlogPostsUseCase>()) {
+    sl.registerLazySingleton<GetBlogPostsUseCase>(
+      () => GetBlogPostsUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetBlogPostDetailUseCase>()) {
+    sl.registerLazySingleton<GetBlogPostDetailUseCase>(
+      () => GetBlogPostDetailUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetPostCommentsUseCase>()) {
+    sl.registerLazySingleton<GetPostCommentsUseCase>(
+      () => GetPostCommentsUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<AddPostCommentUseCase>()) {
+    sl.registerLazySingleton<AddPostCommentUseCase>(
+      () => AddPostCommentUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetQuestionsUseCase>()) {
+    sl.registerLazySingleton<GetQuestionsUseCase>(
+      () => GetQuestionsUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetQuestionDetailUseCase>()) {
+    sl.registerLazySingleton<GetQuestionDetailUseCase>(
+      () => GetQuestionDetailUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<AskQuestionUseCase>()) {
+    sl.registerLazySingleton<AskQuestionUseCase>(
+      () => AskQuestionUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetAnswersUseCase>()) {
+    sl.registerLazySingleton<GetAnswersUseCase>(
+      () => GetAnswersUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<PostAnswerUseCase>()) {
+    sl.registerLazySingleton<PostAnswerUseCase>(
+      () => PostAnswerUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetMyQuestionsUseCase>()) {
+    sl.registerLazySingleton<GetMyQuestionsUseCase>(
+      () => GetMyQuestionsUseCase(sl<ContentRepository>()),
+    );
+  }
+  if (!sl.isRegistered<BlogBloc>()) {
+    sl.registerFactory<BlogBloc>(
+      () => BlogBloc(
+        getBlogPostsUseCase: sl<GetBlogPostsUseCase>(),
+        getBlogPostDetailUseCase: sl<GetBlogPostDetailUseCase>(),
+        getPostCommentsUseCase: sl<GetPostCommentsUseCase>(),
+        addPostCommentUseCase: sl<AddPostCommentUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<QaBloc>()) {
+    sl.registerFactory<QaBloc>(
+      () => QaBloc(
+        getQuestionsUseCase: sl<GetQuestionsUseCase>(),
+        getQuestionDetailUseCase: sl<GetQuestionDetailUseCase>(),
+        askQuestionUseCase: sl<AskQuestionUseCase>(),
+        getAnswersUseCase: sl<GetAnswersUseCase>(),
+        postAnswerUseCase: sl<PostAnswerUseCase>(),
+        getMyQuestionsUseCase: sl<GetMyQuestionsUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<StaticContentBloc>()) {
+    sl.registerFactory<StaticContentBloc>(
+      () => StaticContentBloc(
+        getGuidesUseCase: sl<GetGuidesUseCase>(),
+        getGuideDetailUseCase: sl<GetGuideDetailUseCase>(),
+        getStaticPageUseCase: sl<GetStaticPageUseCase>(),
       ),
     );
   }
