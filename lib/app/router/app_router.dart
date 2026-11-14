@@ -1,0 +1,197 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../../core/security/session_manager.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/register_bloc.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/auth/presentation/pages/verify_otp_page.dart';
+import '../di/injection.dart';
+
+class AppRoutes {
+  static const String home = '/';
+  static const String listings = '/listings';
+  static const String listingDetail = '/listings/:slug';
+  static const String map = '/map';
+  static const String land = '/land';
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String verifyOtp = '/verify-otp';
+  static const String verifyOtpAlt = '/verify_otp';
+  static const String dashboard = '/dashboard';
+  static const String favorites = '/favorites';
+  static const String createListing = '/listings/new';
+
+  static const Set<String> protectedRoutes = {
+    dashboard,
+    favorites,
+    createListing,
+  };
+}
+
+class AppRouter {
+  static final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'rootNav');
+
+  // Manual override for testing
+  static bool? _authOverride;
+
+  static void setAuthOverride(bool? isAuth) {
+    _authOverride = isAuth;
+  }
+
+  static bool get isAuthenticated {
+    if (_authOverride != null) return _authOverride!;
+    if (sl.isRegistered<SessionManager>()) {
+      return sl<SessionManager>().currentStatus == SessionStatus.authenticated;
+    }
+    return false;
+  }
+
+  static String? authGuard(BuildContext context, GoRouterState state) {
+    final destination = state.matchedLocation;
+    final isProtected = AppRoutes.protectedRoutes.any(
+      (route) => destination == route || destination.startsWith('$route/'),
+    );
+
+    if (isProtected && !isAuthenticated) {
+      final from = Uri.encodeComponent(destination);
+      return '${AppRoutes.login}?redirect=$from';
+    }
+
+    if (isAuthenticated &&
+        (destination == AppRoutes.login || destination == AppRoutes.register)) {
+      return AppRoutes.home;
+    }
+
+    return null;
+  }
+
+  static final GoRouter router = GoRouter(
+    navigatorKey: rootNavigatorKey,
+    initialLocation: AppRoutes.home,
+    redirect: authGuard,
+    routes: [
+      GoRoute(
+        path: AppRoutes.home,
+        name: 'home',
+        builder: (context, state) =>
+            const _PlaceholderScreen(title: 'GhorBD Home (SCR-001)'),
+      ),
+      GoRoute(
+        path: AppRoutes.createListing,
+        name: 'create_listing',
+        builder: (context, state) =>
+            const _PlaceholderScreen(title: 'Create Listing (SCR-012)'),
+      ),
+      GoRoute(
+        path: AppRoutes.listings,
+        name: 'listings',
+        builder: (context, state) =>
+            const _PlaceholderScreen(title: 'Listings (SCR-002)'),
+      ),
+      GoRoute(
+        path: AppRoutes.listingDetail,
+        name: 'listing_detail',
+        builder: (context, state) {
+          final slug = state.pathParameters['slug'] ?? '';
+          return _PlaceholderScreen(title: 'Listing Detail: $slug (SCR-006)');
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.map,
+        name: 'map',
+        builder: (context, state) =>
+            const _PlaceholderScreen(title: 'Map View (SCR-004)'),
+      ),
+      GoRoute(
+        path: AppRoutes.land,
+        name: 'land',
+        builder: (context, state) =>
+            const _PlaceholderScreen(title: 'Land Marketplace (SCR-005)'),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        name: 'login',
+        builder: (context, state) {
+          final redirect = state.uri.queryParameters['redirect'];
+          return BlocProvider<AuthBloc>(
+            create: (_) => sl<AuthBloc>(),
+            child: LoginPage(redirect: redirect),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        name: 'register',
+        builder: (context, state) {
+          final role = state.uri.queryParameters['role'];
+          return BlocProvider<RegisterBloc>(
+            create: (_) => sl<RegisterBloc>(),
+            child: RegisterPage(initialRole: role),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.verifyOtp,
+        name: 'verify_otp',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+          final email = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
+          final devOtp = extra['devOtp'] as String?;
+          return BlocProvider<RegisterBloc>(
+            create: (_) => sl<RegisterBloc>(),
+            child: VerifyOtpPage(email: email, devOtp: devOtp),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.verifyOtpAlt,
+        name: 'verify_otp_alt',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+          final email = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
+          final devOtp = extra['devOtp'] as String?;
+          return BlocProvider<RegisterBloc>(
+            create: (_) => sl<RegisterBloc>(),
+            child: VerifyOtpPage(email: email, devOtp: devOtp),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.dashboard,
+        name: 'dashboard',
+        builder: (context, state) =>
+            const _PlaceholderScreen(title: 'Dashboard: My Listings (SCR-013)'),
+      ),
+      GoRoute(
+        path: AppRoutes.favorites,
+        name: 'favorites',
+        builder: (context, state) =>
+            const _PlaceholderScreen(title: 'Favorites (SCR-009)'),
+      ),
+    ],
+    errorBuilder: (context, state) => Scaffold(
+      appBar: AppBar(title: const Text('Page Not Found')),
+      body: Center(
+        child: Text('404: No route defined for ${state.uri.toString()}'),
+      ),
+    ),
+  );
+}
+
+class _PlaceholderScreen extends StatelessWidget {
+  final String title;
+  const _PlaceholderScreen({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(
+        child: Text(title, style: Theme.of(context).textTheme.titleMedium),
+      ),
+    );
+  }
+}
