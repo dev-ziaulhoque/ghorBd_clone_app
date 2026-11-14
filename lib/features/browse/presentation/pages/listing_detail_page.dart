@@ -594,6 +594,34 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
         AppFormatters.toBanglaDigits(listing.floor!),
       ));
     }
+    if (listing.landAreaValue != null) {
+      specs.add((
+        Icons.landscape_outlined,
+        l10n.landArea,
+        '${AppFormatters.toBanglaDigits(listing.landAreaValue!)} ${listing.landAreaUnit ?? ""}'.trim(),
+      ));
+    }
+    if (listing.landType != null && listing.landType!.isNotEmpty) {
+      specs.add((
+        Icons.category_outlined,
+        l10n.landType,
+        listing.landType!,
+      ));
+    }
+    if (listing.landRoadWidthFt != null) {
+      specs.add((
+        Icons.add_road_outlined,
+        l10n.landRoadWidth,
+        l10n.landRoadWidthFt(AppFormatters.toBanglaDigits(listing.landRoadWidthFt!)),
+      ));
+    }
+    if (listing.landFacing != null && listing.landFacing!.isNotEmpty) {
+      specs.add((
+        Icons.explore_outlined,
+        l10n.landFacing,
+        listing.landFacing!,
+      ));
+    }
 
     if (specs.isEmpty) return const SizedBox.shrink();
 

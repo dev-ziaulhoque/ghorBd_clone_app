@@ -514,4 +514,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noLocationListings => 'No listings found in this area';
+
+  @override
+  String get landTitle => 'Land Marketplace';
+
+  @override
+  String get landType => 'Land Type';
+
+  @override
+  String get landTypeResidential => 'Residential';
+
+  @override
+  String get landTypeCommercial => 'Commercial';
+
+  @override
+  String get landTypeAgricultural => 'Agricultural';
+
+  @override
+  String get landTypeIndustrial => 'Industrial';
+
+  @override
+  String get landArea => 'Land Area';
+
+  @override
+  String get landRoadWidth => 'Road Width';
+
+  @override
+  String landRoadWidthFt(Object width) {
+    return '$width ft Road';
+  }
+
+  @override
+  String get landFacing => 'Facing';
+
+  @override
+  String get katha => 'Katha';
+
+  @override
+  String get bigha => 'Bigha';
+
+  @override
+  String get shotok => 'Shotok';
+
+  @override
+  String get decimal => 'Decimal';
+
+  @override
+  String foundLandResults(Object count) {
+    return '$count land listings found';
+  }
+
+  @override
+  String get noLandListings => 'No land listings found';
 }

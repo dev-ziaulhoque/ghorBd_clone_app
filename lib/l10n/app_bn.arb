@@ -157,5 +157,21 @@
   "searchPlaceHint": "স্থান বা ঠিকানা খুঁজুন...",
   "selectedLocation": "নির্বাচিত এলাকা",
   "nearbyListings": "আশেপাশের বিজ্ঞাপন",
-  "noLocationListings": "এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি"
+  "noLocationListings": "এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি",
+  "landTitle": "জমির বিজ্ঞাপন",
+  "landType": "জমির ধরন",
+  "landTypeResidential": "আবাসিক",
+  "landTypeCommercial": "বাণিজ্যিক",
+  "landTypeAgricultural": "কৃষি",
+  "landTypeIndustrial": "শিল্প",
+  "landArea": "জমির পরিমাপ",
+  "landRoadWidth": "রাস্তার প্রস্থ",
+  "landRoadWidthFt": "{width} ফুট রাস্তা",
+  "landFacing": "মুখোমুখি",
+  "katha": "কাঠা",
+  "bigha": "বিঘা",
+  "shotok": "শতক",
+  "decimal": "ডেসিমেল",
+  "foundLandResults": "{count}টি জমির বিজ্ঞাপন পাওয়া গেছে",
+  "noLandListings": "কোনো জমির বিজ্ঞাপন পাওয়া যায়নি"
 }

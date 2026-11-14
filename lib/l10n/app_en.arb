@@ -157,5 +157,21 @@
   "searchPlaceHint": "Search place or address...",
   "selectedLocation": "Selected Location",
   "nearbyListings": "Nearby Listings",
-  "noLocationListings": "No listings found in this area"
+  "noLocationListings": "No listings found in this area",
+  "landTitle": "Land Marketplace",
+  "landType": "Land Type",
+  "landTypeResidential": "Residential",
+  "landTypeCommercial": "Commercial",
+  "landTypeAgricultural": "Agricultural",
+  "landTypeIndustrial": "Industrial",
+  "landArea": "Land Area",
+  "landRoadWidth": "Road Width",
+  "landRoadWidthFt": "{width} ft Road",
+  "landFacing": "Facing",
+  "katha": "Katha",
+  "bigha": "Bigha",
+  "shotok": "Shotok",
+  "decimal": "Decimal",
+  "foundLandResults": "{count} land listings found",
+  "noLandListings": "No land listings found"
 }

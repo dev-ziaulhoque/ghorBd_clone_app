@@ -511,4 +511,56 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get noLocationListings => 'এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি';
+
+  @override
+  String get landTitle => 'জমির বিজ্ঞাপন';
+
+  @override
+  String get landType => 'জমির ধরন';
+
+  @override
+  String get landTypeResidential => 'আবাসিক';
+
+  @override
+  String get landTypeCommercial => 'বাণিজ্যিক';
+
+  @override
+  String get landTypeAgricultural => 'কৃষি';
+
+  @override
+  String get landTypeIndustrial => 'শিল্প';
+
+  @override
+  String get landArea => 'জমির পরিমাপ';
+
+  @override
+  String get landRoadWidth => 'রাস্তার প্রস্থ';
+
+  @override
+  String landRoadWidthFt(Object width) {
+    return '$width ফুট রাস্তা';
+  }
+
+  @override
+  String get landFacing => 'মুখোমুখি';
+
+  @override
+  String get katha => 'কাঠা';
+
+  @override
+  String get bigha => 'বিঘা';
+
+  @override
+  String get shotok => 'শতক';
+
+  @override
+  String get decimal => 'ডেসিমেল';
+
+  @override
+  String foundLandResults(Object count) {
+    return '$countটি জমির বিজ্ঞাপন পাওয়া গেছে';
+  }
+
+  @override
+  String get noLandListings => 'কোনো জমির বিজ্ঞাপন পাওয়া যায়নি';
 }

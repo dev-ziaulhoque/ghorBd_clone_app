@@ -42,6 +42,11 @@ import '../../features/favorites/data/repositories/favorites_repository_impl.dar
 import '../../features/favorites/domain/repositories/favorites_repository.dart';
 import '../../features/favorites/domain/usecases/favorites_usecases.dart';
 import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
+import '../../features/land/data/datasources/land_remote_data_source.dart';
+import '../../features/land/data/repositories/land_repository_impl.dart';
+import '../../features/land/domain/repositories/land_repository.dart';
+import '../../features/land/domain/usecases/get_land_listings_usecase.dart';
+import '../../features/land/presentation/bloc/land_bloc.dart';
 import '../../features/map/data/datasources/map_remote_data_source.dart';
 import '../../features/map/data/repositories/map_repository_impl.dart';
 import '../../features/map/domain/repositories/map_repository.dart';
@@ -332,6 +337,30 @@ Future<void> configureDependencies() async {
         searchPlacesUseCase: sl<SearchPlacesUseCase>(),
         reverseGeocodeUseCase: sl<ReverseGeocodeUseCase>(),
         getMapListingsUseCase: sl<GetMapListingsUseCase>(),
+      ),
+    );
+  }
+
+  // Land Feature
+  if (!sl.isRegistered<LandRemoteDataSource>()) {
+    sl.registerLazySingleton<LandRemoteDataSource>(
+      () => LandRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<LandRepository>()) {
+    sl.registerLazySingleton<LandRepository>(
+      () => LandRepositoryImpl(remoteDataSource: sl<LandRemoteDataSource>()),
+    );
+  }
+  if (!sl.isRegistered<GetLandListingsUseCase>()) {
+    sl.registerLazySingleton<GetLandListingsUseCase>(
+      () => GetLandListingsUseCase(sl<LandRepository>()),
+    );
+  }
+  if (!sl.isRegistered<LandBloc>()) {
+    sl.registerFactory<LandBloc>(
+      () => LandBloc(
+        getLandListingsUseCase: sl<GetLandListingsUseCase>(),
       ),
     );
   }

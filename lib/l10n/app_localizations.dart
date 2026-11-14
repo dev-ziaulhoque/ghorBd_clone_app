@@ -1039,6 +1039,102 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি'**
   String get noLocationListings;
+
+  /// No description provided for @landTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'জমির বিজ্ঞাপন'**
+  String get landTitle;
+
+  /// No description provided for @landType.
+  ///
+  /// In bn, this message translates to:
+  /// **'জমির ধরন'**
+  String get landType;
+
+  /// No description provided for @landTypeResidential.
+  ///
+  /// In bn, this message translates to:
+  /// **'আবাসিক'**
+  String get landTypeResidential;
+
+  /// No description provided for @landTypeCommercial.
+  ///
+  /// In bn, this message translates to:
+  /// **'বাণিজ্যিক'**
+  String get landTypeCommercial;
+
+  /// No description provided for @landTypeAgricultural.
+  ///
+  /// In bn, this message translates to:
+  /// **'কৃষি'**
+  String get landTypeAgricultural;
+
+  /// No description provided for @landTypeIndustrial.
+  ///
+  /// In bn, this message translates to:
+  /// **'শিল্প'**
+  String get landTypeIndustrial;
+
+  /// No description provided for @landArea.
+  ///
+  /// In bn, this message translates to:
+  /// **'জমির পরিমাপ'**
+  String get landArea;
+
+  /// No description provided for @landRoadWidth.
+  ///
+  /// In bn, this message translates to:
+  /// **'রাস্তার প্রস্থ'**
+  String get landRoadWidth;
+
+  /// No description provided for @landRoadWidthFt.
+  ///
+  /// In bn, this message translates to:
+  /// **'{width} ফুট রাস্তা'**
+  String landRoadWidthFt(Object width);
+
+  /// No description provided for @landFacing.
+  ///
+  /// In bn, this message translates to:
+  /// **'মুখোমুখি'**
+  String get landFacing;
+
+  /// No description provided for @katha.
+  ///
+  /// In bn, this message translates to:
+  /// **'কাঠা'**
+  String get katha;
+
+  /// No description provided for @bigha.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিঘা'**
+  String get bigha;
+
+  /// No description provided for @shotok.
+  ///
+  /// In bn, this message translates to:
+  /// **'শতক'**
+  String get shotok;
+
+  /// No description provided for @decimal.
+  ///
+  /// In bn, this message translates to:
+  /// **'ডেসিমেল'**
+  String get decimal;
+
+  /// No description provided for @foundLandResults.
+  ///
+  /// In bn, this message translates to:
+  /// **'{count}টি জমির বিজ্ঞাপন পাওয়া গেছে'**
+  String foundLandResults(Object count);
+
+  /// No description provided for @noLandListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'কোনো জমির বিজ্ঞাপন পাওয়া যায়নি'**
+  String get noLandListings;
 }
 
 class _AppLocalizationsDelegate

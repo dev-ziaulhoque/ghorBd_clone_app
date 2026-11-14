@@ -14,6 +14,7 @@ import '../../features/browse/presentation/pages/home_page.dart';
 import '../../features/browse/presentation/pages/listing_detail_page.dart';
 import '../../features/browse/presentation/pages/listings_page.dart';
 import '../../features/favorites/presentation/pages/favorites_page.dart';
+import '../../features/land/presentation/pages/land_page.dart';
 import '../../features/map/presentation/pages/map_page.dart';
 import '../di/injection.dart';
 
@@ -156,8 +157,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.land,
         name: 'land',
-        builder: (context, state) =>
-            const _PlaceholderScreen(title: 'Land Marketplace (SCR-005)'),
+        builder: (context, state) => const LandPage(),
       ),
       GoRoute(
         path: AppRoutes.login,

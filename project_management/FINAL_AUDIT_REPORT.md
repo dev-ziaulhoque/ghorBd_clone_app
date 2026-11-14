@@ -83,8 +83,8 @@ All requirements (REQ-001 to REQ-045) mapped to concrete Screens (SCR) and verif
 | REQ-010 | SCR-002 | API-022, API-034 | ListingsBloc | browse_blocs_and_pages_test.dart | Done |
 | REQ-011 | SCR-004 | API-022, API-049, API-050 | MapBloc | map_test.dart | Done |
 | REQ-012 | SCR-004 | API-022, API-049 | MapBloc | map_test.dart | Done |
-| REQ-013 | SCR-005 | API-022 | LandBloc | land_bloc_test.dart | Todo |
-| REQ-014 | SCR-005, 006 | API-022, API-023 | LandBloc, ListingDetailBloc | listing_detail_bloc_test.dart | Todo |
+| REQ-013 | SCR-005 | API-022 | LandBloc | land_test.dart | Done |
+| REQ-014 | SCR-005, 006 | API-022, API-023 | LandBloc, ListingDetailBloc | land_test.dart | Done |
 | REQ-015 | SCR-006 | API-023 | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
 | REQ-016 | SCR-006 | API-023 | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
 | REQ-017 | SCR-006 | API-023 | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
