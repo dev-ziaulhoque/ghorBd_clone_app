@@ -69,5 +69,14 @@
   "authRoleOwner": "Owner / Lister",
   "authOtpInstruction": "A 6-digit verification code has been sent to your email.",
   "authListerType": "Lister Type",
-  "authSelectRole": "Select your role"
+  "authSelectRole": "Select your role",
+  "authForgotPasswordTitle": "Password Recovery",
+  "authForgotPasswordInstruction": "Enter your account email. A password reset link will be sent.",
+  "authSendResetLink": "Send Reset Link",
+  "authResetLinkSent": "Password reset link has been sent to your email.",
+  "authNewPassword": "New Password",
+  "authConfirmPassword": "Confirm Password",
+  "authResetToken": "Reset Token",
+  "authPasswordResetSuccess": "Password has been reset successfully. Please log in.",
+  "authBackToLogin": "Back to Login"
 }

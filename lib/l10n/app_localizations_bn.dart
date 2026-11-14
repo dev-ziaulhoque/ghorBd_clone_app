@@ -234,4 +234,34 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get authSelectRole => 'আপনার ভূমিকা নির্বাচন করুন';
+
+  @override
+  String get authForgotPasswordTitle => 'পাসওয়ার্ড পুনরুদ্ধার';
+
+  @override
+  String get authForgotPasswordInstruction =>
+      'আপনার অ্যাকাউন্টের ইমেইল দিন। পাসওয়ার্ড রিসেটের লিংক পাঠানো হবে।';
+
+  @override
+  String get authSendResetLink => 'রিসেট লিংক পাঠান';
+
+  @override
+  String get authResetLinkSent =>
+      'পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে।';
+
+  @override
+  String get authNewPassword => 'নতুন পাসওয়ার্ড';
+
+  @override
+  String get authConfirmPassword => 'পাসওয়ার্ড নিশ্চিত করুন';
+
+  @override
+  String get authResetToken => 'রিসেট টোকেন';
+
+  @override
+  String get authPasswordResetSuccess =>
+      'পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে। এখন লগইন করুন।';
+
+  @override
+  String get authBackToLogin => 'লগইনে ফিরে যান';
 }

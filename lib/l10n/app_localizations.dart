@@ -517,6 +517,60 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'আপনার ভূমিকা নির্বাচন করুন'**
   String get authSelectRole;
+
+  /// No description provided for @authForgotPasswordTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'পাসওয়ার্ড পুনরুদ্ধার'**
+  String get authForgotPasswordTitle;
+
+  /// No description provided for @authForgotPasswordInstruction.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার অ্যাকাউন্টের ইমেইল দিন। পাসওয়ার্ড রিসেটের লিংক পাঠানো হবে।'**
+  String get authForgotPasswordInstruction;
+
+  /// No description provided for @authSendResetLink.
+  ///
+  /// In bn, this message translates to:
+  /// **'রিসেট লিংক পাঠান'**
+  String get authSendResetLink;
+
+  /// No description provided for @authResetLinkSent.
+  ///
+  /// In bn, this message translates to:
+  /// **'পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে।'**
+  String get authResetLinkSent;
+
+  /// No description provided for @authNewPassword.
+  ///
+  /// In bn, this message translates to:
+  /// **'নতুন পাসওয়ার্ড'**
+  String get authNewPassword;
+
+  /// No description provided for @authConfirmPassword.
+  ///
+  /// In bn, this message translates to:
+  /// **'পাসওয়ার্ড নিশ্চিত করুন'**
+  String get authConfirmPassword;
+
+  /// No description provided for @authResetToken.
+  ///
+  /// In bn, this message translates to:
+  /// **'রিসেট টোকেন'**
+  String get authResetToken;
+
+  /// No description provided for @authPasswordResetSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে। এখন লগইন করুন।'**
+  String get authPasswordResetSuccess;
+
+  /// No description provided for @authBackToLogin.
+  ///
+  /// In bn, this message translates to:
+  /// **'লগইনে ফিরে যান'**
+  String get authBackToLogin;
 }
 
 class _AppLocalizationsDelegate

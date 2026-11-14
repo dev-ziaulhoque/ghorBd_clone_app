@@ -236,4 +236,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authSelectRole => 'Select your role';
+
+  @override
+  String get authForgotPasswordTitle => 'Password Recovery';
+
+  @override
+  String get authForgotPasswordInstruction =>
+      'Enter your account email. A password reset link will be sent.';
+
+  @override
+  String get authSendResetLink => 'Send Reset Link';
+
+  @override
+  String get authResetLinkSent =>
+      'Password reset link has been sent to your email.';
+
+  @override
+  String get authNewPassword => 'New Password';
+
+  @override
+  String get authConfirmPassword => 'Confirm Password';
+
+  @override
+  String get authResetToken => 'Reset Token';
+
+  @override
+  String get authPasswordResetSuccess =>
+      'Password has been reset successfully. Please log in.';
+
+  @override
+  String get authBackToLogin => 'Back to Login';
 }

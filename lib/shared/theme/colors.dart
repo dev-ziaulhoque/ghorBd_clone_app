@@ -9,12 +9,12 @@ class AppColors {
   // Known from website metadata (AST-001)
   static const Color browserBarTheme = Color(0xFF0B1017);
 
-  // TODO(design): Primary brand color placeholder until mobile Figma arrives
+  // TODO(design): Primary brand color placeholder until mobile Figma arrives (not from screenshots, see ISS-029)
   static const Color primary = Color(0xFF059669); // Emerald/Green marketplace accent
   static const Color primaryDark = Color(0xFF047857);
   static const Color primaryLight = Color(0xFF34D399);
 
-  // TODO(design): Secondary accent color
+  // TODO(design): Secondary accent color placeholder (not from screenshots, see ISS-029)
   static const Color secondary = Color(0xFF0284C7); // Sky blue
   static const Color secondaryLight = Color(0xFF38BDF8);
 

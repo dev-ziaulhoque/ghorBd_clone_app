@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import '../../core/security/session_manager.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/register_bloc.dart';
+import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/auth/presentation/pages/reset_password_page.dart';
 import '../../features/auth/presentation/pages/verify_otp_page.dart';
 import '../di/injection.dart';
 
@@ -19,6 +21,8 @@ class AppRoutes {
   static const String register = '/register';
   static const String verifyOtp = '/verify-otp';
   static const String verifyOtpAlt = '/verify_otp';
+  static const String forgotPassword = '/forgot-password';
+  static const String resetPassword = '/reset-password';
   static const String dashboard = '/dashboard';
   static const String favorites = '/favorites';
   static const String createListing = '/listings/new';
@@ -157,6 +161,19 @@ class AppRouter {
             create: (_) => sl<RegisterBloc>(),
             child: VerifyOtpPage(email: email, devOtp: devOtp),
           );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        name: 'forgot_password',
+        builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.resetPassword,
+        name: 'reset_password',
+        builder: (context, state) {
+          final token = state.uri.queryParameters['token'];
+          return ResetPasswordPage(initialToken: token);
         },
       ),
       GoRoute(

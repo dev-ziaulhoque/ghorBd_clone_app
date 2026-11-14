@@ -17,7 +17,9 @@ import '../../features/auth/domain/usecases/resend_email_otp_usecase.dart';
 import '../../features/auth/domain/usecases/reset_password_usecase.dart';
 import '../../features/auth/domain/usecases/verify_email_otp_usecase.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/forgot_password_bloc.dart';
 import '../../features/auth/presentation/bloc/register_bloc.dart';
+import '../../features/auth/presentation/bloc/reset_password_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -114,6 +116,20 @@ Future<void> configureDependencies() async {
         registerUseCase: sl<RegisterUseCase>(),
         verifyEmailOtpUseCase: sl<VerifyEmailOtpUseCase>(),
         resendEmailOtpUseCase: sl<ResendEmailOtpUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<ForgotPasswordBloc>()) {
+    sl.registerFactory<ForgotPasswordBloc>(
+      () => ForgotPasswordBloc(
+        forgotPasswordUseCase: sl<ForgotPasswordUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<ResetPasswordBloc>()) {
+    sl.registerFactory<ResetPasswordBloc>(
+      () => ResetPasswordBloc(
+        resetPasswordUseCase: sl<ResetPasswordUseCase>(),
       ),
     );
   }

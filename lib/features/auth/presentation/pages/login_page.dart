@@ -133,7 +133,20 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                           ),
-                          const SizedBox(height: AppSpacing.xl),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              key: const Key('login_forgot_password_button'),
+                              onPressed: () => context.push('/forgot-password'),
+                              child: Text(
+                                l10n.authForgotPassword,
+                                style: TextStyle(
+                                  color: isDark ? AppColors.primaryLight : AppColors.primary,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.md),
                           AppButton(
                             label: l10n.authLogin,
                             onPressed: _onLoginPressed,

@@ -39,6 +39,8 @@
 | ISS-026 | Minor | Phone reveal: limits, logging, abuse rules | REQ-018, NFR-002 | Is there a daily limit for phone reveals? | ফোন নম্বর দেখার কোনো দৈনিক সীমা আছে কি? | **Resolved:** 30 reveals / hour rate limit per user, enforced by backend. Client handles 429 gracefully. | Resolved |
 | ISS-027 | Minor | Photo upload limits: count, size, formats | REQ-026, NFR-004 | Max photos, max size, allowed formats? | সর্বোচ্চ কয়টি ছবি, সাইজ ও ফরম্যাট? | **Resolved:** Max 5 MB per file, max 20 files per request. Formats: JPEG, PNG, WebP (`API-038`). | Resolved |
 | ISS-028 | Minor | Language: is listing text Bangla only or mixed? Does API serve English labels? | REQ-041 | Which content is available in English? | কোন কনটেন্ট ইংরেজিতে পাওয়া যাবে? | **Resolved:** Static pages support `?locale=bn-BD|en`. Master data provides both `name` (Bangla) and `nameEn`. App UI localized via ARB. | Resolved |
+| ISS-029 | Minor | Theme colors #059669 and #0284C7 not confirmed by screenshots | All UI | Please provide official primary and secondary brand hex color codes. | অফিসিয়াল প্রাইমারি ও সেকেন্ডারি ব্র্যান্ড রঙের হেক্স কোড দিন। | Marked TODO(design) in `colors.dart`; emerald/sky used as baseline placeholders. | Open |
+| ISS-030 | Major | SSL certificate pinning needs real production SHA-256 pins | Security | Please provide the real production certificate SHA-256 pin for api.ghorbd.com. | api.ghorbd.com এর আসল প্রোডাকশন SSL পিন (SHA-256) প্রদান করুন। | Pinning hook implemented; disabled in dev/staging, awaiting real production pin. | Open |
 
 ## Client question list (remaining open items) / ক্লায়েন্টকে পাঠানোর প্রশ্ন
 
@@ -57,6 +59,6 @@
 
 ## Summary / সারসংক্ষেপ
 - **Blocker:** open 0 · resolved 2 (ISS-001, ISS-002)
-- **Major:** open 4 · resolved 8 (ISS-006, ISS-007, ISS-009, ISS-010, ISS-011, ISS-012, ISS-013, ISS-022)
-- **Minor:** open 2 · resolved 12 (ISS-008, ISS-014, ISS-015, ISS-016, ISS-017, ISS-019, ISS-020, ISS-023, ISS-025, ISS-026, ISS-027, ISS-028)
-- **Total:** 28 issues (6 open with safe working assumptions, 22 resolved)
+- **Major:** open 5 · resolved 8 (ISS-006, ISS-007, ISS-009, ISS-010, ISS-011, ISS-012, ISS-013, ISS-022)
+- **Minor:** open 3 · resolved 12 (ISS-008, ISS-014, ISS-015, ISS-016, ISS-017, ISS-019, ISS-020, ISS-023, ISS-025, ISS-026, ISS-027, ISS-028)
+- **Total:** 30 issues (8 open with safe working assumptions, 22 resolved)
