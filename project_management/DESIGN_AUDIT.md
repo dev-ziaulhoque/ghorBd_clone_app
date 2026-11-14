@@ -13,33 +13,33 @@ Evidence: `Seen` = page content read · `Linked` = only a link seen · `Blocked`
 
 | ID | Screen | বাংলা | Web route | Linked REQ | Design file | Evidence | Status |
 |----|--------|-------|-----------|------------|-------------|----------|--------|
-| SCR-001 | Home | হোম | `/` | REQ-001–006, 040, 044, 045 | none (website only) | Seen | Todo |
-| SCR-002 | Listings (rent list; also sale/category/verified presets) | তালিকা | `/listings`, `/listings/sale`, `/listings/<type>`, `/listings/verified` | REQ-003, 006–010 | none | Seen | Todo |
-| SCR-003 | Filter sheet | ফিল্টার | (panel on `/listings`) | REQ-008 | none | Seen | Todo |
-| SCR-004 | Map view | মানচিত্র | `/map` | REQ-011, 012 | none | Seen | Todo |
-| SCR-005 | Land listings | জমি | `/land` | REQ-013, 014 | none | Seen | Todo |
-| SCR-006 | Listing detail | বিস্তারিত | `/listings/<slug>` | REQ-014–021, 029 | none | Seen | Todo |
-| SCR-007 | Report listing sheet | রিপোর্ট | (on detail) | REQ-020 | none | Seen (fields unknown) | Todo |
-| SCR-008 | Message / contact sheet | মেসেজ পাঠান | (on detail) | REQ-018, 030 | none | Derived | Todo |
-| SCR-009 | Favorites | সেভ | `/favorites` | REQ-022 | none | Linked | Todo |
-| SCR-010 | Login | লগইন | `/login` | REQ-023 | none | Blocked | Blocked |
-| SCR-011 | Owner registration | মালিক রেজিস্ট্রেশন | `/owner/register` | REQ-024 | none | Blocked | Blocked |
-| SCR-012 | Create / edit listing | বিজ্ঞাপন দিন | `/listings/new` | REQ-025, 026, 028 | none | Blocked | Blocked |
-| SCR-013 | Dashboard: My listings | আমার বিজ্ঞাপন | `/dashboard` | REQ-027, 029, 032 | none | Linked | Todo |
-| SCR-014 | Pricing / plans | প্রাইসিং | `/pricing` | REQ-031, 032, 034 | none | Seen | Todo |
-| SCR-015 | Blog list | ব্লগ | `/blog` | REQ-035 | none | Linked | Todo |
-| SCR-016 | Blog detail | ব্লগ পোস্ট | `/blog/<slug>` | REQ-035 | none | Linked | Todo |
-| SCR-017 | Q&A list | প্রশ্নোত্তর | `/qa` | REQ-036 | none | Seen | Todo |
-| SCR-018 | Q&A detail | প্রশ্ন ও উত্তর | `/qa/<slug>` | REQ-036 | none | Linked | Todo |
-| SCR-019 | Ask a question | প্রশ্ন করুন | (on `/qa`) | REQ-036 | none | Seen (fields unknown) | Todo |
-| SCR-020 | Guides | গাইড | `/guides` | REQ-037 | none | Linked | Todo |
-| SCR-021 | Help Center | হেল্প সেন্টার | `/help` | REQ-038 | none | Seen | Todo |
-| SCR-022 | About | আমাদের সম্পর্কে | `/about` | REQ-039 | none | Linked | Todo |
-| SCR-023 | Contact | যোগাযোগ | `/contact` | REQ-034, 039 | none | Linked | Todo |
-| SCR-024 | Privacy Policy | প্রাইভেসি পলিসি | `/privacy` | REQ-039 | none | Linked | Todo |
-| SCR-025 | Terms | শর্তাবলী | `/terms` | REQ-039 | none | Linked | Todo |
-| SCR-026 | Area page | এলাকা পাতা | `/rent/dhaka/<area>` | REQ-002 | none | Linked | Todo |
-| SCR-027 | Division page | বিভাগ পাতা | `/listings/division/<slug>` | REQ-004 | none | Linked | Todo |
+| SCR-001 | Home | হোম | `/` | REQ-001–006, 040, 044, 045 | none (website only) | Seen | Done |
+| SCR-002 | Listings (rent list; also sale/category/verified presets) | তালিকা | `/listings`, `/listings/sale`, `/listings/<type>`, `/listings/verified` | REQ-003, 006–010 | none | Seen | Done |
+| SCR-003 | Filter sheet | ফিল্টার | (panel on `/listings`) | REQ-008 | none | Seen | Done |
+| SCR-004 | Map view | মানচিত্র | `/map` | REQ-011, 012 | none | Seen | Done |
+| SCR-005 | Land listings | জমি | `/land` | REQ-013, 014 | none | Seen | Done |
+| SCR-006 | Listing detail | বিস্তারিত | `/listings/<slug>` | REQ-014–021, 029 | none | Seen | Done |
+| SCR-007 | Report listing sheet | রিপোর্ট | (on detail) | REQ-020 | none | Seen (fields unknown) | Done |
+| SCR-008 | Message / contact sheet | মেসেজ পাঠান | (on detail) | REQ-018, 030 | none | Derived | Done |
+| SCR-009 | Favorites | সেভ | `/favorites` | REQ-022 | none | Linked | Done |
+| SCR-010 | Login | লগইন | `/login` | REQ-023 | none | Implemented | Done |
+| SCR-011 | Owner registration | মালিক রেজিস্ট্রেশন | `/owner/register` | REQ-024 | none | Implemented | Done |
+| SCR-012 | Create / edit listing | বিজ্ঞাপন দিন | `/listings/new` | REQ-025, 026, 028 | none | Implemented | Done |
+| SCR-013 | Dashboard: My listings | আমার বিজ্ঞাপন | `/dashboard` | REQ-027, 029, 032 | none | Linked | Done |
+| SCR-014 | Pricing / plans | প্রাইসিং | `/pricing` | REQ-031, 032, 034 | none | Seen | Done |
+| SCR-015 | Blog list | ব্লগ | `/blog` | REQ-035 | none | Linked | Done |
+| SCR-016 | Blog detail | ব্লগ পোস্ট | `/blog/<slug>` | REQ-035 | none | Linked | Done |
+| SCR-017 | Q&A list | প্রশ্নোত্তর | `/qa` | REQ-036 | none | Seen | Done |
+| SCR-018 | Q&A detail | প্রশ্ন ও উত্তর | `/qa/<slug>` | REQ-036 | none | Linked | Done |
+| SCR-019 | Ask a question | প্রশ্ন করুন | (on `/qa`) | REQ-036 | none | Implemented | Done |
+| SCR-020 | Guides | গাইড | `/guides` | REQ-037 | none | Linked | Done |
+| SCR-021 | Help Center | হেল্প সেন্টার | `/help` | REQ-038 | none | Seen | Done |
+| SCR-022 | About | আমাদের সম্পর্কে | `/about` | REQ-039 | none | Linked | Done |
+| SCR-023 | Contact | যোগাযোগ | `/contact` | REQ-034, 039 | none | Linked | Done |
+| SCR-024 | Privacy Policy | প্রাইভেসি পলিসি | `/privacy` | REQ-039 | none | Linked | Done |
+| SCR-025 | Terms | শর্তাবলী | `/terms` | REQ-039 | none | Linked | Done |
+| SCR-026 | Area page | এলাকা পাতা | `/rent/dhaka/<area>` | REQ-002 | none | Linked | Done |
+| SCR-027 | Division page | বিভাগ পাতা | `/listings/division/<slug>` | REQ-004 | none | Linked | Done |
 
 ## Missing states per screen / অনুপস্থিত স্টেট
 
