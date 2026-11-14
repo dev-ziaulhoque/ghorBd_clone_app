@@ -266,4 +266,143 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authBackToLogin => 'Back to Login';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navListings => 'Listings';
+
+  @override
+  String get navMap => 'Map';
+
+  @override
+  String get navFavorites => 'Favorites';
+
+  @override
+  String get navProfile => 'Profile';
+
+  @override
+  String get featuredListings => 'Featured Listings';
+
+  @override
+  String get popularAreas => 'Popular Areas';
+
+  @override
+  String get recentRentListings => 'Recent Rent Listings';
+
+  @override
+  String get recentSaleListings => 'Sale Listings';
+
+  @override
+  String get filterTitle => 'Filters';
+
+  @override
+  String get filterApply => 'Apply Filters';
+
+  @override
+  String get filterReset => 'Reset';
+
+  @override
+  String get filterPurpose => 'Purpose';
+
+  @override
+  String get filterPropertyType => 'Property Type';
+
+  @override
+  String get filterBedrooms => 'Bedrooms';
+
+  @override
+  String get filterPriceRange => 'Price Range';
+
+  @override
+  String get filterVerifiedOnly => 'Verified Only';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get rent => 'Rent';
+
+  @override
+  String get sale => 'Sale';
+
+  @override
+  String get apartment => 'Apartment';
+
+  @override
+  String get house => 'House';
+
+  @override
+  String get room => 'Room';
+
+  @override
+  String get shop => 'Shop';
+
+  @override
+  String get office => 'Office';
+
+  @override
+  String get land => 'Land';
+
+  @override
+  String get hostel => 'Hostel';
+
+  @override
+  String get perMonth => '/month';
+
+  @override
+  String bedroomsCount(Object count) {
+    return '$count Beds';
+  }
+
+  @override
+  String bathroomsCount(Object count) {
+    return '$count Baths';
+  }
+
+  @override
+  String sizeSqft(Object size) {
+    return '$size sqft';
+  }
+
+  @override
+  String get verifiedBadge => 'Verified';
+
+  @override
+  String viewCount(Object count) {
+    return '$count views';
+  }
+
+  @override
+  String get similarListings => 'Similar Listings';
+
+  @override
+  String get propertyOverview => 'Property Overview';
+
+  @override
+  String get amenities => 'Amenities';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get floorNumber => 'Floor';
+
+  @override
+  String get sortNewest => 'Newest First';
+
+  @override
+  String get sortPriceAsc => 'Price: Low to High';
+
+  @override
+  String get sortPriceDesc => 'Price: High to Low';
+
+  @override
+  String get sortPopular => 'Most Popular';
+
+  @override
+  String foundResults(Object count) {
+    return '$count listings found';
+  }
 }

@@ -71,27 +71,27 @@ All requirements (REQ-001 to REQ-045) mapped to concrete Screens (SCR) and verif
 
 | REQ | SCR | Concrete Real Endpoints (`API-xxx`) | Bloc / UseCase | Test | Status |
 |-----|-----|--------------------------------------|----------------|------|--------|
-| REQ-001 | SCR-001 | API-022, API-034, API-048 | HomeBloc, SearchBloc | home_bloc_test.dart | Todo |
-| REQ-002 | SCR-001, 026 | API-022, API-048 | AreaBloc | area_bloc_test.dart | Todo |
-| REQ-003 | SCR-001, 002 | API-022, API-034 | ListingsBloc | listings_bloc_test.dart | Todo |
-| REQ-004 | SCR-001, 027 | API-022, API-048 | ListingsBloc | listings_bloc_test.dart | Todo |
-| REQ-005 | SCR-001 | API-022 | HomeBloc | home_bloc_test.dart | Todo |
-| REQ-006 | SCR-001, 002 | API-022, API-034 | ListingsBloc | listings_bloc_test.dart | Todo |
-| REQ-007 | SCR-002 | API-022, API-034 | ListingsBloc, FilterBloc | filter_bloc_test.dart | Todo |
-| REQ-008 | SCR-003 | API-034 | FilterBloc | filter_bloc_test.dart | Todo |
-| REQ-009 | SCR-002 | API-022, API-034 | ListingsBloc | listings_bloc_test.dart | Todo |
-| REQ-010 | SCR-002 | API-022, API-034 | ListingsBloc | listings_bloc_test.dart | Todo |
+| REQ-001 | SCR-001 | API-022, API-034, API-048 | HomeBloc, SearchBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-002 | SCR-001, 026 | API-022, API-048 | AreaBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-003 | SCR-001, 002 | API-022, API-034 | ListingsBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-004 | SCR-001, 027 | API-022, API-048 | ListingsBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-005 | SCR-001 | API-022 | HomeBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-006 | SCR-001, 002 | API-022, API-034 | ListingsBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-007 | SCR-002 | API-022, API-034 | ListingsBloc, FilterBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-008 | SCR-003 | API-034 | FilterBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-009 | SCR-002 | API-022, API-034 | ListingsBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-010 | SCR-002 | API-022, API-034 | ListingsBloc | browse_blocs_and_pages_test.dart | Done |
 | REQ-011 | SCR-004 | API-022, API-049, API-050 | MapBloc | map_bloc_test.dart | Todo |
 | REQ-012 | SCR-004 | API-022, API-049 | MapBloc | map_bloc_test.dart | Todo |
 | REQ-013 | SCR-005 | API-022 | LandBloc | land_bloc_test.dart | Todo |
 | REQ-014 | SCR-005, 006 | API-022, API-023 | LandBloc, ListingDetailBloc | listing_detail_bloc_test.dart | Todo |
-| REQ-015 | SCR-006 | API-023 | ListingDetailBloc | listing_detail_bloc_test.dart | Todo |
-| REQ-016 | SCR-006 | API-023 | ListingDetailBloc | listing_detail_bloc_test.dart | Todo |
-| REQ-017 | SCR-006 | API-023 | ListingDetailBloc | listing_detail_bloc_test.dart | Todo |
+| REQ-015 | SCR-006 | API-023 | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-016 | SCR-006 | API-023 | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
+| REQ-017 | SCR-006 | API-023 | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
 | REQ-018 | SCR-006, 008, 010 | API-023, API-028, API-029 | ContactBloc | contact_bloc_test.dart | Todo |
-| REQ-019 | SCR-006 | API-023 (static notice) | ListingDetailBloc | listing_detail_bloc_test.dart | Todo |
+| REQ-019 | SCR-006 | API-023 (static notice) | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
 | REQ-020 | SCR-007 | API-030 | ReportBloc | report_bloc_test.dart | Todo |
-| REQ-021 | SCR-006 | API-022, API-023 | ListingDetailBloc | listing_detail_bloc_test.dart | Todo |
+| REQ-021 | SCR-006 | API-022, API-023 | ListingDetailBloc | browse_blocs_and_pages_test.dart | Done |
 | REQ-022 | SCR-009 | API-031, API-032, API-033 | FavoritesBloc | favorites_bloc_test.dart | Todo |
 | REQ-023 | SCR-010 | API-010, API-011, API-012, API-013, API-014, API-015, API-016 | AuthBloc | auth_bloc_test.dart | Done |
 | REQ-024 | SCR-011 | API-005, API-006, API-007 | RegisterBloc | register_bloc_test.dart | Done |
@@ -111,10 +111,10 @@ All requirements (REQ-001 to REQ-045) mapped to concrete Screens (SCR) and verif
 | REQ-038 | SCR-021 | API-051, API-052 | GuidesBloc | guides_bloc_test.dart | Todo |
 | REQ-039 | SCR-022 to 025 | API-053 | StaticPageBloc | static_page_bloc_test.dart | Todo |
 | REQ-040 | SCR-001 | none (external browser links) | n/a (url_launcher) | n/a | Todo |
-| REQ-041 | global | API-048 | LocaleCubit | locale_cubit_test.dart | Todo |
-| REQ-042 | global | none (client-side ARB) | LocaleCubit | locale_cubit_test.dart | Todo |
-| REQ-043 | global | none (client theme) | ThemeCubit | theme_cubit_test.dart | Todo |
-| REQ-044 | global | none (client theme) | ThemeCubit | theme_cubit_test.dart | Todo |
+| REQ-041 | global | API-048 | Locale | l10n_test.dart | Done |
+| REQ-042 | global | none (client-side ARB) | Locale | l10n_test.dart | Done |
+| REQ-043 | global | none (client theme) | Theme | theme_test.dart | Done |
+| REQ-044 | global | none (client theme) | Theme | theme_test.dart | Done |
 | REQ-045 | SCR-001 | API-022, API-049 | HomeBloc, MapBloc | home_bloc_test.dart | Todo |
 
 ## 7. Decision / সিদ্ধান্ত

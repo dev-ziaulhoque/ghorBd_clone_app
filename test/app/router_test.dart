@@ -3,6 +3,8 @@ import 'package:ghorbad_clone_app/app/app.dart';
 import 'package:ghorbad_clone_app/app/di/injection.dart';
 import 'package:ghorbad_clone_app/app/router/app_router.dart';
 import 'package:ghorbad_clone_app/features/auth/presentation/pages/login_page.dart';
+import 'package:ghorbad_clone_app/features/browse/presentation/pages/home_page.dart';
+import 'package:ghorbad_clone_app/features/browse/presentation/pages/listings_page.dart';
 
 void main() {
   setUpAll(() async {
@@ -17,19 +19,21 @@ void main() {
 
     testWidgets('initial route renders GhorBD Home screen', (tester) async {
       await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('GhorBD Home (SCR-001)'), findsWidgets);
+      expect(find.byType(HomePage), findsOneWidget);
     });
 
     testWidgets('unauthenticated user navigating to protected route is redirected to login',
         (tester) async {
       AppRouter.setAuthOverride(false);
       await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       AppRouter.router.go(AppRoutes.dashboard);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(LoginPage), findsOneWidget);
     });
@@ -38,10 +42,11 @@ void main() {
         (tester) async {
       AppRouter.setAuthOverride(true);
       await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       AppRouter.router.go(AppRoutes.dashboard);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Dashboard: My Listings (SCR-013)'), findsWidgets);
     });
@@ -50,24 +55,26 @@ void main() {
         (tester) async {
       AppRouter.setAuthOverride(true);
       await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       AppRouter.router.go(AppRoutes.login);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('GhorBD Home (SCR-001)'), findsWidgets);
+      expect(find.byType(HomePage), findsOneWidget);
     });
 
     testWidgets('public route (listings) is accessible to unauthenticated user',
         (tester) async {
       AppRouter.setAuthOverride(false);
       await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       AppRouter.router.go(AppRoutes.listings);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Listings (SCR-002)'), findsWidgets);
+      expect(find.byType(ListingsPage), findsOneWidget);
     });
   });
 }

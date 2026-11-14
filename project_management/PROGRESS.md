@@ -34,7 +34,7 @@
 ---
 
 ## Feature Orders (Journey Order)
-- [ ] **5** Browse & Search: Home, Listings, Filters, Detail (`API-022`, `API-023`, `API-034`, `API-048`).
+- [x] **5** Browse & Search: Home, Listings, Filters, Detail (`API-022`, `API-023`, `API-034`, `API-048`).
 - [ ] **6** Contact (phone reveal, inquiry message), Favorites, Report (`API-028`–`033`).
 - [ ] **7** Map & Geocoding (`API-022`, `API-049`, `API-050`).
 - [ ] **8** Land Marketplace (`API-022`).

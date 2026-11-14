@@ -1,0 +1,23 @@
+import 'package:fpdart/fpdart.dart';
+import '../../../../core/error/failures.dart';
+import '../entities/facets_entity.dart';
+import '../entities/listing_entity.dart';
+import '../repositories/browse_repository.dart';
+
+class SearchListingsUseCase {
+  final BrowseRepository _repository;
+
+  SearchListingsUseCase(this._repository);
+
+  Future<
+      Either<
+          Failure,
+          ({
+            List<ListingEntity> listings,
+            int total,
+            int totalPages,
+            ListingFacetsEntity facets,
+          })>> call(ListingFilterParams params) {
+    return _repository.searchListings(params);
+  }
+}

@@ -20,6 +20,17 @@ import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/forgot_password_bloc.dart';
 import '../../features/auth/presentation/bloc/register_bloc.dart';
 import '../../features/auth/presentation/bloc/reset_password_bloc.dart';
+import '../../features/browse/data/datasources/browse_remote_data_source.dart';
+import '../../features/browse/data/repositories/browse_repository_impl.dart';
+import '../../features/browse/domain/entities/facets_entity.dart';
+import '../../features/browse/domain/repositories/browse_repository.dart';
+import '../../features/browse/domain/usecases/get_areas_usecase.dart';
+import '../../features/browse/domain/usecases/get_listing_detail_usecase.dart';
+import '../../features/browse/domain/usecases/get_listings_usecase.dart';
+import '../../features/browse/domain/usecases/search_listings_usecase.dart';
+import '../../features/browse/presentation/bloc/home_bloc.dart';
+import '../../features/browse/presentation/bloc/listing_detail_bloc.dart';
+import '../../features/browse/presentation/bloc/listings_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -130,6 +141,67 @@ Future<void> configureDependencies() async {
     sl.registerFactory<ResetPasswordBloc>(
       () => ResetPasswordBloc(
         resetPasswordUseCase: sl<ResetPasswordUseCase>(),
+      ),
+    );
+  }
+
+  // Browse Feature — Data Layer
+  if (!sl.isRegistered<BrowseRemoteDataSource>()) {
+    sl.registerLazySingleton<BrowseRemoteDataSource>(
+      () => BrowseRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<BrowseRepository>()) {
+    sl.registerLazySingleton<BrowseRepository>(
+      () => BrowseRepositoryImpl(
+        remoteDataSource: sl<BrowseRemoteDataSource>(),
+      ),
+    );
+  }
+
+  // Browse Feature — Use Cases
+  if (!sl.isRegistered<GetListingsUseCase>()) {
+    sl.registerLazySingleton<GetListingsUseCase>(
+      () => GetListingsUseCase(sl<BrowseRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetListingDetailUseCase>()) {
+    sl.registerLazySingleton<GetListingDetailUseCase>(
+      () => GetListingDetailUseCase(sl<BrowseRepository>()),
+    );
+  }
+  if (!sl.isRegistered<SearchListingsUseCase>()) {
+    sl.registerLazySingleton<SearchListingsUseCase>(
+      () => SearchListingsUseCase(sl<BrowseRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetAreasUseCase>()) {
+    sl.registerLazySingleton<GetAreasUseCase>(
+      () => GetAreasUseCase(sl<BrowseRepository>()),
+    );
+  }
+
+  // Browse Feature — Blocs
+  if (!sl.isRegistered<HomeBloc>()) {
+    sl.registerFactory<HomeBloc>(
+      () => HomeBloc(
+        getListingsUseCase: sl<GetListingsUseCase>(),
+        getAreasUseCase: sl<GetAreasUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<ListingsBloc>()) {
+    sl.registerFactoryParam<ListingsBloc, ListingFilterParams?, void>(
+      (params, _) => ListingsBloc(
+        searchListingsUseCase: sl<SearchListingsUseCase>(),
+        initialParams: params ?? const ListingFilterParams(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<ListingDetailBloc>()) {
+    sl.registerFactory<ListingDetailBloc>(
+      () => ListingDetailBloc(
+        getListingDetailUseCase: sl<GetListingDetailUseCase>(),
       ),
     );
   }

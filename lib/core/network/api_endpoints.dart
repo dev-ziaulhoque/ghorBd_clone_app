@@ -16,4 +16,10 @@ class ApiEndpoints {
   static const String forgotPassword = '/auth/forgot';
   static const String resetPassword = '/auth/reset';
   static const String changePassword = '/auth/password';
+
+  // Browse & Listings endpoints (API-022, API-023, API-034, API-048)
+  static const String listings = '/listings';
+  static String listingDetail(String idOrSlug) => '/listings/$idOrSlug';
+  static const String search = '/search';
+  static const String areas = '/areas';
 }

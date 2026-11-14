@@ -264,4 +264,143 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get authBackToLogin => 'লগইনে ফিরে যান';
+
+  @override
+  String get navHome => 'হোম';
+
+  @override
+  String get navListings => 'তালিকা';
+
+  @override
+  String get navMap => 'মানচিত্র';
+
+  @override
+  String get navFavorites => 'পছন্দ';
+
+  @override
+  String get navProfile => 'প্রোফাইল';
+
+  @override
+  String get featuredListings => 'বিশেষ বিজ্ঞাপন';
+
+  @override
+  String get popularAreas => 'জনপ্রিয় এলাকা';
+
+  @override
+  String get recentRentListings => 'ভাড়ার নতুন বিজ্ঞাপন';
+
+  @override
+  String get recentSaleListings => 'বিক্রির বিজ্ঞাপন';
+
+  @override
+  String get filterTitle => 'ফিল্টার';
+
+  @override
+  String get filterApply => 'ফিল্টার প্রয়োগ করুন';
+
+  @override
+  String get filterReset => 'রিসেট';
+
+  @override
+  String get filterPurpose => 'বিজ্ঞাপনের ধরন';
+
+  @override
+  String get filterPropertyType => 'প্রপার্টির ধরন';
+
+  @override
+  String get filterBedrooms => 'বেডরুম';
+
+  @override
+  String get filterPriceRange => 'ভাড়া / মূল্য সীমা';
+
+  @override
+  String get filterVerifiedOnly => 'শুধু যাচাইকৃত বিজ্ঞাপন';
+
+  @override
+  String get all => 'সব';
+
+  @override
+  String get rent => 'ভাড়া';
+
+  @override
+  String get sale => 'বিক্রি';
+
+  @override
+  String get apartment => 'অ্যাপার্টমেন্ট';
+
+  @override
+  String get house => 'বাড়ি';
+
+  @override
+  String get room => 'রুম';
+
+  @override
+  String get shop => 'দোকান';
+
+  @override
+  String get office => 'অফিস';
+
+  @override
+  String get land => 'জমি';
+
+  @override
+  String get hostel => 'মেস / হোস্টেল';
+
+  @override
+  String get perMonth => '/মাস';
+
+  @override
+  String bedroomsCount(Object count) {
+    return '$count বেড';
+  }
+
+  @override
+  String bathroomsCount(Object count) {
+    return '$count বাথ';
+  }
+
+  @override
+  String sizeSqft(Object size) {
+    return '$size বর্গফুট';
+  }
+
+  @override
+  String get verifiedBadge => 'যাচাইকৃত';
+
+  @override
+  String viewCount(Object count) {
+    return '$count জন দেখেছেন';
+  }
+
+  @override
+  String get similarListings => 'অনুরূপ বিজ্ঞাপন';
+
+  @override
+  String get propertyOverview => 'বিস্তারিত তথ্য';
+
+  @override
+  String get amenities => 'সুবিধাসমূহ';
+
+  @override
+  String get address => 'ঠিকানা';
+
+  @override
+  String get floorNumber => 'তলা';
+
+  @override
+  String get sortNewest => 'নতুন আগে';
+
+  @override
+  String get sortPriceAsc => 'দাম কম থেকে বেশি';
+
+  @override
+  String get sortPriceDesc => 'দাম বেশি থেকে কম';
+
+  @override
+  String get sortPopular => 'জনপ্রিয়';
+
+  @override
+  String foundResults(Object count) {
+    return '$countটি বিজ্ঞাপন পাওয়া গেছে';
+  }
 }

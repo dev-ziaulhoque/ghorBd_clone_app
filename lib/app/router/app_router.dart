@@ -9,6 +9,10 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/reset_password_page.dart';
 import '../../features/auth/presentation/pages/verify_otp_page.dart';
+import '../../features/browse/domain/entities/facets_entity.dart';
+import '../../features/browse/presentation/pages/home_page.dart';
+import '../../features/browse/presentation/pages/listing_detail_page.dart';
+import '../../features/browse/presentation/pages/listings_page.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
@@ -80,8 +84,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.home,
         name: 'home',
-        builder: (context, state) =>
-            const _PlaceholderScreen(title: 'GhorBD Home (SCR-001)'),
+        builder: (context, state) => const HomePage(),
       ),
       GoRoute(
         path: AppRoutes.createListing,
@@ -92,15 +95,55 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.listings,
         name: 'listings',
-        builder: (context, state) =>
-            const _PlaceholderScreen(title: 'Listings (SCR-002)'),
+        builder: (context, state) {
+          final query = state.uri.queryParameters;
+          final params = ListingFilterParams(
+            purpose: query['purpose'],
+            propertyType: query['type'] ?? query['propertyType'],
+            areaSlug: query['area'] ?? query['areaSlug'],
+            division: query['division'],
+            featured: query['featured'] == 'true',
+            search: query['search'],
+          );
+          return ListingsPage(initialParams: params);
+        },
+      ),
+      GoRoute(
+        path: '/listings/sale',
+        builder: (context, state) => const ListingsPage(
+          initialParams: ListingFilterParams(purpose: 'sale'),
+        ),
+      ),
+      GoRoute(
+        path: '/listings/verified',
+        builder: (context, state) => const ListingsPage(
+          initialParams: ListingFilterParams(verified: true),
+        ),
+      ),
+      GoRoute(
+        path: '/listings/division/:slug',
+        builder: (context, state) {
+          final slug = state.pathParameters['slug'];
+          return ListingsPage(
+            initialParams: ListingFilterParams(division: slug),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/rent/dhaka/:area',
+        builder: (context, state) {
+          final area = state.pathParameters['area'];
+          return ListingsPage(
+            initialParams: ListingFilterParams(purpose: 'rent', areaSlug: area),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.listingDetail,
         name: 'listing_detail',
         builder: (context, state) {
           final slug = state.pathParameters['slug'] ?? '';
-          return _PlaceholderScreen(title: 'Listing Detail: $slug (SCR-006)');
+          return ListingDetailPage(idOrSlug: slug);
         },
       ),
       GoRoute(

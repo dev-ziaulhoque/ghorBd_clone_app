@@ -571,6 +571,264 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'লগইনে ফিরে যান'**
   String get authBackToLogin;
+
+  /// No description provided for @navHome.
+  ///
+  /// In bn, this message translates to:
+  /// **'হোম'**
+  String get navHome;
+
+  /// No description provided for @navListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'তালিকা'**
+  String get navListings;
+
+  /// No description provided for @navMap.
+  ///
+  /// In bn, this message translates to:
+  /// **'মানচিত্র'**
+  String get navMap;
+
+  /// No description provided for @navFavorites.
+  ///
+  /// In bn, this message translates to:
+  /// **'পছন্দ'**
+  String get navFavorites;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রোফাইল'**
+  String get navProfile;
+
+  /// No description provided for @featuredListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিশেষ বিজ্ঞাপন'**
+  String get featuredListings;
+
+  /// No description provided for @popularAreas.
+  ///
+  /// In bn, this message translates to:
+  /// **'জনপ্রিয় এলাকা'**
+  String get popularAreas;
+
+  /// No description provided for @recentRentListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাড়ার নতুন বিজ্ঞাপন'**
+  String get recentRentListings;
+
+  /// No description provided for @recentSaleListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিক্রির বিজ্ঞাপন'**
+  String get recentSaleListings;
+
+  /// No description provided for @filterTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'ফিল্টার'**
+  String get filterTitle;
+
+  /// No description provided for @filterApply.
+  ///
+  /// In bn, this message translates to:
+  /// **'ফিল্টার প্রয়োগ করুন'**
+  String get filterApply;
+
+  /// No description provided for @filterReset.
+  ///
+  /// In bn, this message translates to:
+  /// **'রিসেট'**
+  String get filterReset;
+
+  /// No description provided for @filterPurpose.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপনের ধরন'**
+  String get filterPurpose;
+
+  /// No description provided for @filterPropertyType.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রপার্টির ধরন'**
+  String get filterPropertyType;
+
+  /// No description provided for @filterBedrooms.
+  ///
+  /// In bn, this message translates to:
+  /// **'বেডরুম'**
+  String get filterBedrooms;
+
+  /// No description provided for @filterPriceRange.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাড়া / মূল্য সীমা'**
+  String get filterPriceRange;
+
+  /// No description provided for @filterVerifiedOnly.
+  ///
+  /// In bn, this message translates to:
+  /// **'শুধু যাচাইকৃত বিজ্ঞাপন'**
+  String get filterVerifiedOnly;
+
+  /// No description provided for @all.
+  ///
+  /// In bn, this message translates to:
+  /// **'সব'**
+  String get all;
+
+  /// No description provided for @rent.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাড়া'**
+  String get rent;
+
+  /// No description provided for @sale.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিক্রি'**
+  String get sale;
+
+  /// No description provided for @apartment.
+  ///
+  /// In bn, this message translates to:
+  /// **'অ্যাপার্টমেন্ট'**
+  String get apartment;
+
+  /// No description provided for @house.
+  ///
+  /// In bn, this message translates to:
+  /// **'বাড়ি'**
+  String get house;
+
+  /// No description provided for @room.
+  ///
+  /// In bn, this message translates to:
+  /// **'রুম'**
+  String get room;
+
+  /// No description provided for @shop.
+  ///
+  /// In bn, this message translates to:
+  /// **'দোকান'**
+  String get shop;
+
+  /// No description provided for @office.
+  ///
+  /// In bn, this message translates to:
+  /// **'অফিস'**
+  String get office;
+
+  /// No description provided for @land.
+  ///
+  /// In bn, this message translates to:
+  /// **'জমি'**
+  String get land;
+
+  /// No description provided for @hostel.
+  ///
+  /// In bn, this message translates to:
+  /// **'মেস / হোস্টেল'**
+  String get hostel;
+
+  /// No description provided for @perMonth.
+  ///
+  /// In bn, this message translates to:
+  /// **'/মাস'**
+  String get perMonth;
+
+  /// No description provided for @bedroomsCount.
+  ///
+  /// In bn, this message translates to:
+  /// **'{count} বেড'**
+  String bedroomsCount(Object count);
+
+  /// No description provided for @bathroomsCount.
+  ///
+  /// In bn, this message translates to:
+  /// **'{count} বাথ'**
+  String bathroomsCount(Object count);
+
+  /// No description provided for @sizeSqft.
+  ///
+  /// In bn, this message translates to:
+  /// **'{size} বর্গফুট'**
+  String sizeSqft(Object size);
+
+  /// No description provided for @verifiedBadge.
+  ///
+  /// In bn, this message translates to:
+  /// **'যাচাইকৃত'**
+  String get verifiedBadge;
+
+  /// No description provided for @viewCount.
+  ///
+  /// In bn, this message translates to:
+  /// **'{count} জন দেখেছেন'**
+  String viewCount(Object count);
+
+  /// No description provided for @similarListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'অনুরূপ বিজ্ঞাপন'**
+  String get similarListings;
+
+  /// No description provided for @propertyOverview.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিস্তারিত তথ্য'**
+  String get propertyOverview;
+
+  /// No description provided for @amenities.
+  ///
+  /// In bn, this message translates to:
+  /// **'সুবিধাসমূহ'**
+  String get amenities;
+
+  /// No description provided for @address.
+  ///
+  /// In bn, this message translates to:
+  /// **'ঠিকানা'**
+  String get address;
+
+  /// No description provided for @floorNumber.
+  ///
+  /// In bn, this message translates to:
+  /// **'তলা'**
+  String get floorNumber;
+
+  /// No description provided for @sortNewest.
+  ///
+  /// In bn, this message translates to:
+  /// **'নতুন আগে'**
+  String get sortNewest;
+
+  /// No description provided for @sortPriceAsc.
+  ///
+  /// In bn, this message translates to:
+  /// **'দাম কম থেকে বেশি'**
+  String get sortPriceAsc;
+
+  /// No description provided for @sortPriceDesc.
+  ///
+  /// In bn, this message translates to:
+  /// **'দাম বেশি থেকে কম'**
+  String get sortPriceDesc;
+
+  /// No description provided for @sortPopular.
+  ///
+  /// In bn, this message translates to:
+  /// **'জনপ্রিয়'**
+  String get sortPopular;
+
+  /// No description provided for @foundResults.
+  ///
+  /// In bn, this message translates to:
+  /// **'{count}টি বিজ্ঞাপন পাওয়া গেছে'**
+  String foundResults(Object count);
 }
 
 class _AppLocalizationsDelegate
