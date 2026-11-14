@@ -28,7 +28,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Inspect the property in person before paying any advance money.';
 
   @override
-  String get reportListing => 'Report this listing';
+  String get reportListing => 'Report Listing';
 
   @override
   String get reportListingHint => 'Fake, fraud or incorrect info? Let us know.';
@@ -405,4 +405,98 @@ class AppLocalizationsEn extends AppLocalizations {
   String foundResults(Object count) {
     return '$count listings found';
   }
+
+  @override
+  String get contactOwner => 'Contact Advertiser';
+
+  @override
+  String get callOwner => 'Call';
+
+  @override
+  String get sendMessage => 'Send Message';
+
+  @override
+  String get phoneRevealed => 'Phone Number';
+
+  @override
+  String get noPhoneAvailable => 'No phone number available';
+
+  @override
+  String get inquiryMessage => 'Write your message';
+
+  @override
+  String get inquiryPlaceholder =>
+      'Is the flat still available? I would like to visit...';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get inquirySentSuccess => 'Your message has been sent successfully!';
+
+  @override
+  String get selfInquiryError =>
+      'You cannot send an inquiry about your own listing';
+
+  @override
+  String get loginToContact => 'Please log in to contact';
+
+  @override
+  String get reportReason => 'Select Report Reason';
+
+  @override
+  String get reasonScam => 'Fraudulent or fake listing';
+
+  @override
+  String get reasonWrongInfo => 'Incorrect information provided';
+
+  @override
+  String get reasonAlreadyRented => 'Already rented or sold';
+
+  @override
+  String get reasonOffensive => 'Offensive content';
+
+  @override
+  String get reasonOther => 'Other';
+
+  @override
+  String get reportDetails => 'Details (optional)';
+
+  @override
+  String get submitReport => 'Submit Report';
+
+  @override
+  String get reportSuccess =>
+      'Your report has been submitted. Thank you for helping keep GhorBD safe.';
+
+  @override
+  String get ownListingReportError => 'You cannot report your own listing';
+
+  @override
+  String get favoritesTitle => 'Saved Favorites';
+
+  @override
+  String get favoritesEmpty => 'No saved listings yet';
+
+  @override
+  String get favoritesEmptySubtitle =>
+      'Save properties to easily review them later.';
+
+  @override
+  String get addToFavorites => 'Save to Favorites';
+
+  @override
+  String get removeFromFavorites => 'Remove from Favorites';
+
+  @override
+  String get addedToFavoritesSuccess => 'Saved to favorites';
+
+  @override
+  String get removedFromFavoritesSuccess => 'Removed from favorites';
+
+  @override
+  String get loginToFavorite => 'Please log in to save favorites';
+
+  @override
+  String get browseListings => 'Browse Listings';
 }

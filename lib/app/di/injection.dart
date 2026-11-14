@@ -31,6 +31,17 @@ import '../../features/browse/domain/usecases/search_listings_usecase.dart';
 import '../../features/browse/presentation/bloc/home_bloc.dart';
 import '../../features/browse/presentation/bloc/listing_detail_bloc.dart';
 import '../../features/browse/presentation/bloc/listings_bloc.dart';
+import '../../features/contact/data/datasources/contact_remote_data_source.dart';
+import '../../features/contact/data/repositories/contact_repository_impl.dart';
+import '../../features/contact/domain/repositories/contact_repository.dart';
+import '../../features/contact/domain/usecases/contact_usecases.dart';
+import '../../features/contact/presentation/bloc/contact_bloc.dart';
+import '../../features/contact/presentation/bloc/report_bloc.dart';
+import '../../features/favorites/data/datasources/favorites_remote_data_source.dart';
+import '../../features/favorites/data/repositories/favorites_repository_impl.dart';
+import '../../features/favorites/domain/repositories/favorites_repository.dart';
+import '../../features/favorites/domain/usecases/favorites_usecases.dart';
+import '../../features/favorites/presentation/bloc/favorites_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -202,6 +213,84 @@ Future<void> configureDependencies() async {
     sl.registerFactory<ListingDetailBloc>(
       () => ListingDetailBloc(
         getListingDetailUseCase: sl<GetListingDetailUseCase>(),
+      ),
+    );
+  }
+
+  // Favorites Feature
+  if (!sl.isRegistered<FavoritesRemoteDataSource>()) {
+    sl.registerLazySingleton<FavoritesRemoteDataSource>(
+      () => FavoritesRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<FavoritesRepository>()) {
+    sl.registerLazySingleton<FavoritesRepository>(
+      () => FavoritesRepositoryImpl(remoteDataSource: sl<FavoritesRemoteDataSource>()),
+    );
+  }
+  if (!sl.isRegistered<GetFavoritesUseCase>()) {
+    sl.registerLazySingleton<GetFavoritesUseCase>(
+      () => GetFavoritesUseCase(sl<FavoritesRepository>()),
+    );
+  }
+  if (!sl.isRegistered<AddFavoriteUseCase>()) {
+    sl.registerLazySingleton<AddFavoriteUseCase>(
+      () => AddFavoriteUseCase(sl<FavoritesRepository>()),
+    );
+  }
+  if (!sl.isRegistered<RemoveFavoriteUseCase>()) {
+    sl.registerLazySingleton<RemoveFavoriteUseCase>(
+      () => RemoveFavoriteUseCase(sl<FavoritesRepository>()),
+    );
+  }
+  if (!sl.isRegistered<FavoritesBloc>()) {
+    sl.registerFactory<FavoritesBloc>(
+      () => FavoritesBloc(
+        getFavoritesUseCase: sl<GetFavoritesUseCase>(),
+        addFavoriteUseCase: sl<AddFavoriteUseCase>(),
+        removeFavoriteUseCase: sl<RemoveFavoriteUseCase>(),
+      ),
+    );
+  }
+
+  // Contact & Report Feature
+  if (!sl.isRegistered<ContactRemoteDataSource>()) {
+    sl.registerLazySingleton<ContactRemoteDataSource>(
+      () => ContactRemoteDataSourceImpl(dioClient: sl<DioClient>()),
+    );
+  }
+  if (!sl.isRegistered<ContactRepository>()) {
+    sl.registerLazySingleton<ContactRepository>(
+      () => ContactRepositoryImpl(remoteDataSource: sl<ContactRemoteDataSource>()),
+    );
+  }
+  if (!sl.isRegistered<GetContactPhoneUseCase>()) {
+    sl.registerLazySingleton<GetContactPhoneUseCase>(
+      () => GetContactPhoneUseCase(sl<ContactRepository>()),
+    );
+  }
+  if (!sl.isRegistered<SendInquiryUseCase>()) {
+    sl.registerLazySingleton<SendInquiryUseCase>(
+      () => SendInquiryUseCase(sl<ContactRepository>()),
+    );
+  }
+  if (!sl.isRegistered<ReportListingUseCase>()) {
+    sl.registerLazySingleton<ReportListingUseCase>(
+      () => ReportListingUseCase(sl<ContactRepository>()),
+    );
+  }
+  if (!sl.isRegistered<ContactBloc>()) {
+    sl.registerFactory<ContactBloc>(
+      () => ContactBloc(
+        getContactPhoneUseCase: sl<GetContactPhoneUseCase>(),
+        sendInquiryUseCase: sl<SendInquiryUseCase>(),
+      ),
+    );
+  }
+  if (!sl.isRegistered<ReportBloc>()) {
+    sl.registerFactory<ReportBloc>(
+      () => ReportBloc(
+        reportListingUseCase: sl<ReportListingUseCase>(),
       ),
     );
   }

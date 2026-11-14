@@ -73,7 +73,8 @@ void main() {
     registerFallbackValue(const ListingFilterParams());
   });
 
-  setUp(() {
+  setUp(() async {
+    await configureDependencies();
     mockGetListingsUseCase = MockGetListingsUseCase();
     mockGetListingDetailUseCase = MockGetListingDetailUseCase();
     mockSearchListingsUseCase = MockSearchListingsUseCase();

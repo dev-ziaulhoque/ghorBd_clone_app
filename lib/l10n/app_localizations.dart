@@ -137,7 +137,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportListing.
   ///
   /// In bn, this message translates to:
-  /// **'বিজ্ঞাপনটি রিপোর্ট করুন'**
+  /// **'বিজ্ঞাপন রিপোর্ট করুন'**
   String get reportListing;
 
   /// No description provided for @reportListingHint.
@@ -829,6 +829,186 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'{count}টি বিজ্ঞাপন পাওয়া গেছে'**
   String foundResults(Object count);
+
+  /// No description provided for @contactOwner.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপনদাতার সাথে যোগাযোগ'**
+  String get contactOwner;
+
+  /// No description provided for @callOwner.
+  ///
+  /// In bn, this message translates to:
+  /// **'কল করুন'**
+  String get callOwner;
+
+  /// No description provided for @sendMessage.
+  ///
+  /// In bn, this message translates to:
+  /// **'মেসেজ পাঠান'**
+  String get sendMessage;
+
+  /// No description provided for @phoneRevealed.
+  ///
+  /// In bn, this message translates to:
+  /// **'ফোন নম্বর'**
+  String get phoneRevealed;
+
+  /// No description provided for @noPhoneAvailable.
+  ///
+  /// In bn, this message translates to:
+  /// **'কোনো ফোন নম্বর পাওয়া যায়নি'**
+  String get noPhoneAvailable;
+
+  /// No description provided for @inquiryMessage.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার মেসেজ লিখুন'**
+  String get inquiryMessage;
+
+  /// No description provided for @inquiryPlaceholder.
+  ///
+  /// In bn, this message translates to:
+  /// **'ফ্ল্যাটটি কি এখনো খালি আছে? আমি দেখতে চাই...'**
+  String get inquiryPlaceholder;
+
+  /// No description provided for @send.
+  ///
+  /// In bn, this message translates to:
+  /// **'পাঠান'**
+  String get send;
+
+  /// No description provided for @inquirySentSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার মেসেজ সফলভাবে পাঠানো হয়েছে!'**
+  String get inquirySentSuccess;
+
+  /// No description provided for @selfInquiryError.
+  ///
+  /// In bn, this message translates to:
+  /// **'নিজের বিজ্ঞাপনে মেসেজ পাঠানো যাবে না'**
+  String get selfInquiryError;
+
+  /// No description provided for @loginToContact.
+  ///
+  /// In bn, this message translates to:
+  /// **'যোগাযোগ করতে লগইন করুন'**
+  String get loginToContact;
+
+  /// No description provided for @reportReason.
+  ///
+  /// In bn, this message translates to:
+  /// **'রিপোর্টের কারণ নির্বাচন করুন'**
+  String get reportReason;
+
+  /// No description provided for @reasonScam.
+  ///
+  /// In bn, this message translates to:
+  /// **'প্রতারণামূলক বা ভুয়া বিজ্ঞাপন'**
+  String get reasonScam;
+
+  /// No description provided for @reasonWrongInfo.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভুল তথ্য দেওয়া হয়েছে'**
+  String get reasonWrongInfo;
+
+  /// No description provided for @reasonAlreadyRented.
+  ///
+  /// In bn, this message translates to:
+  /// **'ইতিমধ্যে ভাড়া বা বিক্রি হয়ে গেছে'**
+  String get reasonAlreadyRented;
+
+  /// No description provided for @reasonOffensive.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপত্তিকর বিষয়বস্তু'**
+  String get reasonOffensive;
+
+  /// No description provided for @reasonOther.
+  ///
+  /// In bn, this message translates to:
+  /// **'অন্যান্য'**
+  String get reasonOther;
+
+  /// No description provided for @reportDetails.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিস্তারিত বিবরণ (ঐচ্ছিক)'**
+  String get reportDetails;
+
+  /// No description provided for @submitReport.
+  ///
+  /// In bn, this message translates to:
+  /// **'রিপোর্ট জমা দিন'**
+  String get submitReport;
+
+  /// No description provided for @reportSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার রিপোর্ট সফলভাবে জমা হয়েছে। পর্যালোচনার জন্য ধন্যবাদ।'**
+  String get reportSuccess;
+
+  /// No description provided for @ownListingReportError.
+  ///
+  /// In bn, this message translates to:
+  /// **'নিজের বিজ্ঞাপন রিপোর্ট করা যাবে না'**
+  String get ownListingReportError;
+
+  /// No description provided for @favoritesTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'পছন্দের তালিকা'**
+  String get favoritesTitle;
+
+  /// No description provided for @favoritesEmpty.
+  ///
+  /// In bn, this message translates to:
+  /// **'কোনো বিজ্ঞাপন পছন্দ তালিকায় রাখা হয়নি'**
+  String get favoritesEmpty;
+
+  /// No description provided for @favoritesEmptySubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার পছন্দের ফ্ল্যাট বা জমির বিজ্ঞাপনগুলো পরবর্তীতে সহজে দেখতে এখানে সংরক্ষণ করুন।'**
+  String get favoritesEmptySubtitle;
+
+  /// No description provided for @addToFavorites.
+  ///
+  /// In bn, this message translates to:
+  /// **'পছন্দ তালিকায় যুক্ত করুন'**
+  String get addToFavorites;
+
+  /// No description provided for @removeFromFavorites.
+  ///
+  /// In bn, this message translates to:
+  /// **'পছন্দ তালিকা থেকে সরান'**
+  String get removeFromFavorites;
+
+  /// No description provided for @addedToFavoritesSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'পছন্দ তালিকায় যুক্ত হয়েছে'**
+  String get addedToFavoritesSuccess;
+
+  /// No description provided for @removedFromFavoritesSuccess.
+  ///
+  /// In bn, this message translates to:
+  /// **'পছন্দ তালিকা থেকে সরানো হয়েছে'**
+  String get removedFromFavoritesSuccess;
+
+  /// No description provided for @loginToFavorite.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপন সেভ করতে লগইন করুন'**
+  String get loginToFavorite;
+
+  /// No description provided for @browseListings.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিজ্ঞাপন দেখুন'**
+  String get browseListings;
 }
 
 class _AppLocalizationsDelegate

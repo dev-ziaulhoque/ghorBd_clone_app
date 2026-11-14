@@ -12,11 +12,15 @@ import '../../domain/entities/listing_entity.dart';
 class ListingCard extends StatelessWidget {
   final ListingEntity listing;
   final VoidCallback? onTap;
+  final bool isFavorite;
+  final VoidCallback? onFavoritePressed;
 
   const ListingCard({
     super.key,
     required this.listing,
     this.onTap,
+    this.isFavorite = false,
+    this.onFavoritePressed,
   });
 
   @override
@@ -110,6 +114,27 @@ class ListingCard extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              if (onFavoritePressed != null)
+                Positioned(
+                  bottom: AppSpacing.sm,
+                  right: AppSpacing.sm,
+                  child: Material(
+                    color: Colors.black45,
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: onFavoritePressed,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),

@@ -13,6 +13,7 @@ import '../../features/browse/domain/entities/facets_entity.dart';
 import '../../features/browse/presentation/pages/home_page.dart';
 import '../../features/browse/presentation/pages/listing_detail_page.dart';
 import '../../features/browse/presentation/pages/listings_page.dart';
+import '../../features/favorites/presentation/pages/favorites_page.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
@@ -228,8 +229,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.favorites,
         name: 'favorites',
-        builder: (context, state) =>
-            const _PlaceholderScreen(title: 'Favorites (SCR-009)'),
+        builder: (context, state) => const FavoritesPage(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

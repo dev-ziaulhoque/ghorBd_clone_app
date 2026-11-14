@@ -22,4 +22,14 @@ class ApiEndpoints {
   static String listingDetail(String idOrSlug) => '/listings/$idOrSlug';
   static const String search = '/search';
   static const String areas = '/areas';
+
+  // Contact & Inquiries (API-028, API-029)
+  static String listingContact(String id) => '/listings/$id/contact';
+
+  // Report (API-030)
+  static String listingReport(String id) => '/listings/$id/report';
+
+  // Favorites (API-031 to API-033)
+  static const String favorites = '/listings/favorites';
+  static String listingFavorite(String id) => '/listings/$id/favorite';
 }

@@ -28,7 +28,7 @@ class AppLocalizationsBn extends AppLocalizations {
       'যোগাযোগের আগে বাসাটি সরাসরি দেখে নিন। অগ্রিম টাকা পাঠাবেন না।';
 
   @override
-  String get reportListing => 'বিজ্ঞাপনটি রিপোর্ট করুন';
+  String get reportListing => 'বিজ্ঞাপন রিপোর্ট করুন';
 
   @override
   String get reportListingHint => 'ভুয়া, প্রতারণা বা ভুল তথ্য? আমাদের জানান।';
@@ -403,4 +403,97 @@ class AppLocalizationsBn extends AppLocalizations {
   String foundResults(Object count) {
     return '$countটি বিজ্ঞাপন পাওয়া গেছে';
   }
+
+  @override
+  String get contactOwner => 'বিজ্ঞাপনদাতার সাথে যোগাযোগ';
+
+  @override
+  String get callOwner => 'কল করুন';
+
+  @override
+  String get sendMessage => 'মেসেজ পাঠান';
+
+  @override
+  String get phoneRevealed => 'ফোন নম্বর';
+
+  @override
+  String get noPhoneAvailable => 'কোনো ফোন নম্বর পাওয়া যায়নি';
+
+  @override
+  String get inquiryMessage => 'আপনার মেসেজ লিখুন';
+
+  @override
+  String get inquiryPlaceholder =>
+      'ফ্ল্যাটটি কি এখনো খালি আছে? আমি দেখতে চাই...';
+
+  @override
+  String get send => 'পাঠান';
+
+  @override
+  String get inquirySentSuccess => 'আপনার মেসেজ সফলভাবে পাঠানো হয়েছে!';
+
+  @override
+  String get selfInquiryError => 'নিজের বিজ্ঞাপনে মেসেজ পাঠানো যাবে না';
+
+  @override
+  String get loginToContact => 'যোগাযোগ করতে লগইন করুন';
+
+  @override
+  String get reportReason => 'রিপোর্টের কারণ নির্বাচন করুন';
+
+  @override
+  String get reasonScam => 'প্রতারণামূলক বা ভুয়া বিজ্ঞাপন';
+
+  @override
+  String get reasonWrongInfo => 'ভুল তথ্য দেওয়া হয়েছে';
+
+  @override
+  String get reasonAlreadyRented => 'ইতিমধ্যে ভাড়া বা বিক্রি হয়ে গেছে';
+
+  @override
+  String get reasonOffensive => 'আপত্তিকর বিষয়বস্তু';
+
+  @override
+  String get reasonOther => 'অন্যান্য';
+
+  @override
+  String get reportDetails => 'বিস্তারিত বিবরণ (ঐচ্ছিক)';
+
+  @override
+  String get submitReport => 'রিপোর্ট জমা দিন';
+
+  @override
+  String get reportSuccess =>
+      'আপনার রিপোর্ট সফলভাবে জমা হয়েছে। পর্যালোচনার জন্য ধন্যবাদ।';
+
+  @override
+  String get ownListingReportError => 'নিজের বিজ্ঞাপন রিপোর্ট করা যাবে না';
+
+  @override
+  String get favoritesTitle => 'পছন্দের তালিকা';
+
+  @override
+  String get favoritesEmpty => 'কোনো বিজ্ঞাপন পছন্দ তালিকায় রাখা হয়নি';
+
+  @override
+  String get favoritesEmptySubtitle =>
+      'আপনার পছন্দের ফ্ল্যাট বা জমির বিজ্ঞাপনগুলো পরবর্তীতে সহজে দেখতে এখানে সংরক্ষণ করুন।';
+
+  @override
+  String get addToFavorites => 'পছন্দ তালিকায় যুক্ত করুন';
+
+  @override
+  String get removeFromFavorites => 'পছন্দ তালিকা থেকে সরান';
+
+  @override
+  String get addedToFavoritesSuccess => 'পছন্দ তালিকায় যুক্ত হয়েছে';
+
+  @override
+  String get removedFromFavoritesSuccess => 'পছন্দ তালিকা থেকে সরানো হয়েছে';
+
+  @override
+  String get loginToFavorite => 'বিজ্ঞাপন সেভ করতে লগইন করুন';
+
+  @override
+  String get browseListings => 'বিজ্ঞাপন দেখুন';
 }

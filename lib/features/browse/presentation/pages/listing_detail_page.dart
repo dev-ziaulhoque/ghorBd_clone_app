@@ -14,6 +14,10 @@ import '../../../../shared/widgets/loading_view.dart';
 import '../../domain/entities/listing_entity.dart';
 import '../bloc/listing_detail_bloc.dart';
 import '../widgets/listing_card.dart';
+import '../../../contact/presentation/bloc/contact_bloc.dart';
+import '../../../contact/presentation/widgets/inquiry_bottom_sheet.dart';
+import '../../../contact/presentation/widgets/report_bottom_sheet.dart';
+import '../../../favorites/presentation/bloc/favorites_bloc.dart';
 
 /// Property listing detail screen.
 /// Traceability: SCR-006, REQ-014–021, API-023.
@@ -37,61 +41,115 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocProvider(
-      create: (_) => sl<ListingDetailBloc>()
-        ..add(ListingDetailFetch(widget.idOrSlug)),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.propertyOverview),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.share_outlined),
-              onPressed: () {
-                // Share listing URL
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('https://ghorbd.com/listings')),
-                );
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.favorite_border),
-              onPressed: () {
-                if (!AppRouter.isAuthenticated) {
-                  context.push('/login');
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l10n.navFavorites),
-                      backgroundColor: AppColors.success,
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<ListingDetailBloc>()
+            ..add(ListingDetailFetch(widget.idOrSlug)),
         ),
-        body: BlocBuilder<ListingDetailBloc, ListingDetailState>(
-          builder: (context, state) {
-            if (state is ListingDetailLoading) {
-              return const AppLoadingView();
-            }
+        BlocProvider(create: (_) => sl<ContactBloc>()),
+        BlocProvider(create: (_) => sl<FavoritesBloc>()),
+      ],
+      child: BlocConsumer<ContactBloc, ContactState>(
+        listener: (context, contactState) {
+          if (contactState is PhoneRevealed) {
+            showDialog(
+              context: context,
+              builder: (dialogCtx) => AlertDialog(
+                title: Text(l10n.phoneRevealed),
+                content: SelectableText(
+                  contactState.phone.isNotEmpty
+                      ? contactState.phone
+                      : l10n.noPhoneAvailable,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogCtx).pop(),
+                    child: Text(MaterialLocalizations.of(dialogCtx).okButtonLabel),
+                  ),
+                ],
+              ),
+            );
+          } else if (contactState is ContactError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(contactState.messageKey)),
+            );
+          }
+        },
+        builder: (context, _) {
+          return BlocBuilder<ListingDetailBloc, ListingDetailState>(
+            builder: (context, state) {
+              final listing = state is ListingDetailLoaded ? state.listing : null;
 
-            if (state is ListingDetailError) {
-              return AppErrorView(
-                message: state.message,
-                onRetry: () => context
-                    .read<ListingDetailBloc>()
-                    .add(ListingDetailFetch(widget.idOrSlug)),
-              );
-            }
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(l10n.propertyOverview),
+                  actions: [
+                    if (listing != null)
+                      IconButton(
+                        icon: const Icon(Icons.flag_outlined),
+                        tooltip: l10n.reportListing,
+                        onPressed: () {
+                          if (!AppRouter.isAuthenticated) {
+                            context.push('/login');
+                          } else {
+                            ReportBottomSheet.show(context, listingId: listing.id);
+                          }
+                        },
+                      ),
+                    IconButton(
+                      icon: const Icon(Icons.share_outlined),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('https://ghorbd.com/listings')),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.favorite_border),
+                      tooltip: l10n.addToFavorites,
+                      onPressed: () {
+                        if (!AppRouter.isAuthenticated) {
+                          context.push('/login');
+                        } else if (listing != null) {
+                          context.read<FavoritesBloc>().add(ToggleFavorite(listing));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(l10n.addedToFavoritesSuccess),
+                              backgroundColor: AppColors.success,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                body: Builder(
+                  builder: (context) {
+                    if (state is ListingDetailLoading) {
+                      return const AppLoadingView();
+                    }
 
-            if (state is ListingDetailLoaded) {
-              final listing = state.listing;
-              final formattedPrice =
-                  AppFormatters.formatBdt(listing.pricePerMonth);
+                    if (state is ListingDetailError) {
+                      return AppErrorView(
+                        message: state.message,
+                        onRetry: () => context
+                            .read<ListingDetailBloc>()
+                            .add(ListingDetailFetch(widget.idOrSlug)),
+                      );
+                    }
 
-              return Column(
-                children: [
+                    if (state is ListingDetailLoaded) {
+                      final listing = state.listing;
+                      final formattedPrice =
+                          AppFormatters.formatBdt(listing.pricePerMonth);
+
+                      return Column(
+                        children: [
                   Expanded(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
@@ -392,18 +450,16 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                           Expanded(
                             child: AppButton(
                               label: AppRouter.isAuthenticated
-                                  ? 'ফোন করুন'
+                                  ? l10n.callOwner
                                   : l10n.loginToViewPhone,
                               icon: Icons.phone,
                               onPressed: () {
                                 if (!AppRouter.isAuthenticated) {
                                   context.push('/login');
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('+8801700000000'),
-                                    ),
-                                  );
+                                  context
+                                      .read<ContactBloc>()
+                                      .add(RevealContactPhone(listing.id));
                                 }
                               },
                             ),
@@ -412,7 +468,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                           Expanded(
                             child: AppButton(
                               label: AppRouter.isAuthenticated
-                                  ? 'মেসেজ পাঠান'
+                                  ? l10n.sendMessage
                                   : l10n.loginToSendMessage,
                               icon: Icons.chat_bubble_outline,
                               variant: AppButtonVariant.outline,
@@ -420,10 +476,9 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                 if (!AppRouter.isAuthenticated) {
                                   context.push('/login');
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('মেসেজ ফিচার সক্রিয়'),
-                                    ),
+                                  InquiryBottomSheet.show(
+                                    context,
+                                    listingId: listing.id,
                                   );
                                 }
                               },
@@ -437,9 +492,13 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
               );
             }
 
-            return const SizedBox.shrink();
-          },
-        ),
+                    return const SizedBox.shrink();
+                  },
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
