@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/security/deep_link_validator.dart';
+import '../../core/security/input_sanitizer.dart';
 import '../../core/security/session_manager.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/register_bloc.dart';
@@ -125,7 +127,7 @@ class AppRouter {
         path: AppRoutes.editListing,
         name: 'edit_listing',
         builder: (context, state) {
-          final id = state.pathParameters['id'];
+          final id = DeepLinkValidator.sanitizeId(state.pathParameters['id']);
           return CreateEditListingPage(listingId: id);
         },
       ),
@@ -133,7 +135,7 @@ class AppRouter {
         path: AppRoutes.listings,
         name: 'listings',
         builder: (context, state) {
-          final query = state.uri.queryParameters;
+          final query = DeepLinkValidator.sanitizeQueryParams(state.uri.queryParameters);
           final params = ListingFilterParams(
             purpose: query['purpose'],
             propertyType: query['type'] ?? query['propertyType'],
@@ -160,7 +162,7 @@ class AppRouter {
       GoRoute(
         path: '/listings/division/:slug',
         builder: (context, state) {
-          final slug = state.pathParameters['slug'];
+          final slug = DeepLinkValidator.sanitizeSlug(state.pathParameters['slug']);
           return ListingsPage(
             initialParams: ListingFilterParams(division: slug),
           );
@@ -169,7 +171,7 @@ class AppRouter {
       GoRoute(
         path: '/rent/dhaka/:area',
         builder: (context, state) {
-          final area = state.pathParameters['area'];
+          final area = DeepLinkValidator.sanitizeSlug(state.pathParameters['area']);
           return ListingsPage(
             initialParams: ListingFilterParams(purpose: 'rent', areaSlug: area),
           );
@@ -179,7 +181,8 @@ class AppRouter {
         path: AppRoutes.listingDetail,
         name: 'listing_detail',
         builder: (context, state) {
-          final slug = state.pathParameters['slug'] ?? '';
+          final rawSlug = state.pathParameters['slug'] ?? '';
+          final slug = DeepLinkValidator.sanitizeSlug(rawSlug) ?? rawSlug;
           return ListingDetailPage(idOrSlug: slug);
         },
       ),
@@ -197,7 +200,7 @@ class AppRouter {
         path: AppRoutes.login,
         name: 'login',
         builder: (context, state) {
-          final redirect = state.uri.queryParameters['redirect'];
+          final redirect = DeepLinkValidator.sanitizeRedirectUrl(state.uri.queryParameters['redirect']);
           return BlocProvider<AuthBloc>(
             create: (_) => sl<AuthBloc>(),
             child: LoginPage(redirect: redirect),
@@ -220,7 +223,8 @@ class AppRouter {
         name: 'verify_otp',
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
-          final email = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
+          final rawEmail = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
+          final email = InputSanitizer.normalizeEmail(rawEmail);
           final devOtp = extra['devOtp'] as String?;
           return BlocProvider<RegisterBloc>(
             create: (_) => sl<RegisterBloc>(),
@@ -233,7 +237,8 @@ class AppRouter {
         name: 'verify_otp_alt',
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
-          final email = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
+          final rawEmail = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
+          final email = InputSanitizer.normalizeEmail(rawEmail);
           final devOtp = extra['devOtp'] as String?;
           return BlocProvider<RegisterBloc>(
             create: (_) => sl<RegisterBloc>(),
@@ -250,8 +255,9 @@ class AppRouter {
         path: AppRoutes.resetPassword,
         name: 'reset_password',
         builder: (context, state) {
-          final token = state.uri.queryParameters['token'];
-          return ResetPasswordPage(initialToken: token);
+          final rawToken = state.uri.queryParameters['token'] ?? '';
+          final token = InputSanitizer.sanitizeSearchQuery(rawToken);
+          return ResetPasswordPage(initialToken: token.isEmpty ? null : token);
         },
       ),
       GoRoute(
@@ -273,7 +279,8 @@ class AppRouter {
         path: AppRoutes.blogDetail,
         name: 'blog_detail',
         builder: (context, state) {
-          final slug = state.pathParameters['slug'] ?? '';
+          final rawSlug = state.pathParameters['slug'] ?? '';
+          final slug = DeepLinkValidator.sanitizeSlug(rawSlug) ?? rawSlug;
           return BlogDetailPage(slug: slug);
         },
       ),
@@ -291,7 +298,8 @@ class AppRouter {
         path: AppRoutes.qaDetail,
         name: 'qa_detail',
         builder: (context, state) {
-          final id = state.pathParameters['id'] ?? '';
+          final rawId = state.pathParameters['id'] ?? '';
+          final id = DeepLinkValidator.sanitizeId(rawId) ?? rawId;
           return QuestionDetailPage(id: id);
         },
       ),
@@ -304,7 +312,8 @@ class AppRouter {
         path: AppRoutes.guideDetail,
         name: 'guide_detail',
         builder: (context, state) {
-          final slug = state.pathParameters['slug'] ?? '';
+          final rawSlug = state.pathParameters['slug'] ?? '';
+          final slug = DeepLinkValidator.sanitizeSlug(rawSlug) ?? rawSlug;
           return GuideDetailPage(slug: slug);
         },
       ),

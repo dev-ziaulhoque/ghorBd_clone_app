@@ -149,7 +149,7 @@ Verified against `IMPLEMENTATION_GUIDE.md` Section 6:
 | **Error Messages** | User-friendly localized messages | `lib/core/error/failures.dart` & `error_interceptor.dart` (Maps 4xx/5xx codes to ARB keys) | **Implemented** |
 | **Release Build** | Obfuscate & split debug info | Documented build instructions: `flutter build apk --obfuscate --split-debug-info=...` | **Implemented** |
 | **Cache Security** | No unencrypted sensitive data in cache | Cached data stores only public listings and area metadata; no PII | **Implemented** |
-| **Deep Links** | Validate all incoming parameters | `lib/app/router/app_router.dart` validates and sanitizes all route query parameters | **Implemented** |
+| **Deep Links** | Validate all incoming parameters | `lib/core/security/deep_link_validator.dart` & `app_router.dart` (allow-listed route regex, path traversal rejection, sanitized slugs & ObjectIds, query parameters, Open Redirect prevention) | **Implemented** |
 | **Clipboard** | Disable copy on sensitive fields | `lib/shared/widgets/app_text_field.dart` enforces `enableInteractiveSelection: false` on password fields | **Implemented** |
 
 ---
