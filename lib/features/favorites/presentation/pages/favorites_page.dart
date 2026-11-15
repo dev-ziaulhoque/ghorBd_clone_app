@@ -83,7 +83,8 @@ class FavoritesPage extends StatelessWidget {
                                 .add(ToggleFavorite(listing));
                           },
                           onTap: () {
-                            context.push('/listings/${listing.slug}');
+                            final target = listing.slug.isNotEmpty ? listing.slug : listing.id;
+                            context.push('/listings/$target?id=${listing.id}');
                           },
                         ),
                       ),

@@ -169,7 +169,8 @@ class _LandPageState extends State<LandPage> {
                             child: ListingCard(
                               listing: listing,
                               onTap: () {
-                                context.push('/listings/${listing.slug}');
+                                final target = listing.slug.isNotEmpty ? listing.slug : listing.id;
+                                context.push('/listings/$target?id=${listing.id}');
                               },
                             ),
                           );

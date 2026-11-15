@@ -36,7 +36,7 @@ class ListingCard extends StatelessWidget {
           () {
             final target =
                 listing.slug.isNotEmpty ? listing.slug : listing.id;
-            context.push('/listings/$target');
+            context.push('/listings/$target?id=${listing.id}');
           },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

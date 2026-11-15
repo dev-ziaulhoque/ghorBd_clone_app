@@ -141,7 +141,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                         message: state.message,
                         onRetry: () => context
                             .read<ListingDetailBloc>()
-                            .add(ListingDetailFetch(widget.idOrSlug)),
+                            .add(ListingDetailFetch(widget.idOrSlug, fallbackId: widget.fallbackId)),
                       );
                     }
 

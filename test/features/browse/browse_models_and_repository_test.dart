@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ghorbad_clone_app/core/error/exceptions.dart';
 import 'package:ghorbad_clone_app/core/error/failures.dart';
+import 'package:ghorbad_clone_app/core/network/dio_client.dart';
 import 'package:ghorbad_clone_app/features/browse/data/datasources/browse_remote_data_source.dart';
 import 'package:ghorbad_clone_app/features/browse/data/models/area_model.dart';
 import 'package:ghorbad_clone_app/features/browse/data/models/facets_model.dart';
@@ -11,6 +13,8 @@ import 'package:mocktail/mocktail.dart';
 
 class MockBrowseRemoteDataSource extends Mock
     implements BrowseRemoteDataSource {}
+
+class MockDioClient extends Mock implements DioClient {}
 
 void main() {
   late MockBrowseRemoteDataSource mockRemoteDataSource;
@@ -261,6 +265,52 @@ void main() {
           expect(areas.first.name, 'উত্তরা');
         },
       );
+    });
+  });
+
+  group('BrowseRemoteDataSourceImpl', () {
+    test('getListingDetail safely handles raw Bengali Unicode slugs without ArgumentError', () async {
+      final mockDioClient = MockDioClient();
+      final dataSource = BrowseRemoteDataSourceImpl(dioClient: mockDioClient);
+
+      when(() => mockDioClient.get(any())).thenAnswer(
+        (_) async => Response(
+          requestOptions: RequestOptions(path: ''),
+          data: {
+            'data': {
+              'listing': sampleListingJson,
+              'similar': <dynamic>[],
+            },
+          },
+          statusCode: 200,
+        ),
+      );
+
+      final result = await dataSource.getListingDetail('২রুমের-বাসা');
+      expect(result.listing.id, '6671a0b2c3d4e5f601234567');
+      verify(() => mockDioClient.get('/listings/%E0%A7%A8%E0%A6%B0%E0%A7%81%E0%A6%AE%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A6%BE')).called(1);
+    });
+
+    test('getListingDetail safely handles already percent-encoded slugs', () async {
+      final mockDioClient = MockDioClient();
+      final dataSource = BrowseRemoteDataSourceImpl(dioClient: mockDioClient);
+
+      when(() => mockDioClient.get(any())).thenAnswer(
+        (_) async => Response(
+          requestOptions: RequestOptions(path: ''),
+          data: {
+            'data': {
+              'listing': sampleListingJson,
+              'similar': <dynamic>[],
+            },
+          },
+          statusCode: 200,
+        ),
+      );
+
+      final result = await dataSource.getListingDetail('%E0%A7%A8%E0%A6%B0%E0%A7%81%E0%A6%AE%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A6%BE');
+      expect(result.listing.id, '6671a0b2c3d4e5f601234567');
+      verify(() => mockDioClient.get('/listings/%E0%A7%A8%E0%A6%B0%E0%A7%81%E0%A6%AE%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A6%BE')).called(1);
     });
   });
 }
