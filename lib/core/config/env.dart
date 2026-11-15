@@ -119,6 +119,11 @@ class Env {
   static const Duration receiveTimeout = Duration(seconds: 15);
   static const Duration sendTimeout = Duration(seconds: 15);
 
+  /// Feature flag for external land and information service tiles (REQ-040, ISS-024).
+  /// Hidden by default until client explicitly approves external links.
+  static const bool enableExternalInfoServices =
+      bool.fromEnvironment('ENABLE_EXTERNAL_INFO_SERVICES', defaultValue: false);
+
   static bool get isProduction => currentEnvironment == AppEnvironment.prod;
   static bool get isDevelopment => currentEnvironment != AppEnvironment.prod;
 }

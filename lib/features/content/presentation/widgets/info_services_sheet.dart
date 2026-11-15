@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import '../../../../core/config/env.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
 
 /// Bottom sheet displaying external government and information service tools.
-/// Traceability: REQ-040, SCR-001.
+/// Traceability: REQ-040 (Partial), SCR-001, ISS-024.
+/// Hidden behind build flag `ENABLE_EXTERNAL_INFO_SERVICES` until client approval.
 void showInfoServicesSheet(BuildContext context) {
+  if (!Env.enableExternalInfoServices) {
+    debugPrint('REQ-040 Info Services: Hidden behind build flag ENABLE_EXTERNAL_INFO_SERVICES=false pending client approval (ISS-024).');
+    return;
+  }
+
   final l10n = AppLocalizations.of(context)!;
 
   final services = [

@@ -80,16 +80,7 @@ final sl = GetIt.instance;
 Future<void> configureDependencies({SharedPreferences? preferences}) async {
   // Non-sensitive App Preferences
   if (!sl.isRegistered<SharedPreferences>()) {
-    SharedPreferences? prefs = preferences;
-    if (prefs == null) {
-      try {
-        prefs = await SharedPreferences.getInstance();
-      } catch (_) {
-        // Fallback for tests when native platform channel is not registered
-        SharedPreferences.setMockInitialValues({});
-        prefs = await SharedPreferences.getInstance();
-      }
-    }
+    final prefs = preferences ?? await SharedPreferences.getInstance();
     sl.registerSingleton<SharedPreferences>(prefs);
   }
   if (!sl.isRegistered<AppPreferencesService>()) {

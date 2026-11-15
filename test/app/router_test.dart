@@ -6,9 +6,11 @@ import 'package:ghorbad_clone_app/features/auth/presentation/pages/login_page.da
 import 'package:ghorbad_clone_app/features/browse/presentation/pages/home_page.dart';
 import 'package:ghorbad_clone_app/features/browse/presentation/pages/listings_page.dart';
 import 'package:ghorbad_clone_app/features/owner/presentation/pages/owner_dashboard_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
     await configureDependencies();
   });
 

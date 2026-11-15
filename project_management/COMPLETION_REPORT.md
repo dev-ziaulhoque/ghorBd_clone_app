@@ -85,7 +85,7 @@ Every feature in `lib/features/` follows Feature-First Clean Architecture with c
 | **REQ-037** | Guides knowledge base / গাইড | `lib/features/content/presentation/pages/guides_page.dart`, `guide_detail_page.dart` | `API-051`, `API-052` | `test/features/content/content_test.dart` | **Done** |
 | **REQ-038** | Help Center FAQ / হেল্প সেন্টার | `lib/features/content/presentation/pages/static_content_page.dart` (`slug: help`) | `API-051`, `API-053` | `test/features/content/content_test.dart` | **Done** |
 | **REQ-039** | Static pages (About, Contact, Privacy, Terms) / স্ট্যাটিক পেজ | `lib/features/content/presentation/pages/static_content_page.dart` | `API-053` | `test/features/content/content_test.dart` | **Done** |
-| **REQ-040** | Information services tiles / তথ্য সেবা | `lib/features/browse/presentation/widgets/info_services_sheet.dart` | None (Browser links) | `test/features/content/content_test.dart` | **Done** |
+| **REQ-040** | Information services tiles / তথ্য সেবা | `lib/features/content/presentation/widgets/info_services_sheet.dart` | None (External links) | `test/features/content/content_test.dart` | **Partial** (Hidden behind `ENABLE_EXTERNAL_INFO_SERVICES` build flag per ISS-024 pending client approval) |
 | **REQ-041** | Language toggle Bangla / English / ভাষা পরিবর্তন | `lib/app/app.dart` | None (ARB l10n) | `test/app/l10n_test.dart` | **Done** |
 | **REQ-042** | Bangla digits & BDT lakh/crore format / বাংলা ফরম্যাট | `lib/core/utils/formatters.dart` | None (Formatters) | `test/core/utils/formatters_test.dart` | **Done** |
 | **REQ-043** | Dark theme token `#0b1017` / থিম টোকেন | `lib/shared/theme/colors.dart`, `theme.dart` | None (Theme) | `test/shared/theme_test.dart` | **Done** |

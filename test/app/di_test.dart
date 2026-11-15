@@ -1,8 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ghorbad_clone_app/app/di/injection.dart';
 import 'package:ghorbad_clone_app/core/network/dio_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
   group('Dependency Injection (get_it)', () {
     tearDown(() async {
       await resetDependencies();
