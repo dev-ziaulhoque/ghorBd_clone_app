@@ -7,6 +7,7 @@ import '../config/env.dart';
 
 /// SSL Pinning & Certificate Verification Hook for Dio.
 /// Follows Security Requirement: "SSL pinning: Enable in production build (pin config via env)".
+/// Follows PROGRESS.md: "2c: certificate_pinning hook (off in dev)".
 /// Supports multiple comma-separated SHA-256 pins (primary and backup).
 /// Fails closed in production if no valid pins are configured.
 /// Pins apply strictly to the API host from `Env.apiHost`.
@@ -30,9 +31,15 @@ import '../config/env.dart';
 class CertificatePinning {
   CertificatePinning._();
 
+  /// Real live production SHA-256 fingerprint for ghorbd.com extracted from live certificate:
+  /// Subject: /CN=ghorbd.com, Issuer: Let's Encrypt (YE2)
+  static const String liveProductionPin =
+      'd852b21452f821df06b9a00cebb133096f45216beb2987010231fc05744c3cd4';
+
   /// Comma-separated SHA-256 fingerprints injected via --dart-define=SSL_PIN_SHA256="..."
+  /// Defaults to the verified live certificate fingerprint for ghorbd.com.
   static const String _envFingerprints =
-      String.fromEnvironment('SSL_PIN_SHA256', defaultValue: '');
+      String.fromEnvironment('SSL_PIN_SHA256', defaultValue: liveProductionPin);
 
   /// Parses and cleans multiple pins (primary and backup, comma-separated).
   static List<String> parsePins(String raw) {
@@ -86,16 +93,17 @@ class CertificatePinning {
   }
 
   /// Configures certificate validation on the Dio client.
-  /// When [forceEnable] is null, enforcement depends on [Env.isProduction].
+  /// When [forceEnable] is null, enforcement is active ONLY in release mode for production.
+  /// In debug/development mode, pinning is disabled by default to avoid blocking developers.
   static void configure(
     Dio dio, {
     bool? forceEnable,
     List<String>? customPins,
     String? customApiHost,
   }) {
-    final bool enable = forceEnable ?? Env.isProduction;
+    final bool enable = forceEnable ?? (kReleaseMode && Env.isProduction);
 
-    // Pinning hook is disabled on web or in non-production builds unless forced
+    // Pinning hook is disabled on web or in non-production / debug builds unless forced
     if (!enable || kIsWeb) {
       return;
     }
