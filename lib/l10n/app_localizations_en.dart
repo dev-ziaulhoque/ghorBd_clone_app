@@ -534,6 +534,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mapStyle => 'Map Style';
 
   @override
+  String get allMarket => 'All Markets';
+
+  @override
+  String get rentMarket => 'Rent Market';
+
+  @override
+  String get saleMarket => 'Sale Market';
+
+  @override
   String get viewDetails => 'View Details';
 
   @override

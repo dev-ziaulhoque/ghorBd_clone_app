@@ -73,8 +73,10 @@ class BrowseRemoteDataSourceImpl implements BrowseRemoteDataSource {
   Future<({ListingModel listing, List<ListingModel> similar})> getListingDetail(
     String idOrSlug,
   ) async {
+    final decoded = Uri.decodeComponent(idOrSlug);
+    final safePath = Uri.encodeComponent(decoded);
     final response = await _dioClient.get(
-      ApiEndpoints.listingDetail(idOrSlug),
+      ApiEndpoints.listingDetail(safePath),
     );
 
     final responseData = response.data as Map<String, dynamic>;

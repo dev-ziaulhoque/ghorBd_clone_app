@@ -196,6 +196,15 @@ class DhakaCoordinates {
     int totalInArea, {
     Size size = canvasSize,
   }) {
+    if (listing.lat != null &&
+        listing.lng != null &&
+        listing.lat! >= minLat &&
+        listing.lat! <= maxLat &&
+        listing.lng! >= minLng &&
+        listing.lng! <= maxLng) {
+      return project(listing.lat!, listing.lng!, size: size);
+    }
+
     final (lat, lng) = getLatLngForArea(listing.areaSlug);
     final base = project(lat, lng, size: size);
 

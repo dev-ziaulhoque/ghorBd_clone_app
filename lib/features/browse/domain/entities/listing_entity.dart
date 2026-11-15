@@ -37,6 +37,10 @@ class ListingEntity extends Equatable {
   final String? landFacing;
   final double? landRoadWidthFt;
 
+  // Geo coordinates
+  final double? lat;
+  final double? lng;
+
   const ListingEntity({
     required this.id,
     this.ownerId,
@@ -69,6 +73,8 @@ class ListingEntity extends Equatable {
     this.landAreaUnit,
     this.landFacing,
     this.landRoadWidthFt,
+    this.lat,
+    this.lng,
   });
 
   @override
@@ -92,5 +98,7 @@ class ListingEntity extends Equatable {
         verified,
         featured,
         viewCount,
+        lat,
+        lng,
       ];
 }

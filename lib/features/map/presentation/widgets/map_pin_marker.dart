@@ -5,7 +5,9 @@ import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
 import '../../../browse/domain/entities/listing_entity.dart';
 
-class MapPinMarker extends StatelessWidget {
+/// Premium custom real-estate map marker with property-type icons,
+/// purpose badges (Rent/Sale), verified status, and glowing anchor pointers.
+class MapPinMarker extends StatefulWidget {
   final ListingEntity listing;
   final bool isSelected;
   final VoidCallback onTap;
@@ -18,12 +20,96 @@ class MapPinMarker extends StatelessWidget {
   });
 
   @override
+  State<MapPinMarker> createState() => _MapPinMarkerState();
+}
+
+class _MapPinMarkerState extends State<MapPinMarker>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulseController;
+  late final Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    );
+    _pulseAnimation = Tween<double>(begin: 0.8, end: 1.6).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeOutQuad),
+    );
+
+    if (widget.isSelected) {
+      _pulseController.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant MapPinMarker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isSelected && !oldWidget.isSelected) {
+      _pulseController.forward(from: 0.0);
+    } else if (!widget.isSelected && oldWidget.isSelected) {
+      _pulseController.reset();
+    }
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  IconData _getPropertyIcon(String propertyType) {
+    switch (propertyType.toLowerCase()) {
+      case 'house':
+      case 'villa':
+      case 'duplex':
+        return Icons.home_rounded;
+      case 'apartment':
+      case 'flat':
+        return Icons.apartment_rounded;
+      case 'office':
+      case 'commercial':
+      case 'building':
+        return Icons.business_rounded;
+      case 'land':
+      case 'plot':
+        return Icons.landscape_rounded;
+      case 'shop':
+        return Icons.storefront_rounded;
+      case 'hostel':
+      case 'room':
+        return Icons.single_bed_rounded;
+      default:
+        return Icons.location_on_rounded;
+    }
+  }
+
+  Color _getPurposeColor(String purpose, bool isDark) {
+    switch (purpose.toLowerCase()) {
+      case 'sale':
+        return const Color(0xFF2563EB); // Royal Blue for Sale
+      case 'land':
+        return const Color(0xFFD97706); // Amber for Land
+      case 'rent':
+      default:
+        return AppColors.primary; // Emerald for Rent
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final formattedPrice = AppFormatters.formatBdt(listing.pricePerMonth);
+    final formattedPrice = AppFormatters.formatBdt(widget.listing.pricePerMonth);
+    final purposeColor = _getPurposeColor(widget.listing.purpose, isDark);
+    final propertyIcon = _getPropertyIcon(widget.listing.propertyType);
 
-    final bgColor = isSelected
-        ? AppColors.primary
+    final isSelected = widget.isSelected;
+
+    // Card colors
+    final cardBgColor = isSelected
+        ? purposeColor
         : (isDark ? const Color(0xFF1E293B) : Colors.white);
 
     final borderColor = isSelected
@@ -34,41 +120,43 @@ class MapPinMarker extends StatelessWidget {
         ? Colors.white
         : (isDark ? Colors.white : const Color(0xFF0F172A));
 
-    final iconColor = isSelected
-        ? Colors.white
-        : (listing.verified ? AppColors.verifiedBadge : AppColors.primary);
+    final iconBgColor = isSelected
+        ? Colors.white.withAlpha(50)
+        : (isDark ? Colors.white.withAlpha(20) : purposeColor.withAlpha(25));
+
+    final iconColor = isSelected ? Colors.white : purposeColor;
 
     return GestureDetector(
-      key: ValueKey('map_pin_${listing.id}'),
+      key: ValueKey('map_pin_${widget.listing.id}'),
       behavior: HitTestBehavior.opaque,
       onTap: () {
         HapticFeedback.selectionClick();
-        onTap();
+        widget.onTap();
       },
       child: AnimatedScale(
-        scale: isSelected ? 1.12 : 1.0,
-        duration: const Duration(milliseconds: 220),
+        scale: isSelected ? 1.15 : 1.0,
+        duration: const Duration(milliseconds: 240),
         curve: Curves.easeOutBack,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 1. Price Pill
+            // 1. Custom Property Price Card
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.fromLTRB(6, 4, 10, 4),
               decoration: BoxDecoration(
-                color: bgColor,
+                color: cardBgColor,
                 borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
                 border: Border.all(
                   color: borderColor,
-                  width: isSelected ? 2.0 : 1.0,
+                  width: isSelected ? 2.0 : 1.2,
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: isSelected
-                        ? AppColors.primary.withAlpha(120)
-                        : Colors.black.withAlpha(isDark ? 80 : 30),
-                    blurRadius: isSelected ? 10 : 4,
+                        ? purposeColor.withAlpha(140)
+                        : Colors.black.withAlpha(isDark ? 90 : 30),
+                    blurRadius: isSelected ? 12 : 5,
                     offset: const Offset(0, 3),
                   ),
                 ],
@@ -76,12 +164,33 @@ class MapPinMarker extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    listing.verified ? Icons.verified : Icons.location_on,
-                    size: 14,
-                    color: iconColor,
+                  // Property Type Icon Circle
+                  Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: iconBgColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      propertyIcon,
+                      size: 13,
+                      color: iconColor,
+                    ),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 5),
+
+                  // Verified badge
+                  if (widget.listing.verified) ...[
+                    Icon(
+                      Icons.verified,
+                      size: 13,
+                      color: isSelected ? Colors.white : AppColors.verifiedBadge,
+                    ),
+                    const SizedBox(width: 3),
+                  ],
+
+                  // Formatted Price Text
                   Text(
                     formattedPrice,
                     style: TextStyle(
@@ -91,35 +200,84 @@ class MapPinMarker extends StatelessWidget {
                       letterSpacing: 0.2,
                     ),
                   ),
+
+                  // Sale / Rent mini dot badge
+                  if (widget.listing.purpose == 'sale') ...[
+                    const SizedBox(width: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Colors.white.withAlpha(60)
+                            : const Color(0xFF2563EB).withAlpha(40),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'Sale',
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : const Color(0xFF2563EB),
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
 
-            // 2. Downward Pin Pointer
+            // 2. Custom Tapered Pointer Needle
             CustomPaint(
               size: const Size(12, 6),
-              painter: _PinTrianglePainter(color: bgColor),
+              painter: _PinTrianglePainter(color: cardBgColor),
             ),
 
-            // 3. Anchor Pulse Indicator (When selected)
-            if (isSelected)
-              Container(
-                margin: const EdgeInsets.only(top: 2),
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 1.5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withAlpha(150),
-                      blurRadius: 6,
-                      spreadRadius: 2,
+            // 3. Precision Anchor Dot with Animated Radial Pulse Wave
+            SizedBox(
+              width: 20,
+              height: 12,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  if (isSelected)
+                    AnimatedBuilder(
+                      animation: _pulseAnimation,
+                      builder: (context, child) {
+                        return Container(
+                          width: 8 * _pulseAnimation.value,
+                          height: 8 * _pulseAnimation.value,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: purposeColor.withAlpha(
+                                ((1.6 - _pulseAnimation.value) * 180).clamp(0, 255).toInt(),
+                              ),
+                              width: 1.5,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 1),
+                    width: 7,
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: purposeColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: purposeColor.withAlpha(120),
+                          blurRadius: 4,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
+            ),
           ],
         ),
       ),

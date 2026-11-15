@@ -38,8 +38,10 @@ class DeepLinkValidator {
   /// MongoDB ObjectId pattern (24-character hex).
   static final RegExp _objectIdRegex = RegExp(r'^[0-9a-fA-F]{24}$');
 
-  /// Safe slug pattern: lowercase alphanumeric, hyphens, and underscores (1 to 100 chars).
-  static final RegExp _slugRegex = RegExp(r'^[a-z0-9][a-z0-9-_]{0,99}$', caseSensitive: false);
+  /// Safe slug pattern: alphanumeric (English & Bengali), hyphens, and underscores (1 to 200 chars).
+  static final RegExp _slugRegex = RegExp(
+    r'^([a-zA-Z0-9\u0980-\u09FF]|%[0-9a-fA-F]{2})([a-zA-Z0-9\u0980-\u09FF-_]|%[0-9a-fA-F]{2}){0,199}$',
+  );
 
   /// Validates whether a route path or deep link URI is allow-listed and safe.
   static bool isAllowedPath(String path) {
@@ -61,8 +63,8 @@ class DeepLinkValidator {
     }
 
     // Dynamic patterns
-    // /listings/:slug
-    if (RegExp(r'^/listings/[a-zA-Z0-9-_]+$').hasMatch(cleanPath) &&
+    // /listings/:slug (allows English, Bengali Unicode, and percent-encoded slugs)
+    if (RegExp(r'^/listings/([a-zA-Z0-9\u0980-\u09FF-_]|%[0-9a-fA-F]{2})+$').hasMatch(cleanPath) &&
         !cleanPath.endsWith('/new') &&
         !cleanPath.endsWith('/sale') &&
         !cleanPath.endsWith('/verified')) {
@@ -75,17 +77,17 @@ class DeepLinkValidator {
     }
 
     // /listings/division/:slug
-    if (RegExp(r'^/listings/division/[a-zA-Z0-9-_]+$').hasMatch(cleanPath)) {
+    if (RegExp(r'^/listings/division/([a-zA-Z0-9\u0980-\u09FF-_]|%[0-9a-fA-F]{2})+$').hasMatch(cleanPath)) {
       return true;
     }
 
     // /rent/dhaka/:area
-    if (RegExp(r'^/rent/dhaka/[a-zA-Z0-9-_]+$').hasMatch(cleanPath)) {
+    if (RegExp(r'^/rent/dhaka/([a-zA-Z0-9\u0980-\u09FF-_]|%[0-9a-fA-F]{2})+$').hasMatch(cleanPath)) {
       return true;
     }
 
     // /blog/:slug
-    if (RegExp(r'^/blog/[a-zA-Z0-9-_]+$').hasMatch(cleanPath)) {
+    if (RegExp(r'^/blog/([a-zA-Z0-9\u0980-\u09FF-_]|%[0-9a-fA-F]{2})+$').hasMatch(cleanPath)) {
       return true;
     }
 
@@ -95,7 +97,7 @@ class DeepLinkValidator {
     }
 
     // /guides/:slug
-    if (RegExp(r'^/guides/[a-zA-Z0-9-_]+$').hasMatch(cleanPath)) {
+    if (RegExp(r'^/guides/([a-zA-Z0-9\u0980-\u09FF-_]|%[0-9a-fA-F]{2})+$').hasMatch(cleanPath)) {
       return true;
     }
 
@@ -108,15 +110,20 @@ class DeepLinkValidator {
     if (slug == null || slug.trim().isEmpty) return null;
     final trimmed = slug.trim().toLowerCase();
 
-    // Reject path traversals, scripts, and non-slug characters
+    // Check if string contains only hyphens or underscores (which caused the "------" bug)
+    final withoutHyphens = trimmed.replaceAll(RegExp(r'[-_]'), '');
+    if (withoutHyphens.isEmpty) return null;
+
+    // Check for path traversals, scripts, and non-slug characters
     if (!_slugRegex.hasMatch(trimmed)) {
-      // Clean non-alphanumeric/hyphen characters
-      final sanitized = trimmed.replaceAll(RegExp(r'[^a-z0-9-_]'), '');
-      if (sanitized.isEmpty) return null;
-      return sanitized.length > 100 ? sanitized.substring(0, 100) : sanitized;
+      // Clean non-alphanumeric, non-Bengali, non-percent, and non-hyphen characters
+      final sanitized = trimmed.replaceAll(RegExp(r'[^\w\u0980-\u09FF-]'), '');
+      final cleanWithoutHyphens = sanitized.replaceAll(RegExp(r'[-_]'), '');
+      if (cleanWithoutHyphens.isEmpty) return null;
+      return sanitized.length > 200 ? sanitized.substring(0, 200) : sanitized;
     }
 
-    return trimmed;
+    return trimmed.length > 200 ? trimmed.substring(0, 200) : trimmed;
   }
 
   /// Validates a 24-character hexadecimal MongoDB ObjectId.

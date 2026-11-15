@@ -38,6 +38,7 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
 
   MapThemeStyle _currentStyle = MapThemeStyle.modern;
   String _selectedAreaSlug = 'all';
+  String _selectedMarketPurpose = 'all';
   bool _isCardDismissed = false;
   bool _hasInitialCentered = false;
 
@@ -265,7 +266,9 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         _buildSearchField(context, state, isDark, l10n),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
+                        _buildMarketFilterRow(isDark, l10n),
+                        const SizedBox(height: 6),
                         _buildAreaChipsCarousel(state, isDark, l10n),
                       ],
                     ),
@@ -310,8 +313,11 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                           setState(() => _isCardDismissed = true);
                         },
                         onTap: () {
+                          final target = state.selectedListing!.slug.isNotEmpty
+                              ? state.selectedListing!.slug
+                              : state.selectedListing!.id;
                           context.push(
-                            '/listings/${state.selectedListing!.slug.isNotEmpty ? state.selectedListing!.slug : state.selectedListing!.id}',
+                            '/listings/$target?id=${state.selectedListing!.id}',
                           );
                         },
                       ),
@@ -332,9 +338,16 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
     MapLoaded state,
     bool isDark,
   ) {
+    // Filter listings by selected market purpose (all / rent / sale)
+    final filteredListings = state.listings.where((l) {
+      if (_selectedMarketPurpose == 'rent') return l.purpose == 'rent';
+      if (_selectedMarketPurpose == 'sale') return l.purpose == 'sale';
+      return true;
+    }).toList();
+
     // Group listings by areaSlug to compute dispersion offsets
     final Map<String, List<ListingEntity>> areaGroups = {};
-    for (final l in state.listings) {
+    for (final l in filteredListings) {
       final key = l.areaSlug.toLowerCase();
       areaGroups.putIfAbsent(key, () => []).add(l);
     }
@@ -368,8 +381,8 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                 if (state.selectedPlace != null)
                   _buildSelectedPlaceMarker(state.selectedPlace!),
 
-                // Listing Price Pins
-                ...state.listings.map((listing) {
+                // Custom Listing Price Pins
+                ...filteredListings.map((listing) {
                   final group = areaGroups[listing.areaSlug.toLowerCase()] ?? [listing];
                   final indexInArea = group.indexOf(listing);
                   final totalInArea = group.length;
@@ -544,6 +557,103 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
             ),
           ),
       ],
+    );
+  }
+
+  Widget _buildMarketFilterRow(bool isDark, AppLocalizations l10n) {
+    return Row(
+      children: [
+        _buildMarketPill(
+          label: l10n.allMarket,
+          icon: Icons.domain,
+          isSelected: _selectedMarketPurpose == 'all',
+          onTap: () => setState(() => _selectedMarketPurpose = 'all'),
+          isDark: isDark,
+        ),
+        const SizedBox(width: 6),
+        _buildMarketPill(
+          label: l10n.rentMarket,
+          icon: Icons.key_rounded,
+          isSelected: _selectedMarketPurpose == 'rent',
+          onTap: () => setState(() => _selectedMarketPurpose = 'rent'),
+          isDark: isDark,
+          activeColor: AppColors.primary,
+        ),
+        const SizedBox(width: 6),
+        _buildMarketPill(
+          label: l10n.saleMarket,
+          icon: Icons.sell_rounded,
+          isSelected: _selectedMarketPurpose == 'sale',
+          onTap: () => setState(() => _selectedMarketPurpose = 'sale'),
+          isDark: isDark,
+          activeColor: const Color(0xFF2563EB),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMarketPill({
+    required String label,
+    required IconData icon,
+    required bool isSelected,
+    required VoidCallback onTap,
+    required bool isDark,
+    Color activeColor = AppColors.primary,
+  }) {
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? activeColor
+                  : (isDark ? AppColors.surfaceDark : Colors.white),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
+              border: Border.all(
+                color: isSelected
+                    ? activeColor
+                    : (isDark ? AppColors.borderDark : AppColors.borderLight),
+                width: isSelected ? 1.5 : 1.0,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(isDark ? 50 : 15),
+                  blurRadius: 3,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 13,
+                  color: isSelected
+                      ? Colors.white
+                      : (isDark ? Colors.white70 : Colors.black87),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                    color: isSelected
+                        ? Colors.white
+                        : (isDark ? Colors.white : Colors.black87),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

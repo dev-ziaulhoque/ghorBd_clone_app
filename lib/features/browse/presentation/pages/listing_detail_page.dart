@@ -23,10 +23,12 @@ import '../../../favorites/presentation/bloc/favorites_bloc.dart';
 /// Traceability: SCR-006, REQ-014–021, API-023.
 class ListingDetailPage extends StatefulWidget {
   final String idOrSlug;
+  final String? fallbackId;
 
   const ListingDetailPage({
     super.key,
     required this.idOrSlug,
+    this.fallbackId,
   });
 
   @override
@@ -45,7 +47,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
       providers: [
         BlocProvider(
           create: (_) => sl<ListingDetailBloc>()
-            ..add(ListingDetailFetch(widget.idOrSlug)),
+            ..add(ListingDetailFetch(widget.idOrSlug, fallbackId: widget.fallbackId)),
         ),
         BlocProvider(create: (_) => sl<ContactBloc>()),
         BlocProvider(create: (_) => sl<FavoritesBloc>()),

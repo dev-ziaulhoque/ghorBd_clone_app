@@ -531,6 +531,15 @@ class AppLocalizationsBn extends AppLocalizations {
   String get mapStyle => 'ম্যাপের ধরন';
 
   @override
+  String get allMarket => 'সব মার্কেট';
+
+  @override
+  String get rentMarket => 'ভাড়া মার্কেট';
+
+  @override
+  String get saleMarket => 'বিক্রয় মার্কেট';
+
+  @override
   String get viewDetails => 'বিস্তারিত দেখুন';
 
   @override

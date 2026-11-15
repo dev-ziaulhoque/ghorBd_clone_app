@@ -1076,6 +1076,24 @@ abstract class AppLocalizations {
   /// **'ম্যাপের ধরন'**
   String get mapStyle;
 
+  /// No description provided for @allMarket.
+  ///
+  /// In bn, this message translates to:
+  /// **'সব মার্কেট'**
+  String get allMarket;
+
+  /// No description provided for @rentMarket.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাড়া মার্কেট'**
+  String get rentMarket;
+
+  /// No description provided for @saleMarket.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিক্রয় মার্কেট'**
+  String get saleMarket;
+
   /// No description provided for @viewDetails.
   ///
   /// In bn, this message translates to:

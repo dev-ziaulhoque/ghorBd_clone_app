@@ -13,6 +13,7 @@ void main() {
       expect(DeepLinkValidator.isAllowedPath('/pricing'), isTrue);
       expect(DeepLinkValidator.isAllowedPath('/listings/mirpur-flat-102'), isTrue);
       expect(DeepLinkValidator.isAllowedPath('/listings/507f1f77bcf86cd799439011/edit'), isTrue);
+      expect(DeepLinkValidator.isAllowedPath('/listings/৩-বেডরুম-ফ্ল্যাট-বাসা-ভাড়া-মিরপুর-ঢাকা'), isTrue);
       expect(DeepLinkValidator.isAllowedPath('/rent/dhaka/mirpur'), isTrue);
       expect(DeepLinkValidator.isAllowedPath('/blog/property-buying-guide'), isTrue);
       expect(DeepLinkValidator.isAllowedPath('/qa/507f1f77bcf86cd799439011'), isTrue);
@@ -33,6 +34,12 @@ void main() {
       expect(DeepLinkValidator.sanitizeSlug('Dhaka_Uttara-Apartment_12'), 'dhaka_uttara-apartment_12');
       expect(DeepLinkValidator.sanitizeSlug('../../etc/passwd'), 'etcpasswd');
       expect(DeepLinkValidator.sanitizeSlug('<script>alert("xss")</script>'), 'scriptalertxssscript');
+      expect(
+        DeepLinkValidator.sanitizeSlug('৩-বেডরুম-ফ্ল্যাট-বাসা-ভাড়া-মিরপুর-ঢাকা'),
+        '৩-বেডরুম-ফ্ল্যাট-বাসা-ভাড়া-মিরপুর-ঢাকা',
+      );
+      expect(DeepLinkValidator.sanitizeSlug('------'), isNull);
+      expect(DeepLinkValidator.sanitizeSlug('---'), isNull);
       expect(DeepLinkValidator.sanitizeSlug(null), isNull);
       expect(DeepLinkValidator.sanitizeSlug('   '), isNull);
     });

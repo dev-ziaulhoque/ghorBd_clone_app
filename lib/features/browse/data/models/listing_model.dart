@@ -34,6 +34,8 @@ class ListingModel {
   final String? landAreaUnit;
   final String? landFacing;
   final double? landRoadWidthFt;
+  final double? lat;
+  final double? lng;
 
   const ListingModel({
     required this.id,
@@ -67,11 +69,34 @@ class ListingModel {
     this.landAreaUnit,
     this.landFacing,
     this.landRoadWidthFt,
+    this.lat,
+    this.lng,
   });
+
+  static String _normalizeImageUrl(String url) {
+    if (url.isEmpty) return url;
+    if (url.startsWith('http://localhost:5000') ||
+        url.startsWith('http://10.0.2.2:5000')) {
+      return url.replaceFirst(
+        RegExp(r'http://(localhost|10\.0\.2\.2):5000'),
+        'https://ghorbd.com',
+      );
+    }
+    if (url.startsWith('/')) {
+      return 'https://ghorbd.com$url';
+    }
+    return url;
+  }
 
   factory ListingModel.fromJson(Map<String, dynamic> json) {
     final rooms = json['rooms'] as Map<String, dynamic>?;
     final land = json['land'] as Map<String, dynamic>?;
+    final coords = json['coords'] as Map<String, dynamic>?;
+
+    final latVal = (coords?['lat'] as num?)?.toDouble() ??
+        (json['lat'] as num?)?.toDouble();
+    final lngVal = (coords?['lng'] as num?)?.toDouble() ??
+        (json['lng'] as num?)?.toDouble();
 
     DateTime? parsedVerifiedAt;
     if (json['verifiedAt'] != null) {
@@ -102,7 +127,7 @@ class ListingModel {
           .toInt(),
       currency: json['currency'] as String? ?? 'BDT',
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => e.toString())
+              ?.map((e) => _normalizeImageUrl(e.toString()))
               .toList() ??
           const [],
       amenities: (json['amenities'] as List<dynamic>?)
@@ -119,6 +144,8 @@ class ListingModel {
       landAreaUnit: land?['areaUnit'] as String?,
       landFacing: land?['facing'] as String?,
       landRoadWidthFt: (land?['roadWidthFt'] as num?)?.toDouble(),
+      lat: latVal,
+      lng: lngVal,
     );
   }
 
@@ -155,6 +182,8 @@ class ListingModel {
       landAreaUnit: landAreaUnit,
       landFacing: landFacing,
       landRoadWidthFt: landRoadWidthFt,
+      lat: lat,
+      lng: lng,
     );
   }
 }

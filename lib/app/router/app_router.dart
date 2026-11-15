@@ -185,8 +185,15 @@ class AppRouter {
         name: 'listing_detail',
         builder: (context, state) {
           final rawSlug = state.pathParameters['slug'] ?? '';
-          final slug = DeepLinkValidator.sanitizeSlug(rawSlug) ?? rawSlug;
-          return ListingDetailPage(idOrSlug: slug);
+          final idParam = state.uri.queryParameters['id'];
+          final sanitizedSlug = DeepLinkValidator.sanitizeSlug(rawSlug);
+          final slug = (sanitizedSlug != null && sanitizedSlug.isNotEmpty)
+              ? sanitizedSlug
+              : (idParam ?? rawSlug);
+          return ListingDetailPage(
+            idOrSlug: slug,
+            fallbackId: idParam,
+          );
         },
       ),
       GoRoute(

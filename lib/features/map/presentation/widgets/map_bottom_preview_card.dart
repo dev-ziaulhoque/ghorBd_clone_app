@@ -23,7 +23,7 @@ class MapBottomPreviewCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final formattedPrice = AppFormatters.formatBdt(listing.pricePerMonth);
-    final priceSuffix = listing.purpose == 'sale' ? '' : ' /${l10n.perMonth}';
+    final priceSuffix = listing.purpose == 'sale' ? '' : ' ${l10n.perMonth}';
 
     return Container(
       key: const Key('map_selected_listing_card'),

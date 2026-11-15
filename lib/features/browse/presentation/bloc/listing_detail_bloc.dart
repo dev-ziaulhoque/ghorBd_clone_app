@@ -13,11 +13,12 @@ abstract class ListingDetailEvent extends Equatable {
 
 class ListingDetailFetch extends ListingDetailEvent {
   final String idOrSlug;
+  final String? fallbackId;
 
-  const ListingDetailFetch(this.idOrSlug);
+  const ListingDetailFetch(this.idOrSlug, {this.fallbackId});
 
   @override
-  List<Object?> get props => [idOrSlug];
+  List<Object?> get props => [idOrSlug, fallbackId];
 }
 
 // States
@@ -69,7 +70,13 @@ class ListingDetailBloc extends Bloc<ListingDetailEvent, ListingDetailState> {
     Emitter<ListingDetailState> emit,
   ) async {
     emit(ListingDetailLoading());
-    final result = await _getListingDetailUseCase(event.idOrSlug);
+    var result = await _getListingDetailUseCase(event.idOrSlug);
+    if (result.isLeft() &&
+        event.fallbackId != null &&
+        event.fallbackId!.isNotEmpty &&
+        event.fallbackId != event.idOrSlug) {
+      result = await _getListingDetailUseCase(event.fallbackId!);
+    }
     result.fold(
       (failure) => emit(ListingDetailError(message: failure.messageKey)),
       (data) => emit(
