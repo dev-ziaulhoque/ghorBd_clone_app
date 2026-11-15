@@ -56,6 +56,17 @@ void main() {
     expect(find.text('ডার্ক মোড (#0B1017)'), findsOneWidget);
   });
 
+  testWidgets('ProfileSettingsPage renders Login button when unauthenticated without layout exception', (tester) async {
+    AppRouter.setAuthOverride(false);
+
+    await tester.pumpWidget(buildTestableWidget());
+    await tester.pumpAndSettle();
+
+    expect(find.text('অতিথি ব্যবহারকারী'), findsOneWidget);
+    expect(find.text('লগইন'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('ProfileSettingsPage renders Account Actions and delete dialog when authenticated', (tester) async {
     AppRouter.setAuthOverride(true);
 

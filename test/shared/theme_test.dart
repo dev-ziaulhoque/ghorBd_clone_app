@@ -40,5 +40,26 @@ void main() {
       expect(theme.brightness, Brightness.dark);
       expect(theme.scaffoldBackgroundColor, const Color(0xFF0B1017));
     });
+
+    testWidgets('ElevatedButton inside a Row lays out cleanly without infinite width exception', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          home: Scaffold(
+            body: Row(
+              children: [
+                const Text('Hello'),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Button'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      expect(tester.takeException(), isNull);
+      expect(find.text('Button'), findsOneWidget);
+    });
   });
 }

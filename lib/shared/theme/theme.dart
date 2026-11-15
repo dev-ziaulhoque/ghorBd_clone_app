@@ -48,7 +48,8 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
-          minimumSize: const Size.fromHeight(AppSpacing.buttonHeight),
+          minimumSize: const Size(64, AppSpacing.buttonHeight),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
           elevation: 0,
@@ -57,7 +58,8 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
-          minimumSize: const Size.fromHeight(AppSpacing.buttonHeight),
+          minimumSize: const Size(64, AppSpacing.buttonHeight),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           side: const BorderSide(color: AppColors.primary),
           shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
@@ -146,7 +148,8 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
-          minimumSize: const Size.fromHeight(AppSpacing.buttonHeight),
+          minimumSize: const Size(64, AppSpacing.buttonHeight),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
           elevation: 0,
@@ -155,7 +158,8 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primaryLight,
-          minimumSize: const Size.fromHeight(AppSpacing.buttonHeight),
+          minimumSize: const Size(64, AppSpacing.buttonHeight),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           side: const BorderSide(color: AppColors.primaryLight),
           shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),

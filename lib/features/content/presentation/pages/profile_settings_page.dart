@@ -250,6 +250,10 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   ),
                   if (!isAuth)
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(80, 36),
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                      ),
                       onPressed: () => context.push(AppRoutes.login),
                       child: Text(l10n.authLogin),
                     ),
