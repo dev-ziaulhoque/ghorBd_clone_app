@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/config/app_preferences.dart';
 import '../../core/network/dio_client.dart';
 import '../../core/network/interceptors/auth_interceptor.dart';
 import '../../core/security/biometric_service.dart';
@@ -75,7 +77,27 @@ import '../../features/plans/presentation/bloc/pricing_bloc.dart';
 
 final sl = GetIt.instance;
 
-Future<void> configureDependencies() async {
+Future<void> configureDependencies({SharedPreferences? preferences}) async {
+  // Non-sensitive App Preferences
+  if (!sl.isRegistered<SharedPreferences>()) {
+    SharedPreferences? prefs = preferences;
+    if (prefs == null) {
+      try {
+        prefs = await SharedPreferences.getInstance();
+      } catch (_) {
+        // Fallback for tests when native platform channel is not registered
+        SharedPreferences.setMockInitialValues({});
+        prefs = await SharedPreferences.getInstance();
+      }
+    }
+    sl.registerSingleton<SharedPreferences>(prefs);
+  }
+  if (!sl.isRegistered<AppPreferencesService>()) {
+    sl.registerSingleton<AppPreferencesService>(
+      AppPreferencesService(sl<SharedPreferences>()),
+    );
+  }
+
   // Security & Storage
   if (!sl.isRegistered<AppSecureStorage>()) {
     sl.registerLazySingleton<AppSecureStorage>(() => AppSecureStorage());

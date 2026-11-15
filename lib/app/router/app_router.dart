@@ -25,6 +25,7 @@ import '../../features/content/presentation/pages/blog_detail_page.dart';
 import '../../features/content/presentation/pages/blog_page.dart';
 import '../../features/content/presentation/pages/guide_detail_page.dart';
 import '../../features/content/presentation/pages/guides_page.dart';
+import '../../features/content/presentation/pages/profile_settings_page.dart';
 import '../../features/content/presentation/pages/qa_page.dart';
 import '../../features/content/presentation/pages/question_detail_page.dart';
 import '../../features/content/presentation/pages/static_content_page.dart';
@@ -61,6 +62,8 @@ class AppRoutes {
   static const String terms = '/terms';
   static const String help = '/help';
   static const String pricing = '/pricing';
+  static const String settings = '/settings';
+  static const String profile = '/profile';
 
   static const Set<String> protectedRoutes = {
     dashboard,
@@ -346,6 +349,16 @@ class AppRouter {
         path: AppRoutes.pricing,
         name: 'pricing',
         builder: (context, state) => const PricingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.settings,
+        name: 'settings',
+        builder: (context, state) => const ProfileSettingsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.profile,
+        name: 'profile',
+        builder: (context, state) => const ProfileSettingsPage(),
       ),
     ],
     errorBuilder: (context, state) {

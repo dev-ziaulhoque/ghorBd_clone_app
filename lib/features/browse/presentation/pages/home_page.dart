@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/di/injection.dart';
+import '../../../../core/config/app_preferences.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
@@ -49,6 +50,18 @@ class _HomePageState extends State<HomePage> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           actions: [
+            // Quick Language Toggle (REQ-041)
+            TextButton(
+              onPressed: () {
+                if (sl.isRegistered<AppPreferencesService>()) {
+                  sl<AppPreferencesService>().toggleLanguage();
+                }
+              },
+              child: Text(
+                l10n.localeName == 'bn' ? 'EN' : 'বাং',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
             IconButton(
               icon: const Icon(Icons.favorite_border),
               tooltip: l10n.navFavorites,
@@ -57,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: const Icon(Icons.person_outline),
               tooltip: l10n.navProfile,
-              onPressed: () => context.push('/login'),
+              onPressed: () => context.push('/settings'),
             ),
           ],
         ),
