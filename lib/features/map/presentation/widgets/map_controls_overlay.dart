@@ -9,6 +9,8 @@ class MapControlsOverlay extends StatelessWidget {
   final VoidCallback onZoomOut;
   final VoidCallback onRecenter;
   final VoidCallback onToggleStyle;
+  final VoidCallback? onToggleMarkerMode;
+  final bool isIconOnlyMode;
   final MapThemeStyle currentStyle;
 
   const MapControlsOverlay({
@@ -17,6 +19,8 @@ class MapControlsOverlay extends StatelessWidget {
     required this.onZoomOut,
     required this.onRecenter,
     required this.onToggleStyle,
+    this.onToggleMarkerMode,
+    this.isIconOnlyMode = false,
     required this.currentStyle,
   });
 
@@ -73,6 +77,17 @@ class MapControlsOverlay extends StatelessWidget {
             onPressed: onToggleStyle,
             iconColor: iconColor,
           ),
+          if (onToggleMarkerMode != null) ...[
+            _buildDivider(isDark),
+            _buildButton(
+              icon: isIconOnlyMode ? Icons.sell_outlined : Icons.apartment_rounded,
+              tooltip: isIconOnlyMode
+                  ? (l10n.localeName == 'bn' ? 'প্রাইস ভিউ চালু করুন' : 'Show Prices')
+                  : (l10n.localeName == 'bn' ? 'আইকন ভিউ চালু করুন' : 'Show Icons Only'),
+              onPressed: onToggleMarkerMode!,
+              iconColor: isIconOnlyMode ? AppColors.primary : iconColor,
+            ),
+          ],
         ],
       ),
     );

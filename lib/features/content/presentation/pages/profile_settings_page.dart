@@ -34,15 +34,16 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   }
 
   Future<void> _loadUserData() async {
-    if (!AppRouter.isAuthenticated) return;
-
     if (sl.isRegistered<SessionManager>()) {
       final session = sl<SessionManager>();
+      if (session.currentStatus != SessionStatus.authenticated) {
+        await session.initialize();
+      }
       final name = await session.getUserName();
       final email = await session.getUserEmail();
       final role = await session.getUserRole();
       final phone = await session.getUserPhone();
-      if (mounted) {
+      if (mounted && (name != null || email != null)) {
         setState(() {
           _userName = name;
           _userEmail = email;
@@ -52,7 +53,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
       }
     }
 
-    if (sl.isRegistered<GetCurrentUserUseCase>()) {
+    if (AppRouter.isAuthenticated && sl.isRegistered<GetCurrentUserUseCase>()) {
       final result = await sl<GetCurrentUserUseCase>()();
       if (mounted) {
         result.fold(
@@ -164,7 +165,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     final prefs = sl.isRegistered<AppPreferencesService>()
         ? sl<AppPreferencesService>()
         : null;
-    final isAuth = AppRouter.isAuthenticated;
+    final isAuth = AppRouter.isAuthenticated || (_userEmail != null && _userEmail!.isNotEmpty);
 
     return Scaffold(
       appBar: AppBar(

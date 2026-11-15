@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'secure_storage.dart';
 
 enum SessionStatus {
@@ -7,7 +8,7 @@ enum SessionStatus {
   expired,
 }
 
-class SessionManager {
+class SessionManager extends ChangeNotifier {
   final AppSecureStorage _secureStorage;
   final Duration idleTimeout;
   final Future<void> Function()? onSessionExpired;
@@ -37,6 +38,7 @@ class SessionManager {
       _currentStatus = SessionStatus.unauthenticated;
     }
     _statusController.add(_currentStatus);
+    notifyListeners();
   }
 
   void recordActivity() {
@@ -67,6 +69,7 @@ class SessionManager {
     _lastActivityTime = DateTime.now();
     _currentStatus = SessionStatus.authenticated;
     _statusController.add(_currentStatus);
+    notifyListeners();
     _startIdleTimer();
   }
 
@@ -83,6 +86,7 @@ class SessionManager {
     await _secureStorage.clearAll();
     _currentStatus = SessionStatus.unauthenticated;
     _statusController.add(_currentStatus);
+    notifyListeners();
   }
 
   Future<void> handleSessionTimeout() async {
@@ -93,6 +97,7 @@ class SessionManager {
     await _secureStorage.clearAll();
     _currentStatus = SessionStatus.expired;
     _statusController.add(_currentStatus);
+    notifyListeners();
 
     if (onSessionExpired != null) {
       await onSessionExpired!();
@@ -120,8 +125,10 @@ class SessionManager {
     return false;
   }
 
+  @override
   void dispose() {
     _idleCheckTimer?.cancel();
     _statusController.close();
+    super.dispose();
   }
 }

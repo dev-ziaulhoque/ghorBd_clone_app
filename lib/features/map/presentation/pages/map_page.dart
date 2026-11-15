@@ -41,6 +41,7 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
   String _selectedMarketPurpose = 'all';
   bool _isCardDismissed = false;
   bool _hasInitialCentered = false;
+  bool _isIconOnlyMode = false;
 
   @override
   void initState() {
@@ -286,6 +287,8 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                       onZoomOut: () => _zoomBy(0.77),
                       onRecenter: _recenterToDhaka,
                       onToggleStyle: _toggleMapStyle,
+                      onToggleMarkerMode: () => setState(() => _isIconOnlyMode = !_isIconOnlyMode),
+                      isIconOnlyMode: _isIconOnlyMode,
                     ),
                   ),
 
@@ -403,6 +406,7 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                       child: MapPinMarker(
                         listing: listing,
                         isSelected: isSelected,
+                        iconOnly: _isIconOnlyMode,
                         onTap: () {
                           setState(() => _isCardDismissed = false);
                           _mapBloc.add(SelectListingPinEvent(listing));

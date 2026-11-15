@@ -64,4 +64,40 @@ void main() {
       expect(AppFormatters.formatBdt(25000.5, isBangla: false), '25,000.50 ৳');
     });
   });
+
+  group('AppFormatters - Compact BDT Formatting (Map Markers & Badges)', () {
+    test('formats crores compactly in Bangla', () {
+      expect(AppFormatters.formatCompactBdt(12500000), '৳ ১.২৫ কোটি');
+      expect(AppFormatters.formatCompactBdt(10000000), '৳ ১ কোটি');
+      expect(AppFormatters.formatCompactBdt(157000000), '৳ ১৫.৭ কোটি');
+    });
+
+    test('formats lakhs compactly in Bangla', () {
+      expect(AppFormatters.formatCompactBdt(7200000), '৳ ৭২ লাখ');
+      expect(AppFormatters.formatCompactBdt(800000), '৳ ৮ লাখ');
+      expect(AppFormatters.formatCompactBdt(150000), '৳ ১.৫ লাখ');
+    });
+
+    test('formats thousands compactly in Bangla', () {
+      expect(AppFormatters.formatCompactBdt(28000), '৳ ২৮ হাজার');
+      expect(AppFormatters.formatCompactBdt(10000), '৳ ১০ হাজার');
+      expect(AppFormatters.formatCompactBdt(8500), '৳ ৮.৫ হাজার');
+    });
+
+    test('formats amounts less than 1,000 in Bangla', () {
+      expect(AppFormatters.formatCompactBdt(500), '৳ ৫০০');
+      expect(AppFormatters.formatCompactBdt(0), '৳ ০');
+    });
+
+    test('formats compact BDT in English when isBangla is false', () {
+      expect(AppFormatters.formatCompactBdt(12500000, isBangla: false), '৳ 1.25 Cr');
+      expect(AppFormatters.formatCompactBdt(7200000, isBangla: false), '৳ 72 Lac');
+      expect(AppFormatters.formatCompactBdt(10000, isBangla: false), '৳ 10 k');
+    });
+
+    test('supports suffix symbol and omitting symbol', () {
+      expect(AppFormatters.formatCompactBdt(12500000, prefixSymbol: false), '১.২৫ কোটি ৳');
+      expect(AppFormatters.formatCompactBdt(12500000, includeSymbol: false), '১.২৫ কোটি');
+    });
+  });
 }

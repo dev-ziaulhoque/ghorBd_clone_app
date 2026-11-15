@@ -6,16 +6,18 @@ import '../../../../shared/theme/spacing.dart';
 import '../../../browse/domain/entities/listing_entity.dart';
 
 /// Premium custom real-estate map marker with property-type icons,
-/// purpose badges (Rent/Sale), verified status, and glowing anchor pointers.
+/// compact BDT currency notation, icon-only toggle support, and glowing anchor pointers.
 class MapPinMarker extends StatefulWidget {
   final ListingEntity listing;
   final bool isSelected;
+  final bool iconOnly;
   final VoidCallback onTap;
 
   const MapPinMarker({
     super.key,
     required this.listing,
     required this.isSelected,
+    this.iconOnly = false,
     required this.onTap,
   });
 
@@ -141,90 +143,141 @@ class _MapPinMarkerState extends State<MapPinMarker>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 1. Custom Property Price Card
-            Container(
-              padding: const EdgeInsets.fromLTRB(6, 4, 10, 4),
-              decoration: BoxDecoration(
-                color: cardBgColor,
-                borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
-                border: Border.all(
-                  color: borderColor,
-                  width: isSelected ? 2.0 : 1.2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: isSelected
-                        ? purposeColor.withAlpha(140)
-                        : Colors.black.withAlpha(isDark ? 90 : 30),
-                    blurRadius: isSelected ? 12 : 5,
-                    offset: const Offset(0, 3),
+            // 1. Custom Property Marker (Icon-Only or Compact Price Badge)
+            if (widget.iconOnly && !isSelected)
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: purposeColor,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2.0,
                   ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Property Type Icon Circle
-                  Container(
-                    width: 22,
-                    height: 22,
-                    decoration: BoxDecoration(
-                      color: iconBgColor,
-                      shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: purposeColor.withAlpha(140),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
                     ),
-                    child: Icon(
-                      propertyIcon,
-                      size: 13,
-                      color: iconColor,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-
-                  // Verified badge
-                  if (widget.listing.verified) ...[
-                    Icon(
-                      Icons.verified,
-                      size: 13,
-                      color: isSelected ? Colors.white : AppColors.verifiedBadge,
-                    ),
-                    const SizedBox(width: 3),
                   ],
-
-                  // Formatted Price Text
-                  Text(
-                    formattedPrice,
-                    style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 12.5,
-                      letterSpacing: 0.2,
+                ),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: [
+                    Icon(
+                      propertyIcon,
+                      size: 16,
+                      color: Colors.white,
                     ),
-                  ),
-
-                  // Sale / Rent mini dot badge
-                  if (widget.listing.purpose == 'sale') ...[
-                    const SizedBox(width: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? Colors.white.withAlpha(60)
-                            : const Color(0xFF2563EB).withAlpha(40),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        'Sale',
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : const Color(0xFF2563EB),
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
+                    if (widget.listing.verified)
+                      Positioned(
+                        right: -3,
+                        top: -3,
+                        child: Container(
+                          padding: const EdgeInsets.all(1),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.verified,
+                            size: 11,
+                            color: AppColors.verifiedBadge,
+                          ),
                         ),
                       ),
+                  ],
+                ),
+              )
+            else
+              Container(
+                padding: const EdgeInsets.fromLTRB(5, 3, 8, 3),
+                decoration: BoxDecoration(
+                  color: cardBgColor,
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
+                  border: Border.all(
+                    color: borderColor,
+                    width: isSelected ? 2.0 : 1.2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isSelected
+                          ? purposeColor.withAlpha(140)
+                          : Colors.black.withAlpha(isDark ? 90 : 30),
+                      blurRadius: isSelected ? 12 : 5,
+                      offset: const Offset(0, 3),
                     ),
                   ],
-                ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Property Type Icon Circle
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: iconBgColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        propertyIcon,
+                        size: 12,
+                        color: iconColor,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+
+                    // Compact BDT Price Text (or full price when tapped/selected)
+                    Text(
+                      isSelected
+                          ? formattedPrice
+                          : AppFormatters.formatCompactBdt(widget.listing.pricePerMonth),
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 11.5,
+                        letterSpacing: 0.1,
+                      ),
+                    ),
+
+                    // Verified badge on selected state
+                    if (widget.listing.verified && isSelected) ...[
+                      const SizedBox(width: 3),
+                      Icon(
+                        Icons.verified,
+                        size: 12,
+                        color: isSelected ? Colors.white : AppColors.verifiedBadge,
+                      ),
+                    ],
+
+                    // Sale mini badge on selected state
+                    if (widget.listing.purpose == 'sale' && isSelected) ...[
+                      const SizedBox(width: 3),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? Colors.white.withAlpha(60)
+                              : const Color(0xFF2563EB).withAlpha(40),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'Sale',
+                          style: TextStyle(
+                            color: isSelected ? Colors.white : const Color(0xFF2563EB),
+                            fontSize: 8.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
 
             // 2. Custom Tapered Pointer Needle
             CustomPaint(

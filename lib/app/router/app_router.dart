@@ -82,6 +82,12 @@ class AppRouter {
 
   static void setAuthOverride(bool? isAuth) {
     _authOverride = isAuth;
+    notifyAuthStateChanged();
+  }
+
+  static final ValueNotifier<int> authRefreshListenable = ValueNotifier<int>(0);
+  static void notifyAuthStateChanged() {
+    authRefreshListenable.value++;
   }
 
   static bool get isAuthenticated {
@@ -114,6 +120,7 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.home,
+    refreshListenable: authRefreshListenable,
     redirect: authGuard,
     routes: [
       GoRoute(

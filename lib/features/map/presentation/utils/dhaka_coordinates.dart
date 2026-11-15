@@ -196,17 +196,28 @@ class DhakaCoordinates {
     int totalInArea, {
     Size size = canvasSize,
   }) {
+    Offset base;
     if (listing.lat != null &&
         listing.lng != null &&
         listing.lat! >= minLat &&
         listing.lat! <= maxLat &&
         listing.lng! >= minLng &&
         listing.lng! <= maxLng) {
-      return project(listing.lat!, listing.lng!, size: size);
+      base = project(listing.lat!, listing.lng!, size: size);
+      if (totalInArea <= 1 || indexInArea == 0) {
+        return base;
+      }
+      // Gentle street-side offset when multiple listings share the same GPS cluster
+      final angle = (indexInArea * (2 * math.pi / totalInArea)) + 0.35;
+      const radius = 28.0;
+      return Offset(
+        base.dx + radius * math.cos(angle),
+        base.dy + radius * math.sin(angle),
+      );
     }
 
     final (lat, lng) = getLatLngForArea(listing.areaSlug);
-    final base = project(lat, lng, size: size);
+    base = project(lat, lng, size: size);
 
     if (totalInArea <= 1) {
       return base;
