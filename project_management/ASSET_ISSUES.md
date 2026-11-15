@@ -41,6 +41,7 @@
 | ISS-028 | Minor | Language: is listing text Bangla only or mixed? Does API serve English labels? | REQ-041 | Which content is available in English? | কোন কনটেন্ট ইংরেজিতে পাওয়া যাবে? | **Resolved:** Static pages support `?locale=bn-BD|en`. Master data provides both `name` (Bangla) and `nameEn`. App UI localized via ARB. | Resolved |
 | ISS-029 | Minor | Theme colors #059669 and #0284C7 not confirmed by screenshots | All UI | Please provide official primary and secondary brand hex color codes. | অফিসিয়াল প্রাইমারি ও সেকেন্ডারি ব্র্যান্ড রঙের হেক্স কোড দিন। | Marked TODO(design) in `colors.dart`; emerald/sky used as baseline placeholders. | Open |
 | ISS-030 | Major | SSL certificate pinning needs real production SHA-256 pins | Security | Please provide the real production certificate SHA-256 pin for api.ghorbd.com. | api.ghorbd.com এর আসল প্রোডাকশন SSL পিন (SHA-256) প্রদান করুন। | Pinning hook implemented; disabled in dev/staging, awaiting real production pin. | Open |
+| ISS-031 | Major | In-app user account deletion endpoint missing from API | REQ-023, PRP-001 | Apple App Store (Guideline 5.1.1(v)) & Google Play Store policies mandate in-app account deletion. Backend only provides admin delete (API-090). Backend must provide DELETE /auth/me or DELETE /account. | অ্যাপল ও গুগল প্লে স্টোর পলিসি অনুযায়ী অ্যাপের ভেতর থেকে অ্যাকাউন্ট ডিলিট করার ব্যবস্থা থাকা বাধ্যতামূলক। ব্যাকএন্ডে অবিলম্বে DELETE /auth/me বা DELETE /account এন্ডপয়েন্ট তৈরি করতে হবে। | Backend team must deploy DELETE /auth/me before store release. In-app settings screen provides confirmation dialog & support ticket routing. | Open |
 
 ## Client question list (remaining open items) / ক্লায়েন্টকে পাঠানোর প্রশ্ন
 
@@ -52,6 +53,7 @@
 2. **Brand Assets:** Please provide high-resolution SVG/PNG logo, app icon, and brand font files. (ISS-005)
 3. **Map Provider:** Should the mobile map use OpenStreetMap tiles (Leaflet/MapLibre, no key required) or Google Maps SDK (requires API key)? (ISS-018)
 4. **Brand Ownership:** Please confirm official app status for app store listing metadata. (ISS-004)
+5. **Account Deletion Endpoint:** Apple App Store (5.1.1(v)) and Google Play require self-service in-app account deletion. Please provide `DELETE /auth/me` or equivalent. (ISS-031)
 
 ### Minor / ছোট
 1. Confirm preference for light mode, dark mode, or system default (currently supporting both). (ISS-021)
@@ -59,6 +61,6 @@
 
 ## Summary / সারসংক্ষেপ
 - **Blocker:** open 0 · resolved 2 (ISS-001, ISS-002)
-- **Major:** open 5 · resolved 8 (ISS-006, ISS-007, ISS-009, ISS-010, ISS-011, ISS-012, ISS-013, ISS-022)
+- **Major:** open 6 · resolved 8 (ISS-006, ISS-007, ISS-009, ISS-010, ISS-011, ISS-012, ISS-013, ISS-022)
 - **Minor:** open 3 · resolved 12 (ISS-008, ISS-014, ISS-015, ISS-016, ISS-017, ISS-019, ISS-020, ISS-023, ISS-025, ISS-026, ISS-027, ISS-028)
-- **Total:** 30 issues (8 open with safe working assumptions, 22 resolved)
+- **Total:** 31 issues (9 open with safe working assumptions, 22 resolved)
