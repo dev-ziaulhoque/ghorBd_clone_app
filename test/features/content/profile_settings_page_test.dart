@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:ghorbad_clone_app/app/di/injection.dart';
 import 'package:ghorbad_clone_app/app/router/app_router.dart';
 import 'package:ghorbad_clone_app/core/config/app_preferences.dart';
+import 'package:ghorbad_clone_app/features/auth/domain/entities/user_entity.dart';
+import 'package:ghorbad_clone_app/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:ghorbad_clone_app/features/content/presentation/pages/profile_settings_page.dart';
 import 'package:ghorbad_clone_app/l10n/app_localizations.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+class MockGetCurrentUserUseCase extends Mock implements GetCurrentUserUseCase {}
 
 void main() {
   setUp(() async {
@@ -75,5 +81,34 @@ void main() {
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('মুছে ফেলুন'), findsOneWidget);
     expect(find.text('বাতিল'), findsOneWidget);
+  });
+
+  testWidgets('ProfileSettingsPage renders user profile details when authenticated', (tester) async {
+    AppRouter.setAuthOverride(true);
+
+    final mockUseCase = MockGetCurrentUserUseCase();
+    when(() => mockUseCase()).thenAnswer(
+      (_) async => const Right(UserEntity(
+        id: 'user-123',
+        name: 'Md. Ziaul Hoque',
+        email: 'riadkhan94073@gmail.com',
+        phone: '+8801889564894',
+        role: 'tenant',
+        verified: true,
+      )),
+    );
+
+    if (sl.isRegistered<GetCurrentUserUseCase>()) {
+      sl.unregister<GetCurrentUserUseCase>();
+    }
+    sl.registerLazySingleton<GetCurrentUserUseCase>(() => mockUseCase);
+
+    await tester.pumpWidget(buildTestableWidget());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Md. Ziaul Hoque'), findsOneWidget);
+    expect(find.textContaining('riadkhan94073@gmail.com'), findsOneWidget);
+    expect(find.text('+8801889564894'), findsOneWidget);
+    expect(find.text('আমার বিজ্ঞাপন ও ড্যাশবোর্ড'), findsOneWidget);
   });
 }

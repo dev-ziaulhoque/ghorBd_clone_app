@@ -9,6 +9,7 @@ import '../../../../core/security/session_manager.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
+import '../../../auth/domain/usecases/get_current_user_usecase.dart';
 
 /// Profile & Settings page.
 /// Traceability: REQ-041 (Language toggle), REQ-043 (Theme mode), ISS-031 (Account deletion), SCR-010/013.
@@ -20,6 +21,58 @@ class ProfileSettingsPage extends StatefulWidget {
 }
 
 class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
+  String? _userName;
+  String? _userEmail;
+  String? _userRole;
+  String? _userPhone;
+  bool _isVerified = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    if (!AppRouter.isAuthenticated) return;
+
+    if (sl.isRegistered<SessionManager>()) {
+      final session = sl<SessionManager>();
+      final name = await session.getUserName();
+      final email = await session.getUserEmail();
+      final role = await session.getUserRole();
+      final phone = await session.getUserPhone();
+      if (mounted) {
+        setState(() {
+          _userName = name;
+          _userEmail = email;
+          _userRole = role;
+          _userPhone = phone;
+        });
+      }
+    }
+
+    if (sl.isRegistered<GetCurrentUserUseCase>()) {
+      final result = await sl<GetCurrentUserUseCase>()();
+      if (mounted) {
+        result.fold(
+          (_) {},
+          (user) {
+            if (user != null) {
+              setState(() {
+                _userName = user.name;
+                _userEmail = user.email;
+                _userRole = user.role;
+                _userPhone = user.phone;
+                _isVerified = user.verified;
+              });
+            }
+          },
+        );
+      }
+    }
+  }
+
   void _showDeleteAccountDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
       context: context,
@@ -135,10 +188,15 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   CircleAvatar(
                     radius: 28,
                     backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                    child: Icon(
-                      isAuth ? Icons.person : Icons.person_outline,
-                      size: 32,
-                      color: Theme.of(context).primaryColor,
+                    child: Text(
+                      isAuth && _userName != null && _userName!.isNotEmpty
+                          ? _userName!.substring(0, 1).toUpperCase()
+                          : (isAuth ? 'U' : 'G'),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.md),
@@ -146,25 +204,47 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          isAuth
-                              ? (l10n.localeName == 'bn' ? 'ব্যবহারকারী' : 'Logged In User')
-                              : (l10n.localeName == 'bn' ? 'অতিথি ব্যবহারকারী' : 'Guest User'),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                isAuth
+                                    ? (_userName ?? (_userEmail ?? (l10n.localeName == 'bn' ? 'ব্যবহারকারী' : 'User')))
+                                    : (l10n.localeName == 'bn' ? 'অতিথি ব্যবহারকারী' : 'Guest User'),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            if (_isVerified) ...[
+                              const SizedBox(width: 4),
+                              const Icon(Icons.verified, size: 16, color: AppColors.verifiedBadge),
+                            ],
+                          ],
                         ),
                         const SizedBox(height: 4),
                         Text(
                           isAuth
-                              ? (l10n.localeName == 'bn' ? 'সক্রিয় অ্যাকাউন্ট' : 'Active Account')
+                              ? '${_userRole == 'tenant' ? (l10n.localeName == 'bn' ? 'ভাড়াটিয়া' : 'Tenant') : (_userRole == 'owner' ? (l10n.localeName == 'bn' ? 'মালিক / লিস্টার' : 'Owner / Lister') : (_userRole ?? 'Active'))}${_userEmail != null && _userEmail!.isNotEmpty ? ' • $_userEmail' : ''}'
                               : (l10n.localeName == 'bn' ? 'লগইন করুন সব ফিচারের জন্য' : 'Log in to access all features'),
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 12,
                             color: Theme.of(context).textTheme.bodySmall?.color,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
+                        if (isAuth && _userPhone != null && _userPhone!.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            _userPhone!,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Theme.of(context).textTheme.bodySmall?.color,
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -177,6 +257,26 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               ),
             ),
           ),
+          if (isAuth) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.dashboard_outlined, color: AppColors.primary),
+                title: Text(
+                  _userRole == 'owner'
+                      ? (l10n.localeName == 'bn' ? 'মালিক ড্যাশবোর্ড ও বিজ্ঞাপন' : 'Owner Dashboard & Listings')
+                      : (l10n.localeName == 'bn' ? 'আমার বিজ্ঞাপন ও ড্যাশবোর্ড' : 'My Listings & Dashboard'),
+                ),
+                subtitle: Text(
+                  _userRole == 'owner'
+                      ? (l10n.localeName == 'bn' ? 'বিজ্ঞাপন পরিচালনা ও অ্যানালিটিক্স দেখুন' : 'Manage your ads & view stats')
+                      : (l10n.localeName == 'bn' ? 'নতুন বিজ্ঞাপন পোস্ট করুন বা তালিকা দেখুন' : 'Post new ad or view listed properties'),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+                onTap: () => context.push(AppRoutes.dashboard),
+              ),
+            ),
+          ],
           const SizedBox(height: AppSpacing.lg),
 
           // Section 1: Language Switcher (REQ-041)

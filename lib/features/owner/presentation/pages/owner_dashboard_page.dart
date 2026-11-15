@@ -586,50 +586,61 @@ class _OwnerDashboardView extends StatelessWidget {
         value: context.read<VerificationBloc>(),
         child: AlertDialog(
           title: Text(l10n.verificationTitle),
-          content: BlocBuilder<VerificationBloc, VerificationState>(
-            builder: (ctx, state) {
-              if (state is VerificationLoading) {
-                return const SizedBox(
-                  height: 100,
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
+          content: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 400,
+              maxHeight: 350,
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: BlocBuilder<VerificationBloc, VerificationState>(
+                builder: (ctx, state) {
+                  if (state is VerificationLoading) {
+                    return const SizedBox(
+                      height: 100,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
 
-              if (state is VerificationLoaded) {
-                return SizedBox(
-                  width: double.maxFinite,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.verificationSubtitle),
-                      const SizedBox(height: AppSpacing.md),
-                      if (state.documents.isEmpty)
-                        Text(
-                          l10n.noDocumentsUploaded,
-                          style: const TextStyle(color: Colors.grey),
-                        )
-                      else
-                        Flexible(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.documents.length,
-                            itemBuilder: (_, index) {
-                              final doc = state.documents[index];
-                              return ListTile(
-                                leading: const Icon(Icons.description_outlined),
-                                title: Text(doc.originalName),
-                                subtitle: Text('${(doc.size / 1024).toStringAsFixed(1)} KB'),
-                              );
-                            },
+                  if (state is VerificationLoaded) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l10n.verificationSubtitle),
+                        const SizedBox(height: AppSpacing.md),
+                        if (state.documents.isEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                            child: Text(
+                              l10n.noDocumentsUploaded,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          )
+                        else
+                          Flexible(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: state.documents.length,
+                              itemBuilder: (_, index) {
+                                final doc = state.documents[index];
+                                return ListTile(
+                                  dense: true,
+                                  leading: const Icon(Icons.description_outlined),
+                                  title: Text(doc.originalName),
+                                  subtitle: Text('${(doc.size / 1024).toStringAsFixed(1)} KB'),
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                    ],
-                  ),
-                );
-              }
+                      ],
+                    );
+                  }
 
-              return Text(l10n.noDocumentsUploaded);
-            },
+                  return Text(l10n.noDocumentsUploaded);
+                },
+              ),
+            ),
           ),
           actions: [
             TextButton(

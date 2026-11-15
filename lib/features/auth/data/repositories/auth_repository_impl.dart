@@ -61,6 +61,8 @@ class AuthRepositoryImpl implements AuthRepository {
         userId: session.user.id,
         userRole: session.user.role,
         userEmail: session.user.email,
+        userName: session.user.name,
+        userPhone: session.user.phone,
       );
 
       return Right(session);
@@ -98,6 +100,8 @@ class AuthRepositoryImpl implements AuthRepository {
         userId: session.user.id,
         userRole: session.user.role,
         userEmail: session.user.email,
+        userName: session.user.name,
+        userPhone: session.user.phone,
       );
 
       return Right(session);

@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                 context.push('/favorites');
                 break;
               case 4:
-                context.push('/dashboard');
+                context.push('/profile');
                 break;
             }
           },
@@ -116,8 +116,8 @@ class _HomePageState extends State<HomePage> {
               label: l10n.navFavorites,
             ),
             NavigationDestination(
-              icon: const Icon(Icons.dashboard_outlined),
-              selectedIcon: const Icon(Icons.dashboard),
+              icon: const Icon(Icons.person_outline),
+              selectedIcon: const Icon(Icons.person),
               label: l10n.navProfile,
             ),
           ],

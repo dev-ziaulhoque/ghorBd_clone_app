@@ -15,6 +15,8 @@ class AppSecureStorage {
   static const String _keyUserId = 'ghorbd_user_id';
   static const String _keyUserRole = 'ghorbd_user_role';
   static const String _keyUserEmail = 'ghorbd_user_email';
+  static const String _keyUserName = 'ghorbd_user_name';
+  static const String _keyUserPhone = 'ghorbd_user_phone';
 
   Future<void> saveTokens({
     required String accessToken,
@@ -40,6 +42,8 @@ class AppSecureStorage {
     String? userId,
     String? userRole,
     String? userEmail,
+    String? userName,
+    String? userPhone,
   }) async {
     await saveTokens(accessToken: accessToken, refreshToken: refreshToken);
     if (userId != null) {
@@ -51,11 +55,19 @@ class AppSecureStorage {
     if (userEmail != null) {
       await _storage.write(key: _keyUserEmail, value: userEmail);
     }
+    if (userName != null) {
+      await _storage.write(key: _keyUserName, value: userName);
+    }
+    if (userPhone != null) {
+      await _storage.write(key: _keyUserPhone, value: userPhone);
+    }
   }
 
   Future<String?> getUserId() => _storage.read(key: _keyUserId);
   Future<String?> getUserRole() => _storage.read(key: _keyUserRole);
   Future<String?> getUserEmail() => _storage.read(key: _keyUserEmail);
+  Future<String?> getUserName() => _storage.read(key: _keyUserName);
+  Future<String?> getUserPhone() => _storage.read(key: _keyUserPhone);
 
   Future<bool> hasValidSession() async {
     final refreshToken = await getRefreshToken();
@@ -69,6 +81,8 @@ class AppSecureStorage {
       _storage.delete(key: _keyUserId),
       _storage.delete(key: _keyUserRole),
       _storage.delete(key: _keyUserEmail),
+      _storage.delete(key: _keyUserName),
+      _storage.delete(key: _keyUserPhone),
     ]);
   }
 

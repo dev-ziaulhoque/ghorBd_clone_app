@@ -51,6 +51,8 @@ class SessionManager {
     String? userId,
     String? userRole,
     String? userEmail,
+    String? userName,
+    String? userPhone,
   }) async {
     await _secureStorage.saveUserSession(
       accessToken: accessToken,
@@ -58,6 +60,8 @@ class SessionManager {
       userId: userId,
       userRole: userRole,
       userEmail: userEmail,
+      userName: userName,
+      userPhone: userPhone,
     );
 
     _lastActivityTime = DateTime.now();
@@ -65,6 +69,11 @@ class SessionManager {
     _statusController.add(_currentStatus);
     _startIdleTimer();
   }
+
+  Future<String?> getUserName() => _secureStorage.getUserName();
+  Future<String?> getUserEmail() => _secureStorage.getUserEmail();
+  Future<String?> getUserRole() => _secureStorage.getUserRole();
+  Future<String?> getUserPhone() => _secureStorage.getUserPhone();
 
   Future<void> endSession() async {
     _idleCheckTimer?.cancel();
