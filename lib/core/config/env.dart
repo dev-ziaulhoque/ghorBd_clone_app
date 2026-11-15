@@ -67,6 +67,9 @@ class Env {
     return getBaseUrlForEnvironment(currentEnvironment, lanIp: _rawLanIp);
   }
 
+  /// The hostname of the API server (used for strict SSL certificate pinning).
+  static String get apiHost => Uri.tryParse(baseUrl)?.host ?? 'ghorbd.com';
+
   static String get mediaBaseUrl {
     if (_overrideMediaBaseUrl != null && _overrideMediaBaseUrl!.isNotEmpty) {
       return _overrideMediaBaseUrl!;

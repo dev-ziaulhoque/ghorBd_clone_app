@@ -138,7 +138,7 @@ Verified against `IMPLEMENTATION_GUIDE.md` Section 6:
 |---------------|-------------|---------------------------------|--------|
 | **Token Storage** | `flutter_secure_storage` only | `lib/core/security/secure_storage.dart` with Android `EncryptedSharedPreferences` and iOS Keychain Accessibility | **Implemented** |
 | **Token Refresh** | Single-flight mutex refresh on 401 | `lib/core/network/interceptors/auth_interceptor.dart` (`Completer<bool>` mutex lock queues parallel requests) | **Implemented** |
-| **SSL Pinning** | Production build SSL pinning via env | `lib/core/security/certificate_pinning.dart` (SHA-256 cert fingerprint validation for production) | **Implemented** |
+| **SSL Pinning** | Production build SSL pinning via env | `lib/core/security/certificate_pinning.dart` (Supports primary & backup comma-separated SHA-256 pins, binds strictly to `Env.apiHost`, fails closed in production on empty pins) | **Implemented** |
 | **Root / Jailbreak** | Detect at startup, block/warn | `lib/core/security/device_integrity.dart` (`FlutterJailbreakDetection` checks root/jailbreak & dev mode) | **Implemented** |
 | **Screen Protection** | Block screenshots & app switcher blur | `lib/core/security/screen_protection.dart` + `MainActivity.kt` (`FLAG_SECURE` window flags) | **Implemented** |
 | **Biometric Lock** | Optional app lock via `local_auth` | `lib/core/security/biometric_service.dart` (`LocalAuthentication` with biometric-only flag) | **Implemented** |
