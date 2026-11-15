@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ghorbad_clone_app/app/di/injection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ghorbad_clone_app/features/browse/domain/entities/area_entity.dart';
 import 'package:ghorbad_clone_app/features/browse/domain/entities/facets_entity.dart';
 import 'package:ghorbad_clone_app/features/browse/domain/entities/listing_entity.dart';
@@ -74,6 +75,7 @@ void main() {
   });
 
   setUp(() async {
+    SharedPreferences.setMockInitialValues({});
     await configureDependencies();
     mockGetListingsUseCase = MockGetListingsUseCase();
     mockGetListingDetailUseCase = MockGetListingDetailUseCase();

@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ghorbad_clone_app/app/di/injection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ghorbad_clone_app/core/error/exceptions.dart';
 import 'package:ghorbad_clone_app/core/error/failures.dart';
 import 'package:ghorbad_clone_app/features/browse/data/models/listing_model.dart';
@@ -232,6 +233,7 @@ void main() {
 
     setUp(() async {
       await sl.reset();
+      SharedPreferences.setMockInitialValues({});
       await configureDependencies();
     });
 

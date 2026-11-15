@@ -154,32 +154,79 @@ Verified against `IMPLEMENTATION_GUIDE.md` Section 6:
 
 ---
 
-## 6. Remaining Gaps & Manual Steps / অবশিষ্ট কাজ ও ম্যানুয়াল পদক্ষেপ
+## 6. What Was NOT Verified (Explicit Gaps) / যা যাচাই করা হয়নি
 
-The following items cannot be fully executed in the local automated environment and must be completed manually by the team before production deployment:
+The following areas could not be verified automatically in the local development/headless CI environment:
 
-নিম্নলিখিত কাজগুলো স্বয়ংক্রিয় পরিবেশে সম্পন্ন করা সম্ভব নয় এবং প্রোডাকশনে রিলিজের আগে ম্যানুয়ালি করতে হবে:
+এই বিষয়গুলো লোকাল টেস্ট পরিবেশে স্বয়ংক্রিয়ভাবে পরীক্ষা করা যায়নি এবং এগুলো লাইভ পরিবেশে ম্যানুয়ালি যাচাই করা আবশ্যক:
 
-1. **Real Hardware & Physical Device Testing / বাস্তব ডিভাইসে পরীক্ষা:**
-   - Test camera & document photo pickers on physical Android/iOS hardware (e.g. Sony SO 51B, Samsung, iPhone).
-   - Test biometric hardware fingerprint / face unlock prompt on physical devices.
-   *(Note: Automated widget tests verify all logic, but physical hardware sensors require manual testing).*
-
-2. **Production SSL Certificate Pinning Keys / প্রোডাকশন এসএসএল পিন:**
-   - When deploying to production domain `ghorbd.com`, extract the exact SHA-256 certificate fingerprint and inject it via build flag:
-     `flutter build apk --release --dart-define=SSL_PIN_SHA256="<your-sha256-fingerprint>"`.
-
-3. **Store Assets & App Icons / স্টোর অ্যাসেট ও আইকন:**
-   - Generate production vector app launcher icons for Android (`mipmap-hdpi`, `xhdpi`, etc.) and iOS assets catalog (`AppIcon.appiconset`).
-   - Create Google Play Store & Apple App Store screenshots, feature graphics, and store promotional copy.
-
-4. **Production Release Signing Keystore / রিলিজ সাইনিং কি-স্টোর:**
-   - Configure `key.properties` and keystore (`upload-keystore.jks`) for Android App Bundle (`flutter build appbundle`).
-   - Configure Apple Developer signing certificate & provisioning profile in Xcode.
+1. **Real Hardware / Physical Device Testing (বাস্তব হার্ডওয়্যার ডিভাইস):**
+   - Camera & document picker on physical Android/iOS phones (e.g. Sony SO 51B, Samsung, iPhone).
+   - Biometric fingerprint scanner & Face ID hardware unlock prompt on real devices.
+   - Physical GPS sensor location lock vs mock coordinates.
+2. **Real Live Backend Communication (লাইভ ব্যাকএন্ড সংযোগ):**
+   - All 276 unit and widget tests use mock datasources and mock Dio clients. No HTTP requests were dispatched to live production servers.
+3. **Release Build Behavior on Physical Hardware (রিলিজ বিল্ডের অন-ডিভাইস আচরণ):**
+   - While `flutter build apk --release --obfuscate --split-debug-info=build/symbols` succeeded with R8 rules, testing the compiled APK on a physical Android device is required to verify real-world biometric prompts and jailbreak detection hooks.
+4. **Push Notifications (পুশ নোটিফিকেশন):**
+   - Firebase Cloud Messaging (FCM) / APNs push notification services are not configured in client materials or API docs and require real device provisioning.
 
 ---
 
-## 7. Final Verification Checklist / চূড়ান্ত যাচাই চেকলিস্ট
+## 7. Required CLI Commands & Environment Variables / প্রয়োজনীয় কমান্ড ও ভ্যারিয়েবল
+
+### Three Essential Commands:
+
+1. **Staging Run Command (স্টেজিং রান):**
+   ```bash
+   flutter run -d <device_id> \
+     --dart-define=APP_ENV=staging \
+     --dart-define=BASE_URL=https://staging.ghorbd.com/api
+   ```
+
+2. **Production Obfuscated Release Build Command (প্রোডাকশন রিলিজ বিল্ড):**
+   ```bash
+   flutter build apk --release \
+     --obfuscate \
+     --split-debug-info=build/symbols \
+     --dart-define=APP_ENV=prod \
+     --dart-define=SSL_PIN_SHA256="<primary_pin>,<backup_pin>"
+   ```
+
+3. **Local Dev Run with Android Emulator (লোকাল এমুলেটর রান):**
+   ```bash
+   flutter run -d emulator \
+     --dart-define=APP_ENV=emulator
+   ```
+
+### Exact `--dart-define` Names Supported in `env.dart`:
+
+| Variable Name | Type / Values | Default | Purpose |
+|---------------|---------------|---------|---------|
+| `APP_ENV` | `prod` \| `staging` \| `local` \| `emulator` \| `lan` | `prod` | Selects standard base URL, media URL, and pinning defaults |
+| `BASE_URL` | String (URL) | `""` | Overrides the REST API base URL (e.g. `https://staging.ghorbd.com/api`) |
+| `MEDIA_BASE_URL` | String (URL) | `""` | Overrides the image/file media base URL |
+| `LAN_IP` | String (IP address) | `192.168.1.100` | Host computer IP when testing with physical device over Wi-Fi (`APP_ENV=lan`) |
+| `SSL_PIN_SHA256` | String (comma-separated hex) | `""` | Comma-separated SHA-256 certificate fingerprints for API host (`Env.apiHost`) |
+| `ENABLE_EXTERNAL_INFO_SERVICES` | `true` \| `false` | `false` | Enables external third-party land service web links (REQ-040, ISS-024) |
+
+---
+
+## 8. Historical Note: Step 9 in PROGRESS.md / প্রোগ্রেস ফাইলের স্টেপ ৯ ব্যাখ্যা
+
+In `project_management/PROGRESS.md`:
+- **Step 9** was titled: `Owner Ad Management: create/edit listing, photo upload, dashboard (API-024–027, API-035–043)`.
+- **Implementation Status:** Step 9 was completed in commit `7025edd` on 2026-11-14.
+- **Coverage breakdown:**
+  - **APIs Implemented (13 endpoints):** `API-024` (create ad), `API-025` (update ad), `API-026` (delete ad), `API-027` (transition status), `API-035` (my listings), `API-036` (stats), `API-037` (pending), `API-038` (photo upload), `API-039` (photo delete), `API-040` (documents), `API-041` (upload doc), `API-042` (view doc), `API-043` (delete doc).
+  - **Screens Implemented (2 screens):** `SCR-012` (`CreateEditListingPage` - ad form & photo picker) and `SCR-013` (`OwnerDashboardPage` - ad stats, active/pending/archived tabs, NID/utility doc verification).
+  - **Requirements Covered:** `REQ-025`, `REQ-026`, `REQ-027`, `REQ-028`, `REQ-029`, and `REQ-032`.
+  - **User Journeys Covered:** `UJ-007` & `UJ-008`.
+  - **Automated Tests:** `test/features/owner/owner_test.dart` (357 lines verifying BLoCs, repository, models, and UI rendering).
+
+---
+
+## 9. Final Verification Checklist / চূড়ান্ত যাচাই চেকলিস্ট
 
 - [x] `flutter analyze` shows 0 errors, 0 warnings, 0 lints.
 - [x] `flutter test` executes 263 tests with 100% pass rate.

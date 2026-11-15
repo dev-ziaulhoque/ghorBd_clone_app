@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ghorbad_clone_app/app/di/injection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ghorbad_clone_app/features/owner/data/datasources/owner_remote_data_source.dart';
 import 'package:ghorbad_clone_app/features/owner/data/models/owner_dashboard_stats_model.dart';
 import 'package:ghorbad_clone_app/features/owner/data/models/owner_listing_item_model.dart';
@@ -304,6 +305,7 @@ void main() {
   group('Owner Pages Widget Tests', () {
     setUp(() async {
       await resetDependencies();
+      SharedPreferences.setMockInitialValues({});
       await configureDependencies();
 
       final mockRepo = MockOwnerRepository();
