@@ -3,6 +3,7 @@ import '../../core/network/dio_client.dart';
 import '../../core/network/interceptors/auth_interceptor.dart';
 import '../../core/security/biometric_service.dart';
 import '../../core/security/device_integrity.dart';
+import '../../core/security/screen_protection.dart';
 import '../../core/security/secure_storage.dart';
 import '../../core/security/session_manager.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
@@ -86,6 +87,9 @@ Future<void> configureDependencies() async {
   }
   if (!sl.isRegistered<DeviceIntegrityService>()) {
     sl.registerLazySingleton<DeviceIntegrityService>(() => DeviceIntegrityServiceImpl());
+  }
+  if (!sl.isRegistered<ScreenProtectionService>()) {
+    sl.registerLazySingleton<ScreenProtectionService>(() => ScreenProtectionServiceImpl());
   }
   if (!sl.isRegistered<BiometricService>()) {
     sl.registerLazySingleton<BiometricService>(() => BiometricServiceImpl());

@@ -98,6 +98,7 @@ class _AppTextFieldState extends State<AppTextField> {
           validator: widget.validator,
           maxLines: widget.isPassword ? 1 : widget.maxLines,
           readOnly: widget.readOnly,
+          enableInteractiveSelection: widget.isPassword ? false : null,
           onTap: widget.onTap,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,

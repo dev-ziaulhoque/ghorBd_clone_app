@@ -27,6 +27,7 @@ import '../../features/content/presentation/pages/qa_page.dart';
 import '../../features/content/presentation/pages/question_detail_page.dart';
 import '../../features/content/presentation/pages/static_content_page.dart';
 import '../../features/plans/presentation/pages/pricing_page.dart';
+import '../../l10n/app_localizations.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
@@ -338,27 +339,18 @@ class AppRouter {
         builder: (context, state) => const PricingPage(),
       ),
     ],
-    errorBuilder: (context, state) => Scaffold(
-      appBar: AppBar(title: const Text('Page Not Found')),
-      body: Center(
-        child: Text('404: No route defined for ${state.uri.toString()}'),
-      ),
-    ),
+    errorBuilder: (context, state) {
+      final l10n = AppLocalizations.of(context);
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n?.error_not_found ?? 'Resource not found')),
+        body: Center(
+          child: Text(
+            l10n != null
+                ? '${l10n.error_not_found}: ${state.uri}'
+                : '404: No route defined for ${state.uri}',
+          ),
+        ),
+      );
+    },
   );
-}
-
-// ignore: unused_element
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-  const _PlaceholderScreen({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Text(title, style: Theme.of(context).textTheme.titleMedium),
-      ),
-    );
-  }
 }

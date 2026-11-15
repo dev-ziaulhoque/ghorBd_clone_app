@@ -15,15 +15,27 @@ subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
+
 subprojects {
-    if (project.name == "flutter_jailbreak_detection") {
-        plugins.withId("com.android.library") {
+    afterEvaluate {
+        if (project.plugins.hasPlugin("com.android.library")) {
             val android = project.extensions.findByName("android")
             if (android != null) {
                 try {
-                    val setNamespace = android.javaClass.getMethod("setNamespace", String::class.java)
-                    setNamespace.invoke(android, "appmire.be.flutterjailbreakdetection")
-                } catch (_: Exception) {}
+                    val method = android.javaClass.getMethod("compileSdkVersion", Int::class.javaPrimitiveType)
+                    method.invoke(android, 36)
+                } catch (_: Exception) {
+                    try {
+                        val method = android.javaClass.getMethod("compileSdkVersion", String::class.java)
+                        method.invoke(android, "android-36")
+                    } catch (_: Exception) {}
+                }
+                if (project.name == "flutter_jailbreak_detection") {
+                    try {
+                        val setNamespace = android.javaClass.getMethod("setNamespace", String::class.java)
+                        setNamespace.invoke(android, "appmire.be.flutterjailbreakdetection")
+                    } catch (_: Exception) {}
+                }
             }
         }
     }

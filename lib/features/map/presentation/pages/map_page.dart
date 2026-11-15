@@ -173,37 +173,33 @@ class _MapPageState extends State<MapPage> {
           Container(
             margin: const EdgeInsets.only(top: 4),
             constraints: const BoxConstraints(maxHeight: 200),
-            decoration: BoxDecoration(
+            child: Material(
               color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
               borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(30),
-                  blurRadius: 8,
-                ),
-              ],
-            ),
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: state.placeSuggestions.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final place = state.placeSuggestions[index];
-                return ListTile(
-                  dense: true,
-                  leading: const Icon(Icons.location_on_outlined, size: 20),
-                  title: Text(place.label),
-                  subtitle: Text(
-                    place.fullLabel,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onTap: () {
-                    _searchController.text = place.label;
-                    context.read<MapBloc>().add(SelectPlaceEvent(place));
-                  },
-                );
-              },
+              elevation: 4,
+              clipBehavior: Clip.antiAlias,
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: state.placeSuggestions.length,
+                separatorBuilder: (_, __) => const Divider(height: 1),
+                itemBuilder: (context, index) {
+                  final place = state.placeSuggestions[index];
+                  return ListTile(
+                    dense: true,
+                    leading: const Icon(Icons.location_on_outlined, size: 20),
+                    title: Text(place.label),
+                    subtitle: Text(
+                      place.fullLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () {
+                      _searchController.text = place.label;
+                      context.read<MapBloc>().add(SelectPlaceEvent(place));
+                    },
+                  );
+                },
+              ),
             ),
           ),
       ],

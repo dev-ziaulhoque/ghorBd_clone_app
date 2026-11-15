@@ -559,7 +559,7 @@ class _OwnerDashboardView extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogCtx).pop(),
-              child: const Text('Close'),
+              child: Text(l10n.btnCancel),
             ),
             ElevatedButton(
               onPressed: () {

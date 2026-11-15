@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ghorbad_clone_app/core/config/env.dart';
 import 'package:ghorbad_clone_app/core/security/certificate_pinning.dart';
 import 'package:ghorbad_clone_app/core/security/log_redactor.dart';
+import 'package:ghorbad_clone_app/core/security/screen_protection.dart';
 
 void main() {
   group('LogRedactor', () {
@@ -67,6 +68,17 @@ void main() {
         customPins: ['abcdef1234567890'],
       );
       expect(dio.httpClientAdapter, isNotNull);
+    });
+  });
+
+  group('ScreenProtectionService', () {
+    test('instance can be created and service methods invoked safely in test environment', () async {
+      final service = ScreenProtectionServiceImpl();
+      // Should not throw in test/VM environment
+      final enableResult = await service.enableProtection();
+      expect(enableResult, isA<bool>());
+      final disableResult = await service.disableProtection();
+      expect(disableResult, isA<bool>());
     });
   });
 }
