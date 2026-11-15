@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import '../../../app/di/injection.dart';
 import '../../config/env.dart';
 import '../../security/secure_storage.dart';
+import '../../security/session_manager.dart';
 
 class AuthInterceptor extends QueuedInterceptor {
   final AppSecureStorage secureStorage;
@@ -38,6 +40,10 @@ class AuthInterceptor extends QueuedInterceptor {
   ) async {
     if (options.extra[noAuthHeaderKey] == true) {
       return handler.next(options);
+    }
+
+    if (sl.isRegistered<SessionManager>()) {
+      sl<SessionManager>().recordActivity();
     }
 
     final token = await secureStorage.getAccessToken();

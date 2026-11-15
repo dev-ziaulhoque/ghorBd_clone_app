@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/di/injection.dart';
 import '../../../../app/router/app_router.dart';
+import '../../../../core/security/secure_storage.dart';
+import '../../../../core/security/session_manager.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
@@ -37,6 +39,38 @@ class ListingDetailPage extends StatefulWidget {
 
 class _ListingDetailPageState extends State<ListingDetailPage> {
   int _activeImageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuth();
+  }
+
+  Future<void> _checkAuth() async {
+    if (sl.isRegistered<SessionManager>()) {
+      final session = sl<SessionManager>();
+      if (session.currentStatus != SessionStatus.authenticated) {
+        await session.initialize();
+        if (mounted) setState(() {});
+      }
+    }
+  }
+
+  Future<bool> _ensureAuthenticated() async {
+    if (AppRouter.isAuthenticated) return true;
+    if (sl.isRegistered<AppSecureStorage>()) {
+      final hasSession = await sl<AppSecureStorage>().hasValidSession();
+      if (hasSession && sl.isRegistered<SessionManager>()) {
+        await sl<SessionManager>().initialize();
+        if (AppRouter.isAuthenticated) return true;
+      }
+    } else if (sl.isRegistered<SessionManager>()) {
+      final session = sl<SessionManager>();
+      await session.initialize();
+      if (AppRouter.isAuthenticated) return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,49 +121,60 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
             builder: (context, state) {
               final listing = state is ListingDetailLoaded ? state.listing : null;
 
-              return Scaffold(
-                appBar: AppBar(
-                  title: Text(l10n.propertyOverview),
-                  actions: [
-                    if (listing != null)
-                      IconButton(
-                        icon: const Icon(Icons.flag_outlined),
-                        tooltip: l10n.reportListing,
-                        onPressed: () {
-                          if (!AppRouter.isAuthenticated) {
-                            context.push('/login');
-                          } else {
-                            ReportBottomSheet.show(context, listingId: listing.id);
-                          }
-                        },
-                      ),
-                    IconButton(
-                      icon: const Icon(Icons.share_outlined),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('https://ghorbd.com/listings')),
-                        );
-                      },
+              return ListenableBuilder(
+                listenable: sl.isRegistered<SessionManager>()
+                    ? sl<SessionManager>()
+                    : AppRouter.authRefreshListenable,
+                builder: (context, _) {
+                  final isAuth = AppRouter.isAuthenticated;
+
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: Text(l10n.propertyOverview),
+                      actions: [
+                        if (listing != null)
+                          IconButton(
+                            icon: const Icon(Icons.flag_outlined),
+                            tooltip: l10n.reportListing,
+                            onPressed: () async {
+                              final authed = await _ensureAuthenticated();
+                              if (!authed) {
+                                if (context.mounted) context.push('/login');
+                              } else {
+                                if (context.mounted) {
+                                  ReportBottomSheet.show(context, listingId: listing.id);
+                                }
+                              }
+                            },
+                          ),
+                        IconButton(
+                          icon: const Icon(Icons.share_outlined),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('https://ghorbd.com/listings')),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.favorite_border),
+                          tooltip: l10n.addToFavorites,
+                          onPressed: () async {
+                            final authed = await _ensureAuthenticated();
+                            if (!authed) {
+                              if (context.mounted) context.push('/login');
+                            } else if (listing != null && context.mounted) {
+                              context.read<FavoritesBloc>().add(ToggleFavorite(listing));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(l10n.addedToFavoritesSuccess),
+                                  backgroundColor: AppColors.success,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      tooltip: l10n.addToFavorites,
-                      onPressed: () {
-                        if (!AppRouter.isAuthenticated) {
-                          context.push('/login');
-                        } else if (listing != null) {
-                          context.read<FavoritesBloc>().add(ToggleFavorite(listing));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(l10n.addedToFavoritesSuccess),
-                              backgroundColor: AppColors.success,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
                 body: Builder(
                   builder: (context) {
                     if (state is ListingDetailLoading) {
@@ -383,16 +428,19 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                     style:
                                         const TextStyle(color: AppColors.error),
                                   ),
-                                  onPressed: () {
-                                    if (!AppRouter.isAuthenticated) {
-                                      context.push('/login');
+                                  onPressed: () async {
+                                    final authed = await _ensureAuthenticated();
+                                    if (!authed) {
+                                      if (context.mounted) context.push('/login');
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content:
-                                              Text(l10n.reportListingHint),
-                                        ),
-                                      );
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content:
+                                                Text(l10n.reportListingHint),
+                                          ),
+                                        );
+                                      }
                                     }
                                   },
                                 ),
@@ -451,17 +499,20 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                         children: [
                           Expanded(
                             child: AppButton(
-                              label: AppRouter.isAuthenticated
+                              label: isAuth
                                   ? l10n.callOwner
                                   : l10n.loginToViewPhone,
                               icon: Icons.phone,
-                              onPressed: () {
-                                if (!AppRouter.isAuthenticated) {
-                                  context.push('/login');
+                              onPressed: () async {
+                                final authed = await _ensureAuthenticated();
+                                if (!authed) {
+                                  if (context.mounted) context.push('/login');
                                 } else {
-                                  context
-                                      .read<ContactBloc>()
-                                      .add(RevealContactPhone(listing.id));
+                                  if (context.mounted) {
+                                    context
+                                        .read<ContactBloc>()
+                                        .add(RevealContactPhone(listing.id));
+                                  }
                                 }
                               },
                             ),
@@ -469,19 +520,22 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                           const SizedBox(width: AppSpacing.md),
                           Expanded(
                             child: AppButton(
-                              label: AppRouter.isAuthenticated
+                              label: isAuth
                                   ? l10n.sendMessage
                                   : l10n.loginToSendMessage,
                               icon: Icons.chat_bubble_outline,
                               variant: AppButtonVariant.outline,
-                              onPressed: () {
-                                if (!AppRouter.isAuthenticated) {
-                                  context.push('/login');
+                              onPressed: () async {
+                                final authed = await _ensureAuthenticated();
+                                if (!authed) {
+                                  if (context.mounted) context.push('/login');
                                 } else {
-                                  InquiryBottomSheet.show(
-                                    context,
-                                    listingId: listing.id,
-                                  );
+                                  if (context.mounted) {
+                                    InquiryBottomSheet.show(
+                                      context,
+                                      listingId: listing.id,
+                                    );
+                                  }
                                 }
                               },
                             ),
@@ -499,6 +553,8 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                 ),
               );
             },
+          );
+        },
           );
         },
       ),

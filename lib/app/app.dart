@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../core/config/app_preferences.dart';
+import '../core/security/session_manager.dart';
 import '../l10n/app_localizations.dart';
 import '../shared/theme/theme.dart';
 import 'di/injection.dart';
@@ -38,6 +39,15 @@ class App extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            builder: (context, child) => Listener(
+              behavior: HitTestBehavior.translucent,
+              onPointerDown: (_) {
+                if (sl.isRegistered<SessionManager>()) {
+                  sl<SessionManager>().recordActivity();
+                }
+              },
+              child: child ?? const SizedBox.shrink(),
+            ),
           );
         },
       );
@@ -58,6 +68,15 @@ class App extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      builder: (context, child) => Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) {
+          if (sl.isRegistered<SessionManager>()) {
+            sl<SessionManager>().recordActivity();
+          }
+        },
+        child: child ?? const SizedBox.shrink(),
+      ),
     );
   }
 }

@@ -71,7 +71,11 @@ class AppSecureStorage {
 
   Future<bool> hasValidSession() async {
     final refreshToken = await getRefreshToken();
-    return refreshToken != null && refreshToken.isNotEmpty;
+    final accessToken = await getAccessToken();
+    final userId = await getUserId();
+    return (refreshToken != null && refreshToken.trim().isNotEmpty) ||
+        (accessToken != null && accessToken.trim().isNotEmpty) ||
+        (userId != null && userId.trim().isNotEmpty);
   }
 
   Future<void> clearAll() async {
