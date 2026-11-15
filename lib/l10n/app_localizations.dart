@@ -1040,6 +1040,48 @@ abstract class AppLocalizations {
   /// **'এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি'**
   String get noLocationListings;
 
+  /// No description provided for @viewList.
+  ///
+  /// In bn, this message translates to:
+  /// **'তালিকা দেখুন'**
+  String get viewList;
+
+  /// No description provided for @allAreas.
+  ///
+  /// In bn, this message translates to:
+  /// **'সব এলাকা'**
+  String get allAreas;
+
+  /// No description provided for @mapRecenter.
+  ///
+  /// In bn, this message translates to:
+  /// **'পুনরায় কেন্দ্র করুন'**
+  String get mapRecenter;
+
+  /// No description provided for @mapZoomIn.
+  ///
+  /// In bn, this message translates to:
+  /// **'জুম ইন'**
+  String get mapZoomIn;
+
+  /// No description provided for @mapZoomOut.
+  ///
+  /// In bn, this message translates to:
+  /// **'জুম আউট'**
+  String get mapZoomOut;
+
+  /// No description provided for @mapStyle.
+  ///
+  /// In bn, this message translates to:
+  /// **'ম্যাপের ধরন'**
+  String get mapStyle;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In bn, this message translates to:
+  /// **'বিস্তারিত দেখুন'**
+  String get viewDetails;
+
   /// No description provided for @landTitle.
   ///
   /// In bn, this message translates to:

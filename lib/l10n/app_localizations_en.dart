@@ -516,6 +516,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noLocationListings => 'No listings found in this area';
 
   @override
+  String get viewList => 'View List';
+
+  @override
+  String get allAreas => 'All Areas';
+
+  @override
+  String get mapRecenter => 'Recenter';
+
+  @override
+  String get mapZoomIn => 'Zoom In';
+
+  @override
+  String get mapZoomOut => 'Zoom Out';
+
+  @override
+  String get mapStyle => 'Map Style';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
   String get landTitle => 'Land Marketplace';
 
   @override

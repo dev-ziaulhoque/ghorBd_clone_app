@@ -513,6 +513,27 @@ class AppLocalizationsBn extends AppLocalizations {
   String get noLocationListings => 'এই এলাকায় কোনো বিজ্ঞাপন পাওয়া যায়নি';
 
   @override
+  String get viewList => 'তালিকা দেখুন';
+
+  @override
+  String get allAreas => 'সব এলাকা';
+
+  @override
+  String get mapRecenter => 'পুনরায় কেন্দ্র করুন';
+
+  @override
+  String get mapZoomIn => 'জুম ইন';
+
+  @override
+  String get mapZoomOut => 'জুম আউট';
+
+  @override
+  String get mapStyle => 'ম্যাপের ধরন';
+
+  @override
+  String get viewDetails => 'বিস্তারিত দেখুন';
+
+  @override
   String get landTitle => 'জমির বিজ্ঞাপন';
 
   @override

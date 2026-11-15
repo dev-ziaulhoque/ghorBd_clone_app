@@ -17,6 +17,8 @@ import 'package:ghorbad_clone_app/features/map/domain/repositories/map_repositor
 import 'package:ghorbad_clone_app/features/map/domain/usecases/map_usecases.dart';
 import 'package:ghorbad_clone_app/features/map/presentation/bloc/map_bloc.dart';
 import 'package:ghorbad_clone_app/features/map/presentation/pages/map_page.dart';
+import 'package:ghorbad_clone_app/features/map/presentation/utils/dhaka_coordinates.dart';
+import 'package:ghorbad_clone_app/features/map/presentation/widgets/dhaka_map_painter.dart';
 import 'package:ghorbad_clone_app/l10n/app_localizations.dart';
 import 'package:ghorbad_clone_app/shared/widgets/empty_view.dart';
 import 'package:ghorbad_clone_app/shared/widgets/error_view.dart';
@@ -239,16 +241,17 @@ void main() {
   });
 
   group('MapPage Widget Tests', () {
-    Widget buildTestWidget() {
-      return const MaterialApp(
-        localizationsDelegates: [
+    Widget buildTestWidget({Locale locale = const Locale('bn')}) {
+      return MaterialApp(
+        locale: locale,
+        localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [Locale('bn'), Locale('en')],
-        home: MapPage(),
+        supportedLocales: const [Locale('bn'), Locale('en')],
+        home: const MapPage(),
       );
     }
 
@@ -322,6 +325,93 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(AppErrorView), findsOneWidget);
+    });
+
+    testWidgets('interacts with area chips, map controls, and card dismiss', (tester) async {
+      final mockRepo = MockMapRepository();
+      when(() => mockRepo.getMapListings(any()))
+          .thenAnswer((_) async => const Right([sampleListing]));
+      when(() => mockRepo.searchPlaces(any()))
+          .thenAnswer((_) async => const Right([]));
+
+      sl.unregister<MapRepository>();
+      sl.registerLazySingleton<MapRepository>(() => mockRepo);
+      sl.unregister<GetMapListingsUseCase>();
+      sl.registerLazySingleton<GetMapListingsUseCase>(
+        () => GetMapListingsUseCase(mockRepo),
+      );
+
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Area chips exist
+      expect(find.text('উত্তরা'), findsOneWidget);
+      await tester.tap(find.text('উত্তরা'));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Map controls exist
+      expect(find.byIcon(Icons.add), findsOneWidget);
+      expect(find.byIcon(Icons.remove), findsOneWidget);
+      expect(find.byIcon(Icons.my_location), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      await tester.tap(find.byIcon(Icons.remove));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      await tester.tap(find.byIcon(Icons.my_location));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // View List button is visible
+      expect(find.text('তালিকা দেখুন'), findsOneWidget);
+
+      // Selected card close button dismisses card
+      expect(find.byKey(const Key('map_selected_listing_card')), findsOneWidget);
+      expect(find.byIcon(Icons.close), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Card is dismissed
+      expect(find.byKey(const Key('map_selected_listing_card')), findsNothing);
+
+      // Tapping the pin reopens card
+      await tester.tap(find.byKey(const ValueKey('map_pin_map-list-1')));
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(find.byKey(const Key('map_selected_listing_card')), findsOneWidget);
+    });
+  });
+
+  group('DhakaCoordinates and DhakaMapPainter', () {
+    test('projects coordinates into valid canvas bounds', () {
+      final uttara = DhakaCoordinates.project(23.8759, 90.3795);
+      expect(uttara.dx, greaterThan(0));
+      expect(uttara.dx, lessThan(DhakaCoordinates.canvasWidth));
+      expect(uttara.dy, greaterThan(0));
+      expect(uttara.dy, lessThan(DhakaCoordinates.canvasHeight));
+
+      final motijheel = DhakaCoordinates.project(23.7330, 90.4172);
+      expect(motijheel.dy, greaterThan(uttara.dy)); // Motijheel is south of Uttara
+    });
+
+    test('getListingOffset computes deterministic dispersion', () {
+      final offset1 = DhakaCoordinates.getListingOffset(sampleListing, 0, 3);
+      final offset2 = DhakaCoordinates.getListingOffset(sampleListing, 1, 3);
+      expect(offset1, isNot(equals(offset2)));
+    });
+
+    test('DhakaMapPainter repaints on style or dark change', () {
+      final p1 = DhakaMapPainter(isDark: true, style: MapThemeStyle.modern);
+      final p2 = DhakaMapPainter(isDark: false, style: MapThemeStyle.modern);
+      final p3 = DhakaMapPainter(isDark: true, style: MapThemeStyle.blueprint);
+
+      expect(p1.shouldRepaint(p2), isTrue);
+      expect(p1.shouldRepaint(p3), isTrue);
+      expect(
+        p1.shouldRepaint(DhakaMapPainter(isDark: true, style: MapThemeStyle.modern)),
+        isFalse,
+      );
     });
   });
 }
