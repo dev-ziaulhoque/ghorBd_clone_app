@@ -1609,6 +1609,18 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'সীমাহীন বিজ্ঞাপন'**
   String get unlimitedListings;
+
+  /// No description provided for @tenantAccountBannerTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাড়াটিয়া অ্যাকাউন্ট'**
+  String get tenantAccountBannerTitle;
+
+  /// No description provided for @tenantAccountBannerSubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনি ভাড়াটিয়া হিসেবে লগইন করেছেন। বিজ্ঞাপনের বিস্তারিত অ্যানালিটিক্স প্রপার্টি মালিকদের জন্য প্রযোজ্য। আপনি কি প্রপার্টি বিজ্ঞাপন দিতে চান?'**
+  String get tenantAccountBannerSubtitle;
 }
 
 class _AppLocalizationsDelegate

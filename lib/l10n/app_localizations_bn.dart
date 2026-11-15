@@ -802,4 +802,11 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get unlimitedListings => 'সীমাহীন বিজ্ঞাপন';
+
+  @override
+  String get tenantAccountBannerTitle => 'ভাড়াটিয়া অ্যাকাউন্ট';
+
+  @override
+  String get tenantAccountBannerSubtitle =>
+      'আপনি ভাড়াটিয়া হিসেবে লগইন করেছেন। বিজ্ঞাপনের বিস্তারিত অ্যানালিটিক্স প্রপার্টি মালিকদের জন্য প্রযোজ্য। আপনি কি প্রপার্টি বিজ্ঞাপন দিতে চান?';
 }

@@ -253,5 +253,7 @@
   "oneTime": "এককালীন",
   "freePrice": "বিনামূল্যে",
   "pricingFeaturesIncluded": "সুবিধাসমূহ",
-  "unlimitedListings": "সীমাহীন বিজ্ঞাপন"
+  "unlimitedListings": "সীমাহীন বিজ্ঞাপন",
+  "tenantAccountBannerTitle": "ভাড়াটিয়া অ্যাকাউন্ট",
+  "tenantAccountBannerSubtitle": "আপনি ভাড়াটিয়া হিসেবে লগইন করেছেন। বিজ্ঞাপনের বিস্তারিত অ্যানালিটিক্স প্রপার্টি মালিকদের জন্য প্রযোজ্য। আপনি কি প্রপার্টি বিজ্ঞাপন দিতে চান?"
 }

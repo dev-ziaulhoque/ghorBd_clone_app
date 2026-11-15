@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/error/failures.dart';
 import '../../domain/entities/owner_dashboard_stats.dart';
 import '../../domain/entities/owner_listing_item.dart';
 import '../../domain/usecases/owner_usecases.dart';
@@ -53,6 +54,7 @@ class OwnerDashboardLoaded extends OwnerDashboardState {
   final String activeFilter; // 'all', 'active', 'pending', 'archived'
   final bool isActionLoading;
   final String? actionSuccessMessage;
+  final bool isOwnerRole;
 
   const OwnerDashboardLoaded({
     required this.stats,
@@ -60,6 +62,7 @@ class OwnerDashboardLoaded extends OwnerDashboardState {
     this.activeFilter = 'all',
     this.isActionLoading = false,
     this.actionSuccessMessage,
+    this.isOwnerRole = true,
   });
 
   OwnerDashboardLoaded copyWith({
@@ -68,6 +71,7 @@ class OwnerDashboardLoaded extends OwnerDashboardState {
     String? activeFilter,
     bool? isActionLoading,
     String? actionSuccessMessage,
+    bool? isOwnerRole,
   }) {
     return OwnerDashboardLoaded(
       stats: stats ?? this.stats,
@@ -75,6 +79,7 @@ class OwnerDashboardLoaded extends OwnerDashboardState {
       activeFilter: activeFilter ?? this.activeFilter,
       isActionLoading: isActionLoading ?? this.isActionLoading,
       actionSuccessMessage: actionSuccessMessage,
+      isOwnerRole: isOwnerRole ?? this.isOwnerRole,
     );
   }
 
@@ -85,6 +90,7 @@ class OwnerDashboardLoaded extends OwnerDashboardState {
         activeFilter,
         isActionLoading,
         actionSuccessMessage,
+        isOwnerRole,
       ];
 }
 
@@ -124,15 +130,39 @@ class OwnerDashboardBloc extends Bloc<OwnerDashboardEvent, OwnerDashboardState> 
       status: filter == 'all' ? null : filter,
     );
 
+    // API-036 (/owner/dashboard) is restricted to owners/staff/admin, returning 403 Forbidden
+    // ("Not allowed") for tenant accounts.
+    // API-035 (/listings/mine) is accessible to any authenticated role.
+    // When a tenant views the dashboard, stats are zeroed and isOwnerRole is marked false,
+    // allowing their personal listings and UI to load cleanly instead of blocking with a 403 error.
     statsResult.fold(
-      (failure) => emit(OwnerDashboardError(failure.message)),
+      (statsFailure) {
+        final isForbidden = statsFailure is ForbiddenFailure ||
+            statsFailure.code == 'FORBIDDEN' ||
+            statsFailure.message.toLowerCase().contains('not allowed');
+
+        if (isForbidden) {
+          listingsResult.fold(
+            (listingsFailure) => emit(OwnerDashboardError(listingsFailure.message)),
+            (listings) => emit(OwnerDashboardLoaded(
+              stats: const OwnerDashboardStats(total: 0, active: 0, draft: 0, views: 0, favorites: 0),
+              listings: listings,
+              activeFilter: filter,
+              isOwnerRole: false,
+            )),
+          );
+        } else {
+          emit(OwnerDashboardError(statsFailure.message));
+        }
+      },
       (stats) {
         listingsResult.fold(
-          (failure) => emit(OwnerDashboardError(failure.message)),
+          (listingsFailure) => emit(OwnerDashboardError(listingsFailure.message)),
           (listings) => emit(OwnerDashboardLoaded(
             stats: stats,
             listings: listings,
             activeFilter: filter,
+            isOwnerRole: true,
           )),
         );
       },

@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ghorbad_clone_app/app/di/injection.dart';
+import 'package:ghorbad_clone_app/core/error/failures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ghorbad_clone_app/features/owner/data/datasources/owner_remote_data_source.dart';
 import 'package:ghorbad_clone_app/features/owner/data/models/owner_dashboard_stats_model.dart';
@@ -251,6 +252,32 @@ void main() {
       );
     });
 
+    test('OwnerDashboardBloc handles 403 Forbidden failure gracefully for tenant accounts', () async {
+      when(() => mockRepo.getDashboardStats())
+          .thenAnswer((_) async => const Left(ForbiddenFailure(message: 'Not allowed')));
+      when(() => mockRepo.getMyListings(status: any(named: 'status')))
+          .thenAnswer((_) async => Right([tListingItemModel.toEntity()]));
+
+      final bloc = OwnerDashboardBloc(
+        getDashboardStatsUseCase: GetOwnerDashboardStatsUseCase(mockRepo),
+        getMyListingsUseCase: GetMyListingsUseCase(mockRepo),
+        transitionListingStatusUseCase: TransitionListingStatusUseCase(mockRepo),
+      );
+
+      bloc.add(const FetchOwnerDashboardData());
+
+      await expectLater(
+        bloc.stream,
+        emitsInOrder([
+          isA<OwnerDashboardLoading>(),
+          isA<OwnerDashboardLoaded>()
+              .having((s) => s.isOwnerRole, 'isOwnerRole', isFalse)
+              .having((s) => s.stats.total, 'zeroed total stats', 0)
+              .having((s) => s.listings.length, 'listings count', 1),
+        ]),
+      );
+    });
+
     test('CreateListingBloc emits loading and success on SubmitCreateListingEvent', () async {
       when(() => mockRepo.createListing(any()))
           .thenAnswer((_) async => Right(tListingItemModel.toEntity()));
@@ -335,6 +362,28 @@ void main() {
       expect(find.text('ড্যাশবোর্ড'), findsWidgets);
       expect(find.text('উত্তরা সেক্টর ৭ ফ্ল্যাট'), findsOneWidget);
       expect(find.text('মোট বিজ্ঞাপন'), findsOneWidget);
+      expect(find.text('বিজ্ঞাপন দিন'), findsWidgets);
+    });
+
+    testWidgets('OwnerDashboardPage renders tenant account banner when isOwnerRole is false', (tester) async {
+      final mockRepo = MockOwnerRepository();
+      when(() => mockRepo.getDashboardStats())
+          .thenAnswer((_) async => const Left(ForbiddenFailure(message: 'Not allowed')));
+      when(() => mockRepo.getMyListings(status: any(named: 'status')))
+          .thenAnswer((_) async => const Right([]));
+      when(() => mockRepo.getDocuments())
+          .thenAnswer((_) async => const Right([]));
+
+      if (sl.isRegistered<OwnerRepository>()) {
+        sl.unregister<OwnerRepository>();
+      }
+      sl.registerLazySingleton<OwnerRepository>(() => mockRepo);
+
+      await tester.pumpWidget(buildTestWidget(const OwnerDashboardPage()));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(find.text('ভাড়াটিয়া অ্যাকাউন্ট'), findsOneWidget);
       expect(find.text('বিজ্ঞাপন দিন'), findsWidgets);
     });
 

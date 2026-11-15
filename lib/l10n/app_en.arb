@@ -253,5 +253,7 @@
   "oneTime": "One-time",
   "freePrice": "Free",
   "pricingFeaturesIncluded": "Features Included",
-  "unlimitedListings": "Unlimited Listings"
+  "unlimitedListings": "Unlimited Listings",
+  "tenantAccountBannerTitle": "Tenant Account",
+  "tenantAccountBannerSubtitle": "You are signed in as a tenant. Detailed listing analytics are reserved for property owners. Want to list a property?"
 }

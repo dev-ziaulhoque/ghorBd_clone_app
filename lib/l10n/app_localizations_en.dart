@@ -805,4 +805,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unlimitedListings => 'Unlimited Listings';
+
+  @override
+  String get tenantAccountBannerTitle => 'Tenant Account';
+
+  @override
+  String get tenantAccountBannerSubtitle =>
+      'You are signed in as a tenant. Detailed listing analytics are reserved for property owners. Want to list a property?';
 }
