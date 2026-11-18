@@ -115,7 +115,11 @@ class Env {
     }
   }
 
-  static const Duration connectTimeout = Duration(seconds: 15);
+  // Connect: establishing TCP+TLS should be fast even on mobile data;
+  // failing in 10s beats hanging for 15s on a dead network.
+  // Receive: the production backend's TTFB alone is ~1.2–1.9s, so 15s
+  // leaves generous headroom for slow pages without masking real hangs.
+  static const Duration connectTimeout = Duration(seconds: 10);
   static const Duration receiveTimeout = Duration(seconds: 15);
   static const Duration sendTimeout = Duration(seconds: 15);
 

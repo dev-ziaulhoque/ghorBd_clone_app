@@ -34,6 +34,19 @@ class AreaModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slug': slug,
+      'name': name,
+      'nameEn': nameEn,
+      'city': city,
+      'division': division,
+      'popular': popular,
+      'listingCount': listingCount,
+    };
+  }
+
   AreaEntity toEntity() {
     return AreaEntity(
       id: id,

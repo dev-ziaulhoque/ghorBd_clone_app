@@ -23,8 +23,8 @@ class AppErrorView extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final displayMessage = message ?? l10n?.error_server ?? 'Something went wrong';
-    final displayRetryLabel = retryLabel ?? l10n?.btnRetry ?? 'Retry';
+    final displayMessage = message ?? l10n?.error_server ?? 'কিছু একটা সমস্যা হয়েছে';
+    final displayRetryLabel = retryLabel ?? l10n?.btnRetry ?? 'আবার চেষ্টা করুন';
 
     return Center(
       child: Padding(

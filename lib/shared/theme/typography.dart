@@ -2,42 +2,59 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 /// Typography tokens for GhorBD.
-/// Supports Bengali script with generous line-heights for conjuncts.
-/// TODO(design): Pending official mobile font assets (AST-018 in ASSET_INVENTORY.md).
+/// Round 2: scale reduced one step (display 28/24/22, headline 22/19/17,
+/// titles 17/16, body 15/14) — the previous scale read oversized
+/// next to the website. Line-heights unchanged so 2.0 text-scale
+/// overflow safety from Round 1 is preserved.
+/// Bundled Hind Siliguri font (assets/fonts, OFL-licensed) so Bengali
+/// renders identically on every device, with generous line-heights for
+/// conjuncts.
 class AppTypography {
   AppTypography._();
 
   // Primary font family fallback: system sans-serif or Bengali-compatible font
-  static const String? fontFamily = null;
+  static const String fontFamily = 'Hind Siliguri';
 
   static TextTheme lightTextTheme = const TextTheme(
     displayLarge: TextStyle(
-      fontSize: 32,
+      fontSize: 28,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimaryLight,
       letterSpacing: -0.5,
       height: 1.25,
     ),
     displayMedium: TextStyle(
-      fontSize: 28,
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: AppColors.textPrimaryLight,
+      height: 1.3,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 22,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimaryLight,
       height: 1.3,
     ),
     headlineLarge: TextStyle(
-      fontSize: 24,
+      fontSize: 22,
       fontWeight: FontWeight.w700,
       color: AppColors.textPrimaryLight,
       height: 1.35,
     ),
     headlineMedium: TextStyle(
-      fontSize: 20,
+      fontSize: 19,
+      fontWeight: FontWeight.w600,
+      color: AppColors.textPrimaryLight,
+      height: 1.4,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 17,
       fontWeight: FontWeight.w600,
       color: AppColors.textPrimaryLight,
       height: 1.4,
     ),
     titleLarge: TextStyle(
-      fontSize: 18,
+      fontSize: 17,
       fontWeight: FontWeight.w600,
       color: AppColors.textPrimaryLight,
       height: 1.4,
@@ -55,7 +72,7 @@ class AppTypography {
       height: 1.45,
     ),
     bodyLarge: TextStyle(
-      fontSize: 16,
+      fontSize: 15,
       fontWeight: FontWeight.normal,
       color: AppColors.textPrimaryLight,
       height: 1.5,
@@ -95,32 +112,44 @@ class AppTypography {
 
   static TextTheme darkTextTheme = const TextTheme(
     displayLarge: TextStyle(
-      fontSize: 32,
+      fontSize: 28,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimaryDark,
       letterSpacing: -0.5,
       height: 1.25,
     ),
     displayMedium: TextStyle(
-      fontSize: 28,
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: AppColors.textPrimaryDark,
+      height: 1.3,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 22,
       fontWeight: FontWeight.bold,
       color: AppColors.textPrimaryDark,
       height: 1.3,
     ),
     headlineLarge: TextStyle(
-      fontSize: 24,
+      fontSize: 22,
       fontWeight: FontWeight.w700,
       color: AppColors.textPrimaryDark,
       height: 1.35,
     ),
     headlineMedium: TextStyle(
-      fontSize: 20,
+      fontSize: 19,
+      fontWeight: FontWeight.w600,
+      color: AppColors.textPrimaryDark,
+      height: 1.4,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 17,
       fontWeight: FontWeight.w600,
       color: AppColors.textPrimaryDark,
       height: 1.4,
     ),
     titleLarge: TextStyle(
-      fontSize: 18,
+      fontSize: 17,
       fontWeight: FontWeight.w600,
       color: AppColors.textPrimaryDark,
       height: 1.4,
@@ -138,7 +167,7 @@ class AppTypography {
       height: 1.45,
     ),
     bodyLarge: TextStyle(
-      fontSize: 16,
+      fontSize: 15,
       fontWeight: FontWeight.normal,
       color: AppColors.textPrimaryDark,
       height: 1.5,

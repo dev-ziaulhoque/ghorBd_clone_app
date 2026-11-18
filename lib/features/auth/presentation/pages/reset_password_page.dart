@@ -127,8 +127,15 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               isPassword: true,
                               prefixIcon: const Icon(Icons.lock_outline),
                               validator: (value) {
-                                if (value == null || value.length < 6) {
-                                  return l10n.error_validation;
+                                if (value == null || value.isEmpty) {
+                                  return l10n.validationPasswordRequired;
+                                }
+                                // Same website rule as registration:
+                                // 8+ characters with a letter and a digit.
+                                final hasLetter = value.contains(RegExp(r'[A-Za-z]'));
+                                final hasDigit = value.contains(RegExp(r'[0-9]'));
+                                if (value.length < 8 || !hasLetter || !hasDigit) {
+                                  return l10n.validationPasswordRule;
                                 }
                                 return null;
                               },

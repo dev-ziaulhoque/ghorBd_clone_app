@@ -1,18 +1,70 @@
+import 'dart:async';
+
 import 'package:fpdart/fpdart.dart';
+import '../../../../core/cache/response_cache.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/content_entities.dart';
 import '../../domain/repositories/content_repository.dart';
 import '../datasources/content_remote_data_source.dart';
+import '../models/content_models.dart';
 
 class ContentRepositoryImpl implements ContentRepository {
   final ContentRemoteDataSource remoteDataSource;
 
-  ContentRepositoryImpl({required this.remoteDataSource});
+  /// Optional response cache (Round 2): guides and static pages are
+  /// slow-changing editorial content, served stale-while-revalidate
+  /// with a 24 h TTL. Blog posts and Q&A are dynamic and stay
+  /// network-only. Null in existing tests → network-only behaviour.
+  final ResponseCache? _cache;
+
+  ContentRepositoryImpl({required this.remoteDataSource, ResponseCache? cache})
+      : _cache = cache;
+
+  /// Returns the decoded cached payload for [key], or null on a miss /
+  /// corrupt entry. When the entry is stale, [revalidate] is fired in
+  /// the background (it refetches and rewrites the cache itself).
+  Future<dynamic> _swrRead(
+    String key,
+    Duration ttl,
+    Future<void> Function() revalidate,
+  ) async {
+    final cache = _cache;
+    if (cache == null) return null;
+    final entry = await cache.read(key);
+    if (entry == null) return null;
+    if (entry.isStale(ttl)) unawaited(revalidate());
+    return entry.data;
+  }
+
+  Future<void> _writeCache(String key, dynamic data) async {
+    final cache = _cache;
+    if (cache != null) await cache.write(key, data);
+  }
 
   @override
   Future<Either<Failure, List<GuideEntity>>> getGuides({int page = 1, int perPage = 12}) async {
+    final key = 'guides_${page}_$perPage';
+    final cached = await _swrRead(key, ResponseCache.staticContentTtl, () async {
+      try {
+        final fresh = await remoteDataSource.getGuides(page: page, perPage: perPage);
+        await _writeCache(key, fresh.map((m) => m.toJson()).toList());
+      } catch (_) {}
+    });
+    if (cached is List) {
+      try {
+        return Right(
+          cached
+              .map((j) => GuideModel.fromJson(j as Map<String, dynamic>))
+              .map((m) => m.toEntity())
+              .toList(),
+        );
+      } catch (_) {
+        // Corrupt payload — fall through to the network.
+      }
+    }
     try {
       final models = await remoteDataSource.getGuides(page: page, perPage: perPage);
+      unawaited(_writeCache(key, models.map((m) => m.toJson()).toList()));
       return Right(models.map((m) => m.toEntity()).toList());
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
@@ -23,8 +75,25 @@ class ContentRepositoryImpl implements ContentRepository {
 
   @override
   Future<Either<Failure, GuideEntity>> getGuideDetail(String slug) async {
+    final key = 'guide_$slug';
+    final cached = await _swrRead(key, ResponseCache.staticContentTtl, () async {
+      try {
+        final fresh = await remoteDataSource.getGuideDetail(slug);
+        await _writeCache(key, fresh.toJson());
+      } catch (_) {}
+    });
+    if (cached is Map) {
+      try {
+        return Right(
+          GuideModel.fromJson(Map<String, dynamic>.from(cached)).toEntity(),
+        );
+      } catch (_) {
+        // Corrupt payload — fall through to the network.
+      }
+    }
     try {
       final model = await remoteDataSource.getGuideDetail(slug);
+      unawaited(_writeCache(key, model.toJson()));
       return Right(model.toEntity());
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
@@ -35,8 +104,26 @@ class ContentRepositoryImpl implements ContentRepository {
 
   @override
   Future<Either<Failure, StaticPageEntity>> getStaticPage(String slug) async {
+    final key = 'static_page_$slug';
+    final cached = await _swrRead(key, ResponseCache.staticContentTtl, () async {
+      try {
+        final fresh = await remoteDataSource.getStaticPage(slug);
+        await _writeCache(key, fresh.toJson());
+      } catch (_) {}
+    });
+    if (cached is Map) {
+      try {
+        return Right(
+          StaticPageModel.fromJson(Map<String, dynamic>.from(cached))
+              .toEntity(),
+        );
+      } catch (_) {
+        // Corrupt payload — fall through to the network.
+      }
+    }
     try {
       final model = await remoteDataSource.getStaticPage(slug);
+      unawaited(_writeCache(key, model.toJson()));
       return Right(model.toEntity());
     } on Exception catch (e) {
       return Left(Failure.fromException(e));

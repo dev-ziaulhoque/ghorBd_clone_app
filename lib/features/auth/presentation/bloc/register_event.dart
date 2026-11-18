@@ -28,6 +28,11 @@ class RegisterSubmitted extends RegisterEvent {
   List<Object?> get props => [name, email, phone, password, role, listerType];
 }
 
+/// User tapped "Continue with Google" on the register screen.
+class GoogleSignInRequested extends RegisterEvent {
+  const GoogleSignInRequested();
+}
+
 class VerifyOtpSubmitted extends RegisterEvent {
   final String email;
   final String otp;

@@ -26,13 +26,11 @@ class VerifyOtpPage extends StatefulWidget {
 class _VerifyOtpPageState extends State<VerifyOtpPage> {
   final _otpController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.devOtp != null && widget.devOtp!.isNotEmpty) {
-      _otpController.text = widget.devOtp!;
-    }
-  }
+  // SECURITY: the backend-returned dev OTP is intentionally NOT
+  // pre-filled. Prefilling it in production would let anyone verify
+  // an account without access to the email inbox. The user must type
+  // the code they received. (widget.devOtp is kept only for API
+  // compatibility and is never used to fill the field.)
 
   @override
   void dispose() {

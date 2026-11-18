@@ -96,7 +96,7 @@ class MapBottomPreviewCard extends StatelessWidget {
                           child: Container(
                             width: 104,
                             height: 88,
-                            color: isDark ? const Color(0xFF1E293B) : Colors.grey[200],
+                            color: isDark ? AppColors.surfaceDark : Colors.grey[200],
                             child: listing.images.isNotEmpty
                                 ? Image.network(
                                     listing.images.first,

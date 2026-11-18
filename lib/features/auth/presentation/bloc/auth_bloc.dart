@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/security/session_manager.dart';
 import '../../domain/usecases/get_current_user_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
+import '../../domain/usecases/login_with_google_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -12,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogoutUseCase _logoutUseCase;
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final SessionManager _sessionManager;
+  final LoginWithGoogleUseCase? _loginWithGoogleUseCase;
   StreamSubscription<SessionStatus>? _sessionSubscription;
 
   AuthBloc({
@@ -19,13 +21,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required LogoutUseCase logoutUseCase,
     required GetCurrentUserUseCase getCurrentUserUseCase,
     required SessionManager sessionManager,
+    LoginWithGoogleUseCase? loginWithGoogleUseCase,
   })  : _loginUseCase = loginUseCase,
         _logoutUseCase = logoutUseCase,
         _getCurrentUserUseCase = getCurrentUserUseCase,
         _sessionManager = sessionManager,
+        _loginWithGoogleUseCase = loginWithGoogleUseCase,
         super(const AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<AuthLoginRequested>(_onAuthLoginRequested);
+    on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
     on<AuthSessionExpiredEvent>(_onAuthSessionExpiredEvent);
 
@@ -78,6 +83,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ));
         }
       },
+      (session) => emit(Authenticated(session.user)),
+    );
+  }
+
+  Future<void> _onAuthGoogleSignInRequested(
+    AuthGoogleSignInRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    final useCase = _loginWithGoogleUseCase;
+    if (useCase == null) {
+      emit(const AuthFailure(
+        message: 'Google sign-in is not available yet',
+        messageKey: 'error_google_unavailable',
+        code: 'GOOGLE_UNAVAILABLE',
+      ));
+      return;
+    }
+    emit(const AuthLoading());
+    final result = await useCase();
+    result.fold(
+      (failure) => emit(AuthFailure(
+        message: failure.message,
+        messageKey: failure.messageKey,
+        code: failure.code,
+      )),
       (session) => emit(Authenticated(session.user)),
     );
   }

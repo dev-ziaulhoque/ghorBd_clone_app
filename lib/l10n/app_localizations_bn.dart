@@ -9,7 +9,7 @@ class AppLocalizationsBn extends AppLocalizations {
   AppLocalizationsBn([String locale = 'bn']) : super(locale);
 
   @override
-  String get appName => 'ঘরবিডি';
+  String get appName => 'GhorBD';
 
   @override
   String get heroTitle => 'আপনার পছন্দের ঘর খুঁজুন সহজেই';
@@ -25,7 +25,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get safetyNotice =>
-      'যোগাযোগের আগে বাসাটি সরাসরি দেখে নিন। অগ্রিম টাকা পাঠাবেন না।';
+      'অগ্রিম টাকা পাঠানোর আগে বাসাটি সরেজমিনে গিয়ে দেখে নিন।';
 
   @override
   String get reportListing => 'বিজ্ঞাপন রিপোর্ট করুন';
@@ -151,7 +151,8 @@ class AppLocalizationsBn extends AppLocalizations {
       'ঠিকানা খোঁজার সেবাটি সাময়িকভাবে বন্ধ আছে।';
 
   @override
-  String get error_unknown => 'অপ্রত্যাশিত কোনো ত্রুটি ঘটেছে।';
+  String get error_unknown =>
+      'কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
 
   @override
   String get btnRetry => 'আবার চেষ্টা করুন';
@@ -166,16 +167,17 @@ class AppLocalizationsBn extends AppLocalizations {
   String get btnSubmit => 'জমা দিন';
 
   @override
-  String get emptyTitle => 'কোনো তথ্য পাওয়া যায়নি';
+  String get emptyTitle => 'কিছু পাওয়া যায়নি';
 
   @override
-  String get emptyMessage => 'এখানে প্রদর্শনের মতো কোনো তথ্য নেই।';
+  String get emptyMessage =>
+      'এই মুহূর্তে কিছু পাওয়া যাচ্ছে না। অন্য শব্দে খুঁজুন বা ফিল্টার বদলে আবার চেষ্টা করুন।';
 
   @override
-  String get offlineTitle => 'অফলাইন মোড';
+  String get offlineTitle => 'ইন্টারনেট সংযোগ নেই';
 
   @override
-  String get offlineMessage => 'ইন্টারনেট সংযোগ চালু করুন।';
+  String get offlineMessage => 'ইন্টারনেট সংযোগ চেক করে আবার চেষ্টা করুন।';
 
   @override
   String get authLogin => 'লগইন';
@@ -290,7 +292,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get recentRentListings => 'ভাড়ার নতুন বিজ্ঞাপন';
 
   @override
-  String get recentSaleListings => 'বিক্রির বিজ্ঞাপন';
+  String get recentSaleListings => 'বিক্রির নতুন বিজ্ঞাপন';
 
   @override
   String get filterTitle => 'ফিল্টার';
@@ -339,6 +341,9 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get office => 'অফিস';
+
+  @override
+  String get hotel => 'হোটেল';
 
   @override
   String get land => 'জমি';
@@ -477,7 +482,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get favoritesEmptySubtitle =>
-      'আপনার পছন্দের ফ্ল্যাট বা জমির বিজ্ঞাপনগুলো পরবর্তীতে সহজে দেখতে এখানে সংরক্ষণ করুন।';
+      'যেকোনো বিজ্ঞাপনে হার্ট আইকনে চাপ দিলেই তা এখানে সংরক্ষিত থাকবে।';
 
   @override
   String get addToFavorites => 'পছন্দ তালিকায় যুক্ত করুন';
@@ -637,6 +642,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get size => 'আয়তন (বর্গফুট)';
 
   @override
+  String get sizeLabel => 'আয়তন';
+
+  @override
   String get priceRent => 'ভাড়া / দাম (টাকা)';
 
   @override
@@ -732,7 +740,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get noOwnerListingsSubtitle =>
-      'আপনার সম্পত্তি দ্রুত ভাড়া বা বিক্রি করতে এখনই নতুন বিজ্ঞাপন পোস্ট করুন।';
+      'আপনার সম্পত্তি ভাড়া বা বিক্রি করতে নতুন বিজ্ঞাপন পোস্ট করুন।';
 
   @override
   String get blogTitle => 'ব্লগ';
@@ -804,7 +812,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get pricingTitle => 'সাবস্ক্রিপশন প্ল্যান';
 
   @override
-  String get pricingSubtitle => 'আপনার চাহিদামতো সেরা প্যাকেজটি বেছে নিন';
+  String get pricingSubtitle => 'আপনার প্রয়োজন অনুযায়ী প্ল্যানটি বেছে নিন';
 
   @override
   String get vatExclusionNotice => 'সকল দাম ভ্যাট ছাড়া';
@@ -839,4 +847,156 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get tenantAccountBannerSubtitle =>
       'আপনি ভাড়াটিয়া হিসেবে লগইন করেছেন। বিজ্ঞাপনের বিস্তারিত অ্যানালিটিক্স প্রপার্টি মালিকদের জন্য প্রযোজ্য। আপনি কি প্রপার্টি বিজ্ঞাপন দিতে চান?';
+
+  @override
+  String get onboardingTitle1 => 'পছন্দের বাসা খুঁজুন';
+
+  @override
+  String get onboardingBody1 =>
+      'মালিকদের দেওয়া ফ্ল্যাট, বাড়ি, রুম ও জমির বিজ্ঞাপন থেকে আপনার পছন্দেরটি বেছে নিন — কোনো মধ্যস্বত্বভোগী ছাড়াই।';
+
+  @override
+  String get onboardingTitle2 => 'সরাসরি বাড়িওয়ালার সাথে যোগাযোগ';
+
+  @override
+  String get onboardingBody2 =>
+      'মালিকের নম্বরে কল করুন বা মেসেজ পাঠান — কোনো মধ্যস্বত্বভোগী নয়।';
+
+  @override
+  String get onboardingTitle3 => 'যাচাইকৃত ব্যাজ, সম্পূর্ণ বিনামূল্যে';
+
+  @override
+  String get onboardingBody3 =>
+      'যাচাইকৃত ব্যাজ থাকা বিজ্ঞাপনগুলো আমাদের টিম যাচাই করে, আর ঘরবিডিতে খোঁজা সবসময়ই বিনামূল্যে।';
+
+  @override
+  String get onboardingSkip => 'এড়িয়ে যান';
+
+  @override
+  String get onboardingNext => 'পরবর্তী';
+
+  @override
+  String get onboardingStart => 'শুরু করুন';
+
+  @override
+  String get setupTitle => 'আপনার পছন্দ বেছে নিন';
+
+  @override
+  String get setupSubtitle =>
+      'থিম ও ভাষা এখনই ঠিক করুন — পরে প্রোফাইল সেটিংস থেকেও বদলাতে পারবেন।';
+
+  @override
+  String get prefThemeLabel => 'থিম';
+
+  @override
+  String get prefLanguageLabel => 'ভাষা';
+
+  @override
+  String get themeOptionLight => 'লাইট';
+
+  @override
+  String get themeOptionDark => 'ডার্ক';
+
+  @override
+  String get themeOptionSystem => 'সিস্টেম';
+
+  @override
+  String get langOptionBanglaSub => 'বাংলায় অ্যাপ ব্যবহার করুন';
+
+  @override
+  String get langOptionEnglishSub => 'ইংরেজিতে অ্যাপ ব্যবহার করুন';
+
+  @override
+  String get settingsLanguageTitle => 'ভাষা নির্বাচন';
+
+  @override
+  String get settingsThemeTitle => 'থিম (Appearance)';
+
+  @override
+  String get authGoogleContinue => 'গুগল দিয়ে চালিয়ে যান';
+
+  @override
+  String get authOrDivider => 'অথবা';
+
+  @override
+  String get authLoginSubtitle => 'স্বাগতম — চালিয়ে যেতে লগইন করুন';
+
+  @override
+  String get authRegisterSubtitle => 'শুরু করতে একটি অ্যাকাউন্ট খুলুন';
+
+  @override
+  String get authRoleTenantCard => 'বাসা খুঁজছি';
+
+  @override
+  String get authRoleOwnerCard => 'আমার বাসা/সম্পত্তি ভাড়া দিতে চাই';
+
+  @override
+  String get authWhoAreYou => 'আপনি কে?';
+
+  @override
+  String get listerOwner => 'মালিক';
+
+  @override
+  String get listerAgent => 'এজেন্ট';
+
+  @override
+  String get listerBuilder => 'ডেভেলপার/কোম্পানি';
+
+  @override
+  String get validationNameRequired => 'পুরো নাম লিখুন';
+
+  @override
+  String get validationEmailRequired => 'ইমেইল লিখুন';
+
+  @override
+  String get validationEmailInvalid => 'সঠিক ইমেইল ঠিকানা দিন';
+
+  @override
+  String get validationPhoneRequired => 'মোবাইল নম্বর লিখুন';
+
+  @override
+  String get validationPhoneInvalid =>
+      'সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (01XXXXXXXXX)';
+
+  @override
+  String get validationPasswordRequired => 'পাসওয়ার্ড লিখুন';
+
+  @override
+  String get validationPasswordRule =>
+      'পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে এবং এতে অক্ষর ও সংখ্যা দুটোই থাকতে হবে';
+
+  @override
+  String get authPhoneVerifyNote => 'যাচাইকরণের কোড এই নম্বরে পাঠানো হবে';
+
+  @override
+  String get authFullName => 'পুরো নাম';
+
+  @override
+  String get authMobileNumber => 'মোবাইল নম্বর';
+
+  @override
+  String get authTermsNote =>
+      'চালিয়ে গেলে আপনি আমাদের শর্তাবলি ও গোপনীয়তা নীতিতে সম্মত হচ্ছেন।';
+
+  @override
+  String get googleSignInUnavailable =>
+      'গুগল সাইন-ইন এখনো চালু হয়নি। ইমেইল দিয়ে চালিয়ে যান।';
+
+  @override
+  String get googleSignInCancelled => 'গুগল সাইন-ইন বাতিল করা হয়েছে।';
+
+  @override
+  String get filterMinPrice => 'সর্বনিম্ন ৳';
+
+  @override
+  String get filterMaxPrice => 'সর্বোচ্চ ৳';
+
+  @override
+  String get offlineBanner => 'ইন্টারনেট সংযোগ নেই — আগের তথ্য দেখানো হচ্ছে';
+
+  @override
+  String get shareListing => 'শেয়ার করুন';
+
+  @override
+  String get callFailed => 'কল করা যাচ্ছে না';
 }

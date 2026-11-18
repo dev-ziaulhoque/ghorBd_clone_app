@@ -69,6 +69,10 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
+      // The user types the code themselves (dev OTP is never prefilled)
+      await tester.enterText(find.byType(TextFormField), '123456');
+      await tester.pump();
+
       final verifyButton = find.widgetWithText(ElevatedButton, 'যাচাই করুন');
       await tester.tap(verifyButton);
       await tester.pump();
@@ -76,6 +80,20 @@ void main() {
       verify(() => mockRegisterBloc.add(
             const VerifyOtpSubmitted(email: 'user@example.com', otp: '123456'),
           )).called(1);
+    });
+
+    testWidgets('does NOT prefill the backend dev OTP (production safety)', (tester) async {
+      when(() => mockRegisterBloc.state).thenReturn(const RegisterInitial());
+
+      await tester.pumpWidget(_buildTestableVerifyOtpPage(
+        registerBloc: mockRegisterBloc,
+        email: 'user@example.com',
+        devOtp: '123456',
+      ));
+      await tester.pumpAndSettle();
+
+      final field = tester.widget<TextFormField>(find.byType(TextFormField));
+      expect(field.controller?.text ?? '', isEmpty);
     });
 
     testWidgets('resend button fires ResendOtpRequested', (tester) async {

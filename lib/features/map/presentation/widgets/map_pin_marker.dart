@@ -112,15 +112,15 @@ class _MapPinMarkerState extends State<MapPinMarker>
     // Card colors
     final cardBgColor = isSelected
         ? purposeColor
-        : (isDark ? const Color(0xFF1E293B) : Colors.white);
+        : (isDark ? AppColors.surfaceDark : Colors.white);
 
     final borderColor = isSelected
         ? Colors.white
-        : (isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1));
+        : (isDark ? AppColors.borderDark : AppColors.borderLight);
 
     final textColor = isSelected
         ? Colors.white
-        : (isDark ? Colors.white : const Color(0xFF0F172A));
+        : (isDark ? Colors.white : AppColors.textPrimaryLight);
 
     final iconBgColor = isSelected
         ? Colors.white.withAlpha(50)

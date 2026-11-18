@@ -23,7 +23,9 @@ class SearchBarWidget extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      height: AppSpacing.inputHeight,
+      // Minimum height only: at large text scales the field grows instead
+      // of clipping the hint/input text (V2 text-scale requirement).
+      constraints: const BoxConstraints(minHeight: AppSpacing.inputHeight),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -51,6 +53,7 @@ class SearchBarWidget extends StatelessWidget {
               key: const Key('search_bar_input'),
               controller: controller,
               onSubmitted: onSubmitted,
+              textInputAction: TextInputAction.search,
               decoration: InputDecoration(
                 hintText: l10n.searchHint,
                 hintStyle: TextStyle(

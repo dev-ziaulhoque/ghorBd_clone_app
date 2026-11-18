@@ -743,7 +743,7 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
     return Material(
       elevation: 6,
       borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
-      color: isDark ? const Color(0xFF1E293B) : Colors.white,
+      color: isDark ? AppColors.surfaceDark : Colors.white,
       child: InkWell(
         borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
         onTap: () => context.push('/listings'),
@@ -765,7 +765,7 @@ class _MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12.5,
-                  color: isDark ? Colors.white : const Color(0xFF0F172A),
+                  color: isDark ? Colors.white : AppColors.textPrimaryLight,
                 ),
               ),
             ],

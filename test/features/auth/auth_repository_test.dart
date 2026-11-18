@@ -4,6 +4,7 @@ import 'package:ghorbad_clone_app/core/error/failures.dart';
 import 'package:ghorbad_clone_app/core/security/secure_storage.dart';
 import 'package:ghorbad_clone_app/core/security/session_manager.dart';
 import 'package:ghorbad_clone_app/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:ghorbad_clone_app/features/auth/data/datasources/google_sign_in_data_source.dart';
 import 'package:ghorbad_clone_app/features/auth/data/models/auth_response_model.dart';
 import 'package:ghorbad_clone_app/features/auth/data/models/user_model.dart';
 import 'package:ghorbad_clone_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -215,5 +216,57 @@ void main() {
         (user) => expect(user?.id, '665f1c2e9b1d4a0012ab34cd'),
       );
     });
+    test('loginWithGoogle fails gracefully when no Google datasource is wired', () async {
+      final result = await repository.loginWithGoogle();
+      expect(result.isLeft(), isTrue);
+      result.fold(
+        (failure) => expect(failure.code, 'GOOGLE_UNAVAILABLE'),
+        (_) => fail('Expected Left but got Right'),
+      );
+    });
+
+    test('loginWithGoogle maps a cancelled Google flow to GOOGLE_CANCELLED', () async {
+      final repo = AuthRepositoryImpl(
+        remoteDataSource: mockRemoteDataSource,
+        secureStorage: secureStorage,
+        sessionManager: sessionManager,
+        googleSignInDataSource: _CancelledGoogleDataSource(),
+      );
+      final result = await repo.loginWithGoogle();
+      expect(result.isLeft(), isTrue);
+      result.fold(
+        (failure) => expect(failure.code, 'GOOGLE_CANCELLED'),
+        (_) => fail('Expected Left but got Right'),
+      );
+    });
+
+    test('loginWithGoogle maps a missing backend endpoint (404) to GOOGLE_UNAVAILABLE', () async {
+      when(() => mockRemoteDataSource.loginWithGoogle(idToken: 'token-123'))
+          .thenThrow(const ServerException('Not Found', 404));
+      final repo = AuthRepositoryImpl(
+        remoteDataSource: mockRemoteDataSource,
+        secureStorage: secureStorage,
+        sessionManager: sessionManager,
+        googleSignInDataSource: _FakeGoogleDataSource(),
+      );
+      final result = await repo.loginWithGoogle();
+      expect(result.isLeft(), isTrue);
+      result.fold(
+        (failure) => expect(failure.code, 'GOOGLE_UNAVAILABLE'),
+        (_) => fail('Expected Left but got Right'),
+      );
+    });
+
   });
+}
+
+class _FakeGoogleDataSource implements GoogleSignInDataSource {
+  @override
+  Future<String> getIdToken() async => 'token-123';
+}
+
+class _CancelledGoogleDataSource implements GoogleSignInDataSource {
+  @override
+  Future<String> getIdToken() async =>
+      throw const GoogleSignInCancelledException();
 }

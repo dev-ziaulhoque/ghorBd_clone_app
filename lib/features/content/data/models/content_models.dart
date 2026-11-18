@@ -34,6 +34,19 @@ class GuideModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slug': slug,
+      'title': title,
+      'titleEn': titleEn,
+      'excerpt': excerpt,
+      'body': body,
+      'coverImageUrl': coverImageUrl,
+      'path': path,
+    };
+  }
+
   GuideEntity toEntity() => GuideEntity(
         id: id,
         slug: slug,
@@ -72,6 +85,17 @@ class StaticPageModel {
       body: json['body'] as String? ?? '',
       path: json['path'] as String?,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slug': slug,
+      'title': title,
+      'titleEn': titleEn,
+      'body': body,
+      'path': path,
+    };
   }
 
   StaticPageEntity toEntity() => StaticPageEntity(

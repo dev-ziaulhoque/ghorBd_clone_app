@@ -23,8 +23,8 @@ class AppEmptyView extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final displayTitle = title ?? l10n?.emptyTitle ?? 'No data found';
-    final displayMessage = message ?? l10n?.emptyMessage ?? 'There is nothing to display here.';
+    final displayTitle = title ?? l10n?.emptyTitle ?? 'কোনো তথ্য পাওয়া যায়নি';
+    final displayMessage = message ?? l10n?.emptyMessage ?? 'Nothing matches right now.';
 
     return Center(
       child: Padding(

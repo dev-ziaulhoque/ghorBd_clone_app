@@ -314,6 +314,31 @@ void main() {
       expect(find.byKey(const Key('search_bar_input')), findsOneWidget);
       expect(find.text('Modern Dhanmondi 3 Bed Apartment'), findsWidgets);
     });
+
+    testWidgets('shows the full website category set including hotel',
+        (tester) async {
+      when(() => mockGetListingsUseCase(any())).thenAnswer(
+        (_) async => const Right((
+          listings: [testListing],
+          total: 1,
+          totalPages: 1,
+          facets: null,
+        )),
+      );
+      when(() => mockGetAreasUseCase(popular: true)).thenAnswer(
+        (_) async => const Right([testArea]),
+      );
+
+      await tester.pumpWidget(buildTestableWidget(const HomePage()));
+      await tester.pumpAndSettle();
+
+      // Round 3: 'hotel' is a real backend type and appears in the
+      // category grid (bn labels in this harness).
+      expect(find.text('হোটেল'), findsOneWidget);
+      expect(find.text('অ্যাপার্টমেন্ট'), findsOneWidget);
+      // Guests get the login affordance in the header, not a fake photo.
+      expect(find.byIcon(Icons.login_rounded), findsOneWidget);
+    });
   });
 
   group('ListingsPage Widget Tests', () {
@@ -354,7 +379,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Modern Dhanmondi 3 Bed Apartment'), findsOneWidget);
-      expect(find.textContaining('যোগাযোগের আগে বাসাটি সরাসরি দেখে নিন'), findsOneWidget);
+      expect(find.textContaining('অগ্রিম টাকা পাঠানোর আগে বাসাটি সরেজমিনে'), findsOneWidget);
       expect(find.byType(SafeArea), findsWidgets);
     });
   });

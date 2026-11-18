@@ -9,6 +9,12 @@ import 'interceptors/retry_interceptor.dart';
 class DioClient {
   late final Dio _dio;
 
+  /// In-flight GET requests, keyed by method + path + sorted query.
+  /// Identical concurrent GETs share one network call (Round 2 dedupe):
+  /// e.g. Home firing the same listings query twice no longer pays the
+  /// ~1.2–1.9 s backend TTFB twice.
+  final Map<String, Future<Response<dynamic>>> _inFlightGets = {};
+
   DioClient({
     Dio? customDio,
     AuthInterceptor? authInterceptor,
@@ -22,6 +28,9 @@ class DioClient {
           connectTimeout: Env.connectTimeout,
           receiveTimeout: Env.receiveTimeout,
           sendTimeout: Env.sendTimeout,
+          // Keep connections alive so repeat calls to the slow backend
+          // reuse the TLS session instead of re-handshaking every time.
+          persistentConnection: true,
           headers: const {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -50,14 +59,48 @@ class DioClient {
     Options? options,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
-  }) async {
-    return _dio.get<T>(
+  }) {
+    // Dedupe identical in-flight GETs. Only plain, untyped GETs without
+    // cancellation/progress/custom options are shared — anything with
+    // its own lifecycle keeps its own call.
+    final canDedupe = T == dynamic &&
+        cancelToken == null &&
+        onReceiveProgress == null &&
+        options == null;
+    if (!canDedupe) {
+      return _dio.get<T>(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
+    }
+
+    final key = _dedupeKey(path, queryParameters);
+    final existing = _inFlightGets[key];
+    if (existing != null) {
+      return existing.then((r) => r as Response<T>);
+    }
+    final future = _dio.get<T>(
       path,
       queryParameters: queryParameters,
-      options: options,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
     );
+    _inFlightGets[key] = future;
+    // Evict once settled (success or error) so the next call re-fetches.
+    future.whenComplete(() {
+      if (identical(_inFlightGets[key], future)) {
+        _inFlightGets.remove(key);
+      }
+    }).ignore();
+    return future;
+  }
+
+  static String _dedupeKey(String path, Map<String, dynamic>? query) {
+    if (query == null || query.isEmpty) return 'GET $path';
+    final keys = query.keys.toList()..sort();
+    final qs = keys.map((k) => '$k=${query[k]}').join('&');
+    return 'GET $path?$qs';
   }
 
   Future<Response<T>> post<T>(

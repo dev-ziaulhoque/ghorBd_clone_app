@@ -9,7 +9,7 @@ class ListingEntity extends Equatable {
   final String title;
   final String slug;
   final String description;
-  final String propertyType; // apartment, room, house, building, shop, office, land, hostel
+  final String propertyType; // backend enum: apartment, room, house, hotel, shop, office, land
   final String purpose; // rent, sale
   final String areaSlug;
   final String city;

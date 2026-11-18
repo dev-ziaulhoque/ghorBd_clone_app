@@ -1,0 +1,12 @@
+# Copy this file to android/key.properties and fill in YOUR OWN values.
+# Create a keystore once (keep it + these passwords somewhere safe —
+# losing them means you can never update the app on Play Store):
+#
+#   keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA \
+#           -keysize 2048 -validity 10000 -alias upload
+#
+# NEVER commit key.properties or the .jks file to version control.
+storePassword=
+keyPassword=
+keyAlias=upload
+storeFile=../upload-keystore.jks

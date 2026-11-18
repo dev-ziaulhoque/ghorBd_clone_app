@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'GhorBD';
 
   @override
-  String get heroTitle => 'Find your preferred home easily';
+  String get heroTitle => 'Find your next home with ease';
 
   @override
   String get searchHint => 'Search by area, type or budget';
@@ -25,7 +25,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get safetyNotice =>
-      'Inspect the property in person before paying any advance money.';
+      'Visit the property in person before paying any advance.';
 
   @override
   String get reportListing => 'Report Listing';
@@ -153,7 +153,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Geocoding service is temporarily unavailable.';
 
   @override
-  String get error_unknown => 'An unexpected error occurred. Please try again.';
+  String get error_unknown => 'Something went wrong. Please try again.';
 
   @override
   String get btnRetry => 'Retry';
@@ -168,16 +168,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get btnSubmit => 'Submit';
 
   @override
-  String get emptyTitle => 'No data found';
+  String get emptyTitle => 'Nothing found';
 
   @override
-  String get emptyMessage => 'There is nothing to display here.';
+  String get emptyMessage =>
+      'Nothing matches right now. Try a different search or adjust your filters.';
 
   @override
-  String get offlineTitle => 'Offline Mode';
+  String get offlineTitle => 'You\'re offline';
 
   @override
-  String get offlineMessage => 'Please check your internet connection.';
+  String get offlineMessage => 'Check your internet connection and try again.';
 
   @override
   String get authLogin => 'Login';
@@ -292,7 +293,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentRentListings => 'Recent Rent Listings';
 
   @override
-  String get recentSaleListings => 'Sale Listings';
+  String get recentSaleListings => 'Latest Listings for Sale';
 
   @override
   String get filterTitle => 'Filters';
@@ -341,6 +342,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get office => 'Office';
+
+  @override
+  String get hotel => 'Hotel';
 
   @override
   String get land => 'Land';
@@ -480,7 +484,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favoritesEmptySubtitle =>
-      'Save properties to easily review them later.';
+      'Tap the heart icon on any listing to keep it here for later.';
 
   @override
   String get addToFavorites => 'Save to Favorites';
@@ -640,6 +644,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get size => 'Size (sqft)';
 
   @override
+  String get sizeLabel => 'Size';
+
+  @override
   String get priceRent => 'Rent / Price (BDT)';
 
   @override
@@ -735,7 +742,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noOwnerListingsSubtitle =>
-      'Post a new ad now to quickly rent or sell your property.';
+      'Post a new listing to rent or sell your property.';
 
   @override
   String get blogTitle => 'Blog';
@@ -807,7 +814,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pricingTitle => 'Subscription Plans';
 
   @override
-  String get pricingSubtitle => 'Choose the best plan tailored to your needs';
+  String get pricingSubtitle => 'Choose the plan that fits your needs';
 
   @override
   String get vatExclusionNotice => 'All prices exclude VAT';
@@ -842,4 +849,157 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tenantAccountBannerSubtitle =>
       'You are signed in as a tenant. Detailed listing analytics are reserved for property owners. Want to list a property?';
+
+  @override
+  String get onboardingTitle1 => 'Find a home you love';
+
+  @override
+  String get onboardingBody1 =>
+      'Browse flats, houses, rooms and land listed by owners, and choose the one that fits you — no middlemen.';
+
+  @override
+  String get onboardingTitle2 => 'Talk directly to the owner';
+
+  @override
+  String get onboardingBody2 =>
+      'Call or message the owner directly — nobody in between.';
+
+  @override
+  String get onboardingTitle3 => 'Verified badges, always free';
+
+  @override
+  String get onboardingBody3 =>
+      'Listings carrying the verified badge have been checked by our team, and searching on GhorBD is always free.';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingStart => 'Get Started';
+
+  @override
+  String get setupTitle => 'Choose your preferences';
+
+  @override
+  String get setupSubtitle =>
+      'Pick your theme and language now — you can change them anytime in Profile Settings.';
+
+  @override
+  String get prefThemeLabel => 'Theme';
+
+  @override
+  String get prefLanguageLabel => 'Language';
+
+  @override
+  String get themeOptionLight => 'Light';
+
+  @override
+  String get themeOptionDark => 'Dark';
+
+  @override
+  String get themeOptionSystem => 'System';
+
+  @override
+  String get langOptionBanglaSub => 'Use the app in Bangla';
+
+  @override
+  String get langOptionEnglishSub => 'Use the app in English';
+
+  @override
+  String get settingsLanguageTitle => 'Language Selection';
+
+  @override
+  String get settingsThemeTitle => 'Theme (Appearance)';
+
+  @override
+  String get authGoogleContinue => 'Continue with Google';
+
+  @override
+  String get authOrDivider => 'or';
+
+  @override
+  String get authLoginSubtitle => 'Welcome back — sign in to continue';
+
+  @override
+  String get authRegisterSubtitle => 'Create an account to get started';
+
+  @override
+  String get authRoleTenantCard => 'I am looking for a home';
+
+  @override
+  String get authRoleOwnerCard => 'I want to rent out my home/property';
+
+  @override
+  String get authWhoAreYou => 'Who are you?';
+
+  @override
+  String get listerOwner => 'Owner';
+
+  @override
+  String get listerAgent => 'Agent';
+
+  @override
+  String get listerBuilder => 'Developer/Company';
+
+  @override
+  String get validationNameRequired => 'Please enter your full name';
+
+  @override
+  String get validationEmailRequired => 'Please enter your email';
+
+  @override
+  String get validationEmailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get validationPhoneRequired => 'Please enter your mobile number';
+
+  @override
+  String get validationPhoneInvalid =>
+      'Enter a valid 11-digit mobile number (01XXXXXXXXX)';
+
+  @override
+  String get validationPasswordRequired => 'Please enter a password';
+
+  @override
+  String get validationPasswordRule =>
+      'Password must be at least 8 characters and include both letters and numbers';
+
+  @override
+  String get authPhoneVerifyNote =>
+      'A verification code will be sent to this number';
+
+  @override
+  String get authFullName => 'Full name';
+
+  @override
+  String get authMobileNumber => 'Mobile number';
+
+  @override
+  String get authTermsNote =>
+      'By continuing, you agree to our Terms of Service and Privacy Policy.';
+
+  @override
+  String get googleSignInUnavailable =>
+      'Google sign-in is not available yet. Please continue with email.';
+
+  @override
+  String get googleSignInCancelled => 'Google sign-in was cancelled.';
+
+  @override
+  String get filterMinPrice => 'Min ৳';
+
+  @override
+  String get filterMaxPrice => 'Max ৳';
+
+  @override
+  String get offlineBanner => 'No internet connection — showing earlier data';
+
+  @override
+  String get shareListing => 'Share';
+
+  @override
+  String get callFailed => 'Could not start the call';
 }

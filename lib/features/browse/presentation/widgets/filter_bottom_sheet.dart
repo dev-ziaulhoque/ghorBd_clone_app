@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../../../../core/utils/formatters.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
@@ -8,6 +10,11 @@ import '../../../../shared/widgets/app_text_field.dart';
 import '../../domain/entities/facets_entity.dart';
 
 /// Modal bottom sheet for filtering listings adhering to SCR-003 and REQ-008.
+///
+/// Responsive (V2): the sheet is capped at 90% of the screen height, its
+/// fields scroll, and the Apply action lives in a sticky bar above the
+/// keyboard so it is never covered while typing a price. Price fields
+/// accept both English and Bengali digits.
 class FilterBottomSheet extends StatefulWidget {
   final ListingFilterParams currentParams;
   final ValueChanged<ListingFilterParams> onApply;
@@ -80,8 +87,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   }
 
   void _apply() {
-    final minP = int.tryParse(_minPriceController.text.trim());
-    final maxP = int.tryParse(_maxPriceController.text.trim());
+    // Accept Bengali digits (০-৯) typed on a Bengali keyboard as well as
+    // English digits.
+    final minP = int.tryParse(
+      AppFormatters.fromBanglaDigits(_minPriceController.text.trim()),
+    );
+    final maxP = int.tryParse(
+      AppFormatters.fromBanglaDigits(_maxPriceController.text.trim()),
+    );
 
     final updated = widget.currentParams.copyWith(
       purpose: _purpose,
@@ -106,6 +119,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final media = MediaQuery.of(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -114,193 +128,269 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           top: Radius.circular(AppSpacing.radiusXl),
         ),
       ),
+      // Cap the sheet at 90% of the screen (less the keyboard) so it never
+      // covers the whole display on small phones / foldables.
+      constraints: BoxConstraints(
+        maxHeight: media.size.height * 0.9 - media.viewInsets.bottom,
+      ),
       padding: EdgeInsets.only(
-        top: AppSpacing.lg,
+        top: AppSpacing.sm,
         left: AppSpacing.lg,
         right: AppSpacing.lg,
-        bottom: MediaQuery.of(context).viewInsets.bottom + AppSpacing.lg,
+        bottom: media.viewInsets.bottom,
       ),
-      child: SingleChildScrollView(
+      child: SafeArea(
+        top: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header: Title & Reset Button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  l10n.filterTitle,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+            // Drag handle
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
+                ),
+              ),
+            ),
+
+            // Scrollable filter fields (loose fit: the sheet stays
+            // content-sized on tall screens, scrolls on short ones)
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header: Title & Reset Button
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.filterTitle,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: _reset,
+                          child: Text(l10n.filterReset),
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                    const SizedBox(height: AppSpacing.sm),
+
+                    // 1. Purpose: Rent / Sale
+                    Text(
+                      l10n.filterPurpose,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Wrap(
+                      spacing: AppSpacing.sm,
+                      runSpacing: AppSpacing.xs,
+                      children: [
+                        AppFilterChip(
+                          label: l10n.all,
+                          isSelected: _purpose == null,
+                          onSelected: (_) => setState(() => _purpose = null),
+                        ),
+                        AppFilterChip(
+                          label: l10n.rent,
+                          isSelected: _purpose == 'rent',
+                          onSelected: (_) => setState(() => _purpose = 'rent'),
+                        ),
+                        AppFilterChip(
+                          label: l10n.sale,
+                          isSelected: _purpose == 'sale',
+                          onSelected: (_) => setState(() => _purpose = 'sale'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // 2. Property Type
+                    Text(
+                      l10n.filterPropertyType,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Wrap(
+                      spacing: AppSpacing.sm,
+                      runSpacing: AppSpacing.xs,
+                      children: [
+                        AppFilterChip(
+                          label: l10n.all,
+                          isSelected: _propertyType == null,
+                          onSelected: (_) =>
+                              setState(() => _propertyType = null),
+                        ),
+                        AppFilterChip(
+                          label: l10n.apartment,
+                          isSelected: _propertyType == 'apartment',
+                          onSelected: (_) =>
+                              setState(() => _propertyType = 'apartment'),
+                        ),
+                        AppFilterChip(
+                          label: l10n.house,
+                          isSelected: _propertyType == 'house',
+                          onSelected: (_) =>
+                              setState(() => _propertyType = 'house'),
+                        ),
+                        AppFilterChip(
+                          label: l10n.room,
+                          isSelected: _propertyType == 'room',
+                          onSelected: (_) =>
+                              setState(() => _propertyType = 'room'),
+                        ),
+                        AppFilterChip(
+                          label: l10n.shop,
+                          isSelected: _propertyType == 'shop',
+                          onSelected: (_) =>
+                              setState(() => _propertyType = 'shop'),
+                        ),
+                        AppFilterChip(
+                          label: l10n.office,
+                          isSelected: _propertyType == 'office',
+                          onSelected: (_) =>
+                              setState(() => _propertyType = 'office'),
+                        ),
+                        AppFilterChip(
+                          label: l10n.hotel,
+                          isSelected: _propertyType == 'hotel',
+                          onSelected: (_) =>
+                              setState(() => _propertyType = 'hotel'),
+                        ),
+                        AppFilterChip(
+                          label: l10n.land,
+                          isSelected: _propertyType == 'land',
+                          onSelected: (_) =>
+                              setState(() => _propertyType = 'land'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // 3. Bedrooms (only if not land/shop/office)
+                    if (_propertyType != 'land' &&
+                        _propertyType != 'shop' &&
+                        _propertyType != 'office') ...[
+                      Text(
+                        l10n.filterBedrooms,
+                        style:
+                            Theme.of(context).textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
-                ),
-                TextButton(
-                  onPressed: _reset,
-                  child: Text(l10n.filterReset),
-                ),
-              ],
-            ),
-            const Divider(),
-            const SizedBox(height: AppSpacing.sm),
+                      const SizedBox(height: AppSpacing.sm),
+                      Wrap(
+                        spacing: AppSpacing.sm,
+                        runSpacing: AppSpacing.xs,
+                        children: [
+                          AppFilterChip(
+                            label: l10n.all,
+                            isSelected: _bedrooms == null,
+                            onSelected: (_) =>
+                                setState(() => _bedrooms = null),
+                          ),
+                          for (final b in [1, 2, 3, 4])
+                            AppFilterChip(
+                              label: l10n.bedroomsCount(
+                                AppFormatters.formatNumber(
+                                  b,
+                                  isBangla: l10n.localeName == 'bn',
+                                ),
+                              ),
+                              isSelected: _bedrooms == b,
+                              onSelected: (_) => setState(() => _bedrooms = b),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                    ],
 
-            // 1. Purpose: Rent / Sale
-            Text(
-              l10n.filterPurpose,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Wrap(
-              spacing: AppSpacing.sm,
-              children: [
-                AppFilterChip(
-                  label: l10n.all,
-                  isSelected: _purpose == null,
-                  onSelected: (_) => setState(() => _purpose = null),
-                ),
-                AppFilterChip(
-                  label: l10n.rent,
-                  isSelected: _purpose == 'rent',
-                  onSelected: (_) => setState(() => _purpose = 'rent'),
-                ),
-                AppFilterChip(
-                  label: l10n.sale,
-                  isSelected: _purpose == 'sale',
-                  onSelected: (_) => setState(() => _purpose = 'sale'),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            // 2. Property Type
-            Text(
-              l10n.filterPropertyType,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.xs,
-              children: [
-                AppFilterChip(
-                  label: l10n.all,
-                  isSelected: _propertyType == null,
-                  onSelected: (_) => setState(() => _propertyType = null),
-                ),
-                AppFilterChip(
-                  label: l10n.apartment,
-                  isSelected: _propertyType == 'apartment',
-                  onSelected: (_) => setState(() => _propertyType = 'apartment'),
-                ),
-                AppFilterChip(
-                  label: l10n.house,
-                  isSelected: _propertyType == 'house',
-                  onSelected: (_) => setState(() => _propertyType = 'house'),
-                ),
-                AppFilterChip(
-                  label: l10n.room,
-                  isSelected: _propertyType == 'room',
-                  onSelected: (_) => setState(() => _propertyType = 'room'),
-                ),
-                AppFilterChip(
-                  label: l10n.shop,
-                  isSelected: _propertyType == 'shop',
-                  onSelected: (_) => setState(() => _propertyType = 'shop'),
-                ),
-                AppFilterChip(
-                  label: l10n.office,
-                  isSelected: _propertyType == 'office',
-                  onSelected: (_) => setState(() => _propertyType = 'office'),
-                ),
-                AppFilterChip(
-                  label: l10n.land,
-                  isSelected: _propertyType == 'land',
-                  onSelected: (_) => setState(() => _propertyType = 'land'),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            // 3. Bedrooms (only if not land/shop/office)
-            if (_propertyType != 'land' &&
-                _propertyType != 'shop' &&
-                _propertyType != 'office') ...[
-              Text(
-                l10n.filterBedrooms,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                    // 4. Price Range
+                    Text(
+                      l10n.filterPriceRange,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Wrap(
-                spacing: AppSpacing.sm,
-                children: [
-                  AppFilterChip(
-                    label: l10n.all,
-                    isSelected: _bedrooms == null,
-                    onSelected: (_) => setState(() => _bedrooms = null),
-                  ),
-                  for (final b in [1, 2, 3, 4])
-                    AppFilterChip(
-                      label: l10n.bedroomsCount(b),
-                      isSelected: _bedrooms == b,
-                      onSelected: (_) => setState(() => _bedrooms = b),
+                    const SizedBox(height: AppSpacing.sm),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AppTextField(
+                            label: l10n.filterMinPrice,
+                            controller: _minPriceController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9০-৯]'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: AppTextField(
+                            label: l10n.filterMaxPrice,
+                            controller: _maxPriceController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9০-৯]'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.lg),
-            ],
+                    const SizedBox(height: AppSpacing.lg),
 
-            // 4. Price Range
-            Text(
-              l10n.filterPriceRange,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Row(
-              children: [
-                Expanded(
-                  child: AppTextField(
-                    label: 'Min ৳',
-                    controller: _minPriceController,
-                    keyboardType: TextInputType.number,
-                  ),
+                    // 5. Verified Only Switch
+                    SwitchListTile.adaptive(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        l10n.filterVerifiedOnly,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      value: _verified == true,
+                      activeTrackColor: AppColors.verifiedBadge,
+                      onChanged: (val) =>
+                          setState(() => _verified = val ? true : null),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                  ],
                 ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: AppTextField(
-                    label: 'Max ৳',
-                    controller: _maxPriceController,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            // 5. Verified Only Switch
-            SwitchListTile.adaptive(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.filterVerifiedOnly,
-                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
-              value: _verified == true,
-              activeTrackColor: AppColors.verifiedBadge,
-              onChanged: (val) => setState(() => _verified = val ? true : null),
             ),
-            const SizedBox(height: AppSpacing.xl),
 
-            // Apply Button
-            AppButton(
-              label: l10n.filterApply,
-              onPressed: _apply,
+            // Sticky apply bar: always visible above the keyboard, so the
+            // primary action is never covered while typing a price.
+            Padding(
+              padding: const EdgeInsets.only(
+                top: AppSpacing.md,
+                bottom: AppSpacing.lg,
+              ),
+              child: AppButton(
+                label: l10n.filterApply,
+                onPressed: _apply,
+              ),
             ),
           ],
         ),

@@ -35,6 +35,13 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(const ResendOtpRequested(email: 'fallback@example.com'));
+    registerFallbackValue(const RegisterSubmitted(
+      name: 'Fallback',
+      email: 'fallback@example.com',
+      phone: '01711000000',
+      password: 'password1',
+      role: 'tenant',
+    ));
   });
 
   setUp(() {
@@ -49,12 +56,59 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('রেজিস্ট্রেশন'), findsWidgets);
-      expect(find.text('নাম'), findsOneWidget);
-      expect(find.text('ইমেইল'), findsOneWidget);
-      expect(find.text('ফোন নম্বর'), findsOneWidget);
-      expect(find.text('পাসওয়ার্ড'), findsOneWidget);
-      expect(find.text('ভাড়াটিয়া / ক্রেতা'), findsOneWidget);
-      expect(find.text('মালিক / লিস্টার'), findsOneWidget);
+      expect(find.text('পুরো নাম *'), findsOneWidget);
+      expect(find.text('ইমেইল *'), findsOneWidget);
+      expect(find.text('মোবাইল নম্বর *'), findsOneWidget);
+      expect(find.text('পাসওয়ার্ড *'), findsOneWidget);
+      // Website-style role cards
+      expect(find.text('বাসা খুঁজছি'), findsOneWidget);
+      expect(find.text('আমার বাসা/সম্পত্তি ভাড়া দিতে চাই'), findsOneWidget);
+      // Google button first, like the website
+      expect(find.byKey(const Key('google_sign_in_button')), findsOneWidget);
+      expect(find.text('গুগল দিয়ে চালিয়ে যান'), findsOneWidget);
+      expect(find.text('অথবা'), findsOneWidget);
+    });
+
+    testWidgets('owner card reveals the "আপনি কে?" lister selector', (tester) async {
+      await tester.pumpWidget(_buildTestableRegisterPage(registerBloc: mockRegisterBloc));
+      await tester.pumpAndSettle();
+
+      // Hidden while the tenant card is selected
+      expect(find.byKey(const Key('register_lister_type_selector')), findsNothing);
+
+      await tester.tap(find.byKey(const Key('register_role_owner_card')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('আপনি কে?'), findsOneWidget);
+      expect(find.byKey(const Key('register_lister_type_selector')), findsOneWidget);
+      expect(find.text('মালিক'), findsOneWidget);
+      expect(find.text('এজেন্ট'), findsOneWidget);
+      expect(find.text('ডেভেলপার/কোম্পানি'), findsOneWidget);
+      // The website's 4th option has no backend value and must not appear
+      expect(find.text('অন্যের হয়ে'), findsNothing);
+    });
+
+    testWidgets('weak password is rejected by the 8+letter+digit rule', (tester) async {
+      await tester.pumpWidget(_buildTestableRegisterPage(registerBloc: mockRegisterBloc));
+      await tester.pumpAndSettle();
+
+      final fields = find.byType(TextFormField);
+      await tester.enterText(fields.at(0), 'Rahim Uddin');
+      await tester.enterText(fields.at(1), 'rahim@example.com');
+      await tester.enterText(fields.at(2), '01711000000');
+      await tester.enterText(fields.at(3), '123456'); // too short, no letter
+      await tester.pump();
+
+      final registerButton = find.widgetWithText(ElevatedButton, 'রেজিস্ট্রেশন');
+      await tester.ensureVisible(registerButton);
+      await tester.tap(registerButton);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে এবং এতে অক্ষর ও সংখ্যা দুটোই থাকতে হবে'),
+        findsWidgets,
+      );
+      verifyNever(() => mockRegisterBloc.add(any(that: isA<RegisterSubmitted>())));
     });
 
     testWidgets('validation prevents empty submission', (tester) async {
@@ -66,7 +120,11 @@ void main() {
       await tester.tap(registerButton);
       await tester.pumpAndSettle();
 
-      expect(find.text('প্রদত্ত তথ্য সঠিক নয়। অনুগ্রহ করে সংশোধন করুন।'), findsWidgets);
+      // Field-specific validation messages (no generic error any more)
+      expect(find.text('পুরো নাম লিখুন'), findsOneWidget);
+      expect(find.text('ইমেইল লিখুন'), findsOneWidget);
+      expect(find.text('মোবাইল নম্বর লিখুন'), findsOneWidget);
+      expect(find.text('পাসওয়ার্ড লিখুন'), findsOneWidget);
       verifyNever(() => mockRegisterBloc.add(any()));
     });
 

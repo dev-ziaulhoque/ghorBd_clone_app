@@ -5,20 +5,25 @@ import '../../../../core/security/session_manager.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../../../core/error/exceptions.dart';
 import '../datasources/auth_remote_data_source.dart';
+import '../datasources/google_sign_in_data_source.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
   final AppSecureStorage _secureStorage;
   final SessionManager _sessionManager;
+  final GoogleSignInDataSource? _googleSignInDataSource;
 
   AuthRepositoryImpl({
     required AuthRemoteDataSource remoteDataSource,
     required AppSecureStorage secureStorage,
     required SessionManager sessionManager,
+    GoogleSignInDataSource? googleSignInDataSource,
   })  : _remoteDataSource = remoteDataSource,
         _secureStorage = secureStorage,
-        _sessionManager = sessionManager;
+        _sessionManager = sessionManager,
+        _googleSignInDataSource = googleSignInDataSource;
 
   @override
   Future<Either<Failure, RegistrationResultEntity>> register({
@@ -105,6 +110,59 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       return Right(session);
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    } catch (e) {
+      return Left(UnknownFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthSessionEntity>> loginWithGoogle() async {
+    final google = _googleSignInDataSource;
+    if (google == null) {
+      return const Left(UnknownFailure(
+        message: 'Google sign-in is not available yet',
+        messageKey: 'error_google_unavailable',
+        code: 'GOOGLE_UNAVAILABLE',
+      ));
+    }
+    try {
+      final idToken = await google.getIdToken();
+      final session = await _remoteDataSource.loginWithGoogle(
+        idToken: idToken,
+      );
+
+      // Persist session into secure storage & session manager (same
+      // path as email login, so the router guard works unchanged)
+      await _sessionManager.startSession(
+        accessToken: session.accessToken,
+        refreshToken: session.refreshToken,
+        userId: session.user.id,
+        userRole: session.user.role,
+        userEmail: session.user.email,
+        userName: session.user.name,
+        userPhone: session.user.phone,
+      );
+
+      return Right(session);
+    } on GoogleSignInCancelledException {
+      return const Left(UnknownFailure(
+        message: 'Google sign-in was cancelled',
+        messageKey: 'error_google_cancelled',
+        code: 'GOOGLE_CANCELLED',
+      ));
+    } on ServerException catch (e) {
+      // Backend has no /auth/google endpoint yet -> graceful error,
+      // never a fake success.
+      if (e.statusCode == 404 || e.statusCode == 501) {
+        return const Left(UnknownFailure(
+          message: 'Google sign-in is not available yet',
+          messageKey: 'error_google_unavailable',
+          code: 'GOOGLE_UNAVAILABLE',
+        ));
+      }
+      return Left(Failure.fromException(e));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     } catch (e) {

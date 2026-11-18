@@ -8,8 +8,11 @@ import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_card.dart';
+import '../../../../shared/widgets/app_motion.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 import '../bloc/auth_bloc.dart';
+import '../widgets/auth_brand_header.dart';
+import '../widgets/google_sign_in_button.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
@@ -62,9 +65,14 @@ class _LoginPageState extends State<LoginPage> {
           } else if (state is AuthOtpRequiredState) {
             context.push('/verify_otp', extra: {'email': state.email});
           } else if (state is AuthFailure) {
+            final text = state.messageKey == 'error_google_unavailable'
+                ? l10n.googleSignInUnavailable
+                : state.messageKey == 'error_google_cancelled'
+                    ? l10n.googleSignInCancelled
+                    : state.message;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message),
+                content: Text(text),
                 backgroundColor: AppColors.error,
               ),
             );
@@ -79,7 +87,10 @@ class _LoginPageState extends State<LoginPage> {
                 padding: AppSpacing.screenPadding,
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 440),
-                  child: AppCard(
+                  // Round 4: the auth card rises in with the shared
+                  // entrance instead of appearing flat.
+                  child: FadeSlideIn(
+                    child: AppCard(
                     padding: AppSpacing.edgeInsetsXl,
                     child: Form(
                       key: _formKey,
@@ -87,20 +98,21 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Icon(
-                            Icons.lock_outline_rounded,
-                            size: 48,
-                            color: isDark ? AppColors.primaryLight : AppColors.primary,
+                          AuthBrandHeader(
+                            title: l10n.authLogin,
+                            subtitle: l10n.authLoginSubtitle,
                           ),
-                          const SizedBox(height: AppSpacing.md),
-                          Text(
-                            l10n.authLogin,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          const SizedBox(height: AppSpacing.lg),
+                          GoogleSignInButton(
+                            onPressed: isLoading
+                                ? null
+                                : () => context
+                                    .read<AuthBloc>()
+                                    .add(const AuthGoogleSignInRequested()),
                           ),
-                          const SizedBox(height: AppSpacing.xl),
+                          const SizedBox(height: AppSpacing.lg),
+                          const AuthOrDivider(),
+                          const SizedBox(height: AppSpacing.lg),
                           AppTextField(
                             controller: _emailController,
                             label: l10n.authEmail,
@@ -110,10 +122,10 @@ class _LoginPageState extends State<LoginPage> {
                             prefixIcon: const Icon(Icons.email_outlined, size: 20),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return l10n.error_validation;
+                                return l10n.validationEmailRequired;
                               }
                               if (!InputSanitizer.isValidEmail(value.trim())) {
-                                return l10n.error_validation;
+                                return l10n.validationEmailInvalid;
                               }
                               return null;
                             },
@@ -128,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                             onSubmitted: (_) => _onLoginPressed(),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return l10n.error_validation;
+                                return l10n.validationPasswordRequired;
                               }
                               return null;
                             },
@@ -165,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
+                  ),
                   ),
                 ),
               ),

@@ -155,6 +155,16 @@ class AppFormatters {
     return result;
   }
 
+  /// Formats a plain count (beds, sqft, views, floor) with South Asian
+  /// grouping and, by default, Bangla digits.
+  /// e.g. 1450 -> "১,৪৫০" (Bangla) or "1,450" (English), 154 -> "১৫৪".
+  static String formatNumber(num value, {bool isBangla = true}) {
+    final isNegative = value < 0;
+    final grouped = _groupSouthAsian(value.abs().toInt().toString());
+    final result = isNegative ? '-$grouped' : grouped;
+    return isBangla ? toBanglaDigits(result) : result;
+  }
+
   static String _formatCompactNumber(double val) {
     if (val == val.roundToDouble()) {
       return val.toInt().toString();

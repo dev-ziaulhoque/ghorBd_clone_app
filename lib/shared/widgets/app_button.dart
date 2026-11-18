@@ -92,6 +92,34 @@ class AppButton extends StatelessWidget {
         break;
     }
 
+    // Round 4 premium CTA: the primary variant renders the shared
+    // emerald CTA gradient with a soft glow shadow (stronger on dark)
+    // instead of a flat fill. The button itself is transparent so the
+    // gradient shows through; ripple/press states are unchanged.
+    if (variant == AppButtonVariant.primary) {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+      button = DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: AppColors.ctaGradient,
+          ),
+          borderRadius: AppSpacing.borderRadiusPill,
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? AppColors.ctaGlowDark
+                  : AppColors.primary.withAlpha(46),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: button,
+      );
+    }
+
     if (width != null) {
       return SizedBox(
         width: width,
@@ -106,11 +134,14 @@ class AppButton extends StatelessWidget {
   ButtonStyle _getButtonStyle(BuildContext context) {
     switch (variant) {
       case AppButtonVariant.primary:
+        // Transparent: the emerald CTA gradient is painted by the
+        // DecoratedBox wrapper in build() (Round 4 premium CTA).
         return ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
           foregroundColor: Colors.white,
           minimumSize: Size(width ?? double.infinity, height),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
           elevation: 0,
         );
       case AppButtonVariant.secondary:
@@ -118,7 +149,7 @@ class AppButton extends StatelessWidget {
           backgroundColor: AppColors.secondary,
           foregroundColor: Colors.white,
           minimumSize: Size(width ?? double.infinity, height),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
           elevation: 0,
         );
       case AppButtonVariant.outline:
@@ -126,13 +157,13 @@ class AppButton extends StatelessWidget {
           foregroundColor: AppColors.primary,
           minimumSize: Size(width ?? double.infinity, height),
           side: const BorderSide(color: AppColors.primary, width: 1.5),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
         );
       case AppButtonVariant.text:
         return TextButton.styleFrom(
           foregroundColor: AppColors.primary,
           minimumSize: Size(width ?? 64, height),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
         );
     }
   }

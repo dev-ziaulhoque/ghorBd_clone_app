@@ -36,13 +36,39 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         color: AppColors.cardLight,
-        elevation: 1,
-        shadowColor: Colors.black.withAlpha(15),
+        // Round 4 premium polish (light): a soft, slightly deeper
+        // shadow so cards lift gently off the flat background.
+        elevation: 2,
+        shadowColor: Colors.black.withAlpha(26),
         shape: const RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
+          borderRadius: AppSpacing.borderRadiusCard,
           side: BorderSide(color: AppColors.borderLight, width: 1),
         ),
         margin: EdgeInsets.zero,
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.surfaceLight,
+        indicatorColor: AppColors.primary.withAlpha(36),
+        elevation: 3,
+        shadowColor: Colors.black.withAlpha(20),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          final selected = states.contains(WidgetState.selected);
+          return TextStyle(
+            fontSize: 12,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+            color: selected
+                ? AppColors.primaryDark
+                : AppColors.textSecondaryLight,
+          );
+        }),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          final selected = states.contains(WidgetState.selected);
+          return IconThemeData(
+            color: selected
+                ? AppColors.primaryDark
+                : AppColors.textSecondaryLight,
+          );
+        }),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -50,7 +76,7 @@ class AppTheme {
           foregroundColor: Colors.white,
           minimumSize: const Size(64, AppSpacing.buttonHeight),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
@@ -61,7 +87,7 @@ class AppTheme {
           minimumSize: const Size(64, AppSpacing.buttonHeight),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           side: const BorderSide(color: AppColors.primary),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ),
@@ -111,8 +137,8 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     const colorScheme = ColorScheme.dark(
-      primary: AppColors.primaryLight,
-      onPrimary: Colors.black,
+      primary: AppColors.primary,
+      onPrimary: Colors.white,
       secondary: AppColors.secondaryLight,
       onSecondary: Colors.black,
       error: AppColors.error,
@@ -137,12 +163,39 @@ class AppTheme {
       ),
       cardTheme: const CardThemeData(
         color: AppColors.cardDark,
-        elevation: 0,
+        // Round 4 premium dark: real elevation + a deep soft shadow so
+        // Material cards layer above the gradient scaffold instead of
+        // reading as flat cut-outs.
+        elevation: 4,
+        shadowColor: Color(0x8C000000),
         shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
+          borderRadius: AppSpacing.borderRadiusCard,
           side: BorderSide(color: AppColors.borderDark, width: 1),
         ),
         margin: EdgeInsets.zero,
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.surfaceDark,
+        indicatorColor: AppColors.primary.withAlpha(64),
+        elevation: 0,
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          final selected = states.contains(WidgetState.selected);
+          return TextStyle(
+            fontSize: 12,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+            color: selected
+                ? AppColors.primaryLight
+                : AppColors.textSecondaryDark,
+          );
+        }),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          final selected = states.contains(WidgetState.selected);
+          return IconThemeData(
+            color: selected
+                ? AppColors.primaryLight
+                : AppColors.textSecondaryDark,
+          );
+        }),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -150,7 +203,7 @@ class AppTheme {
           foregroundColor: Colors.white,
           minimumSize: const Size(64, AppSpacing.buttonHeight),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
           elevation: 0,
         ),
@@ -161,7 +214,7 @@ class AppTheme {
           minimumSize: const Size(64, AppSpacing.buttonHeight),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           side: const BorderSide(color: AppColors.primaryLight),
-          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+          shape: const RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusPill),
           textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ),

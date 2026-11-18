@@ -179,6 +179,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('ধানমন্ডি লেকের কাছে মনোরম ফ্ল্যাট ভাড়া'), findsWidgets);
+      // Round 3: Home is a lazy CustomScrollView — the popular-areas
+      // section builds when scrolled into range, so scroll down to it
+      // before asserting (it previously sat in an eager scroll column).
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
+      await tester.pumpAndSettle();
       expect(find.text('ধানমন্ডি'), findsWidgets);
     });
 

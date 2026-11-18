@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/cache/response_cache.dart';
 import '../../core/config/app_preferences.dart';
 import '../../core/network/dio_client.dart';
 import '../../core/network/interceptors/auth_interceptor.dart';
@@ -9,11 +10,13 @@ import '../../core/security/screen_protection.dart';
 import '../../core/security/secure_storage.dart';
 import '../../core/security/session_manager.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
+import '../../features/auth/data/datasources/google_sign_in_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/domain/usecases/forgot_password_usecase.dart';
 import '../../features/auth/domain/usecases/get_current_user_usecase.dart';
 import '../../features/auth/domain/usecases/login_usecase.dart';
+import '../../features/auth/domain/usecases/login_with_google_usecase.dart';
 import '../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../features/auth/domain/usecases/register_usecase.dart';
 import '../../features/auth/domain/usecases/resend_email_otp_usecase.dart';
@@ -89,6 +92,14 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
     );
   }
 
+  // Response cache for slow-changing data (Round 2): one shared instance
+  // so repository writes and HomeBloc's SWR listener see the same data.
+  if (!sl.isRegistered<ResponseCache>()) {
+    sl.registerSingleton<ResponseCache>(
+      ResponseCache(sl<SharedPreferences>()),
+    );
+  }
+
   // Security & Storage
   if (!sl.isRegistered<AppSecureStorage>()) {
     sl.registerLazySingleton<AppSecureStorage>(() => AppSecureStorage());
@@ -130,6 +141,12 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
     );
   }
 
+  if (!sl.isRegistered<GoogleSignInDataSource>()) {
+    sl.registerLazySingleton<GoogleSignInDataSource>(
+      () => GoogleSignInDataSourceImpl(),
+    );
+  }
+
   // Auth Feature — Repository
   if (!sl.isRegistered<AuthRepository>()) {
     sl.registerLazySingleton<AuthRepository>(
@@ -137,6 +154,7 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
         remoteDataSource: sl<AuthRemoteDataSource>(),
         secureStorage: sl<AppSecureStorage>(),
         sessionManager: sl<SessionManager>(),
+        googleSignInDataSource: sl<GoogleSignInDataSource>(),
       ),
     );
   }
@@ -144,6 +162,9 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
   // Auth Feature — Use Cases
   if (!sl.isRegistered<LoginUseCase>()) {
     sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl<AuthRepository>()));
+  }
+  if (!sl.isRegistered<LoginWithGoogleUseCase>()) {
+    sl.registerLazySingleton<LoginWithGoogleUseCase>(() => LoginWithGoogleUseCase(sl<AuthRepository>()));
   }
   if (!sl.isRegistered<RegisterUseCase>()) {
     sl.registerLazySingleton<RegisterUseCase>(() => RegisterUseCase(sl<AuthRepository>()));
@@ -175,6 +196,7 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
         logoutUseCase: sl<LogoutUseCase>(),
         getCurrentUserUseCase: sl<GetCurrentUserUseCase>(),
         sessionManager: sl<SessionManager>(),
+        loginWithGoogleUseCase: sl<LoginWithGoogleUseCase>(),
       ),
     );
   }
@@ -184,6 +206,7 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
         registerUseCase: sl<RegisterUseCase>(),
         verifyEmailOtpUseCase: sl<VerifyEmailOtpUseCase>(),
         resendEmailOtpUseCase: sl<ResendEmailOtpUseCase>(),
+        loginWithGoogleUseCase: sl<LoginWithGoogleUseCase>(),
       ),
     );
   }
@@ -212,6 +235,7 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
     sl.registerLazySingleton<BrowseRepository>(
       () => BrowseRepositoryImpl(
         remoteDataSource: sl<BrowseRemoteDataSource>(),
+        cache: sl<ResponseCache>(),
       ),
     );
   }
@@ -244,6 +268,7 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
       () => HomeBloc(
         getListingsUseCase: sl<GetListingsUseCase>(),
         getAreasUseCase: sl<GetAreasUseCase>(),
+        cache: sl<ResponseCache>(),
       ),
     );
   }
@@ -487,7 +512,10 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
   }
   if (!sl.isRegistered<ContentRepository>()) {
     sl.registerLazySingleton<ContentRepository>(
-      () => ContentRepositoryImpl(remoteDataSource: sl<ContentRemoteDataSource>()),
+      () => ContentRepositoryImpl(
+        remoteDataSource: sl<ContentRemoteDataSource>(),
+        cache: sl<ResponseCache>(),
+      ),
     );
   }
   if (!sl.isRegistered<GetGuidesUseCase>()) {
@@ -595,7 +623,10 @@ Future<void> configureDependencies({SharedPreferences? preferences}) async {
   }
   if (!sl.isRegistered<PricingRepository>()) {
     sl.registerLazySingleton<PricingRepository>(
-      () => PricingRepositoryImpl(remoteDataSource: sl<PricingRemoteDataSource>()),
+      () => PricingRepositoryImpl(
+        remoteDataSource: sl<PricingRemoteDataSource>(),
+        cache: sl<ResponseCache>(),
+      ),
     );
   }
   if (!sl.isRegistered<GetPricingPlansUseCase>()) {

@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In bn, this message translates to:
-  /// **'ঘরবিডি'**
+  /// **'GhorBD'**
   String get appName;
 
   /// No description provided for @heroTitle.
@@ -131,7 +131,7 @@ abstract class AppLocalizations {
   /// No description provided for @safetyNotice.
   ///
   /// In bn, this message translates to:
-  /// **'যোগাযোগের আগে বাসাটি সরাসরি দেখে নিন। অগ্রিম টাকা পাঠাবেন না।'**
+  /// **'অগ্রিম টাকা পাঠানোর আগে বাসাটি সরেজমিনে গিয়ে দেখে নিন।'**
   String get safetyNotice;
 
   /// No description provided for @reportListing.
@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @error_unknown.
   ///
   /// In bn, this message translates to:
-  /// **'অপ্রত্যাশিত কোনো ত্রুটি ঘটেছে।'**
+  /// **'কিছু একটা সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।'**
   String get error_unknown;
 
   /// No description provided for @btnRetry.
@@ -383,25 +383,25 @@ abstract class AppLocalizations {
   /// No description provided for @emptyTitle.
   ///
   /// In bn, this message translates to:
-  /// **'কোনো তথ্য পাওয়া যায়নি'**
+  /// **'কিছু পাওয়া যায়নি'**
   String get emptyTitle;
 
   /// No description provided for @emptyMessage.
   ///
   /// In bn, this message translates to:
-  /// **'এখানে প্রদর্শনের মতো কোনো তথ্য নেই।'**
+  /// **'এই মুহূর্তে কিছু পাওয়া যাচ্ছে না। অন্য শব্দে খুঁজুন বা ফিল্টার বদলে আবার চেষ্টা করুন।'**
   String get emptyMessage;
 
   /// No description provided for @offlineTitle.
   ///
   /// In bn, this message translates to:
-  /// **'অফলাইন মোড'**
+  /// **'ইন্টারনেট সংযোগ নেই'**
   String get offlineTitle;
 
   /// No description provided for @offlineMessage.
   ///
   /// In bn, this message translates to:
-  /// **'ইন্টারনেট সংযোগ চালু করুন।'**
+  /// **'ইন্টারনেট সংযোগ চেক করে আবার চেষ্টা করুন।'**
   String get offlineMessage;
 
   /// No description provided for @authLogin.
@@ -623,7 +623,7 @@ abstract class AppLocalizations {
   /// No description provided for @recentSaleListings.
   ///
   /// In bn, this message translates to:
-  /// **'বিক্রির বিজ্ঞাপন'**
+  /// **'বিক্রির নতুন বিজ্ঞাপন'**
   String get recentSaleListings;
 
   /// No description provided for @filterTitle.
@@ -721,6 +721,12 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'অফিস'**
   String get office;
+
+  /// No description provided for @hotel.
+  ///
+  /// In bn, this message translates to:
+  /// **'হোটেল'**
+  String get hotel;
 
   /// No description provided for @land.
   ///
@@ -971,7 +977,7 @@ abstract class AppLocalizations {
   /// No description provided for @favoritesEmptySubtitle.
   ///
   /// In bn, this message translates to:
-  /// **'আপনার পছন্দের ফ্ল্যাট বা জমির বিজ্ঞাপনগুলো পরবর্তীতে সহজে দেখতে এখানে সংরক্ষণ করুন।'**
+  /// **'যেকোনো বিজ্ঞাপনে হার্ট আইকনে চাপ দিলেই তা এখানে সংরক্ষিত থাকবে।'**
   String get favoritesEmptySubtitle;
 
   /// No description provided for @addToFavorites.
@@ -1280,6 +1286,12 @@ abstract class AppLocalizations {
   /// **'আয়তন (বর্গফুট)'**
   String get size;
 
+  /// No description provided for @sizeLabel.
+  ///
+  /// In bn, this message translates to:
+  /// **'আয়তন'**
+  String get sizeLabel;
+
   /// No description provided for @priceRent.
   ///
   /// In bn, this message translates to:
@@ -1469,7 +1481,7 @@ abstract class AppLocalizations {
   /// No description provided for @noOwnerListingsSubtitle.
   ///
   /// In bn, this message translates to:
-  /// **'আপনার সম্পত্তি দ্রুত ভাড়া বা বিক্রি করতে এখনই নতুন বিজ্ঞাপন পোস্ট করুন।'**
+  /// **'আপনার সম্পত্তি ভাড়া বা বিক্রি করতে নতুন বিজ্ঞাপন পোস্ট করুন।'**
   String get noOwnerListingsSubtitle;
 
   /// No description provided for @blogTitle.
@@ -1613,7 +1625,7 @@ abstract class AppLocalizations {
   /// No description provided for @pricingSubtitle.
   ///
   /// In bn, this message translates to:
-  /// **'আপনার চাহিদামতো সেরা প্যাকেজটি বেছে নিন'**
+  /// **'আপনার প্রয়োজন অনুযায়ী প্ল্যানটি বেছে নিন'**
   String get pricingSubtitle;
 
   /// No description provided for @vatExclusionNotice.
@@ -1681,6 +1693,294 @@ abstract class AppLocalizations {
   /// In bn, this message translates to:
   /// **'আপনি ভাড়াটিয়া হিসেবে লগইন করেছেন। বিজ্ঞাপনের বিস্তারিত অ্যানালিটিক্স প্রপার্টি মালিকদের জন্য প্রযোজ্য। আপনি কি প্রপার্টি বিজ্ঞাপন দিতে চান?'**
   String get tenantAccountBannerSubtitle;
+
+  /// No description provided for @onboardingTitle1.
+  ///
+  /// In bn, this message translates to:
+  /// **'পছন্দের বাসা খুঁজুন'**
+  String get onboardingTitle1;
+
+  /// No description provided for @onboardingBody1.
+  ///
+  /// In bn, this message translates to:
+  /// **'মালিকদের দেওয়া ফ্ল্যাট, বাড়ি, রুম ও জমির বিজ্ঞাপন থেকে আপনার পছন্দেরটি বেছে নিন — কোনো মধ্যস্বত্বভোগী ছাড়াই।'**
+  String get onboardingBody1;
+
+  /// No description provided for @onboardingTitle2.
+  ///
+  /// In bn, this message translates to:
+  /// **'সরাসরি বাড়িওয়ালার সাথে যোগাযোগ'**
+  String get onboardingTitle2;
+
+  /// No description provided for @onboardingBody2.
+  ///
+  /// In bn, this message translates to:
+  /// **'মালিকের নম্বরে কল করুন বা মেসেজ পাঠান — কোনো মধ্যস্বত্বভোগী নয়।'**
+  String get onboardingBody2;
+
+  /// No description provided for @onboardingTitle3.
+  ///
+  /// In bn, this message translates to:
+  /// **'যাচাইকৃত ব্যাজ, সম্পূর্ণ বিনামূল্যে'**
+  String get onboardingTitle3;
+
+  /// No description provided for @onboardingBody3.
+  ///
+  /// In bn, this message translates to:
+  /// **'যাচাইকৃত ব্যাজ থাকা বিজ্ঞাপনগুলো আমাদের টিম যাচাই করে, আর ঘরবিডিতে খোঁজা সবসময়ই বিনামূল্যে।'**
+  String get onboardingBody3;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In bn, this message translates to:
+  /// **'এড়িয়ে যান'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In bn, this message translates to:
+  /// **'পরবর্তী'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In bn, this message translates to:
+  /// **'শুরু করুন'**
+  String get onboardingStart;
+
+  /// No description provided for @setupTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনার পছন্দ বেছে নিন'**
+  String get setupTitle;
+
+  /// No description provided for @setupSubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'থিম ও ভাষা এখনই ঠিক করুন — পরে প্রোফাইল সেটিংস থেকেও বদলাতে পারবেন।'**
+  String get setupSubtitle;
+
+  /// No description provided for @prefThemeLabel.
+  ///
+  /// In bn, this message translates to:
+  /// **'থিম'**
+  String get prefThemeLabel;
+
+  /// No description provided for @prefLanguageLabel.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাষা'**
+  String get prefLanguageLabel;
+
+  /// No description provided for @themeOptionLight.
+  ///
+  /// In bn, this message translates to:
+  /// **'লাইট'**
+  String get themeOptionLight;
+
+  /// No description provided for @themeOptionDark.
+  ///
+  /// In bn, this message translates to:
+  /// **'ডার্ক'**
+  String get themeOptionDark;
+
+  /// No description provided for @themeOptionSystem.
+  ///
+  /// In bn, this message translates to:
+  /// **'সিস্টেম'**
+  String get themeOptionSystem;
+
+  /// No description provided for @langOptionBanglaSub.
+  ///
+  /// In bn, this message translates to:
+  /// **'বাংলায় অ্যাপ ব্যবহার করুন'**
+  String get langOptionBanglaSub;
+
+  /// No description provided for @langOptionEnglishSub.
+  ///
+  /// In bn, this message translates to:
+  /// **'ইংরেজিতে অ্যাপ ব্যবহার করুন'**
+  String get langOptionEnglishSub;
+
+  /// No description provided for @settingsLanguageTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'ভাষা নির্বাচন'**
+  String get settingsLanguageTitle;
+
+  /// No description provided for @settingsThemeTitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'থিম (Appearance)'**
+  String get settingsThemeTitle;
+
+  /// No description provided for @authGoogleContinue.
+  ///
+  /// In bn, this message translates to:
+  /// **'গুগল দিয়ে চালিয়ে যান'**
+  String get authGoogleContinue;
+
+  /// No description provided for @authOrDivider.
+  ///
+  /// In bn, this message translates to:
+  /// **'অথবা'**
+  String get authOrDivider;
+
+  /// No description provided for @authLoginSubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'স্বাগতম — চালিয়ে যেতে লগইন করুন'**
+  String get authLoginSubtitle;
+
+  /// No description provided for @authRegisterSubtitle.
+  ///
+  /// In bn, this message translates to:
+  /// **'শুরু করতে একটি অ্যাকাউন্ট খুলুন'**
+  String get authRegisterSubtitle;
+
+  /// No description provided for @authRoleTenantCard.
+  ///
+  /// In bn, this message translates to:
+  /// **'বাসা খুঁজছি'**
+  String get authRoleTenantCard;
+
+  /// No description provided for @authRoleOwnerCard.
+  ///
+  /// In bn, this message translates to:
+  /// **'আমার বাসা/সম্পত্তি ভাড়া দিতে চাই'**
+  String get authRoleOwnerCard;
+
+  /// No description provided for @authWhoAreYou.
+  ///
+  /// In bn, this message translates to:
+  /// **'আপনি কে?'**
+  String get authWhoAreYou;
+
+  /// No description provided for @listerOwner.
+  ///
+  /// In bn, this message translates to:
+  /// **'মালিক'**
+  String get listerOwner;
+
+  /// No description provided for @listerAgent.
+  ///
+  /// In bn, this message translates to:
+  /// **'এজেন্ট'**
+  String get listerAgent;
+
+  /// No description provided for @listerBuilder.
+  ///
+  /// In bn, this message translates to:
+  /// **'ডেভেলপার/কোম্পানি'**
+  String get listerBuilder;
+
+  /// No description provided for @validationNameRequired.
+  ///
+  /// In bn, this message translates to:
+  /// **'পুরো নাম লিখুন'**
+  String get validationNameRequired;
+
+  /// No description provided for @validationEmailRequired.
+  ///
+  /// In bn, this message translates to:
+  /// **'ইমেইল লিখুন'**
+  String get validationEmailRequired;
+
+  /// No description provided for @validationEmailInvalid.
+  ///
+  /// In bn, this message translates to:
+  /// **'সঠিক ইমেইল ঠিকানা দিন'**
+  String get validationEmailInvalid;
+
+  /// No description provided for @validationPhoneRequired.
+  ///
+  /// In bn, this message translates to:
+  /// **'মোবাইল নম্বর লিখুন'**
+  String get validationPhoneRequired;
+
+  /// No description provided for @validationPhoneInvalid.
+  ///
+  /// In bn, this message translates to:
+  /// **'সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (01XXXXXXXXX)'**
+  String get validationPhoneInvalid;
+
+  /// No description provided for @validationPasswordRequired.
+  ///
+  /// In bn, this message translates to:
+  /// **'পাসওয়ার্ড লিখুন'**
+  String get validationPasswordRequired;
+
+  /// No description provided for @validationPasswordRule.
+  ///
+  /// In bn, this message translates to:
+  /// **'পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে এবং এতে অক্ষর ও সংখ্যা দুটোই থাকতে হবে'**
+  String get validationPasswordRule;
+
+  /// No description provided for @authPhoneVerifyNote.
+  ///
+  /// In bn, this message translates to:
+  /// **'যাচাইকরণের কোড এই নম্বরে পাঠানো হবে'**
+  String get authPhoneVerifyNote;
+
+  /// No description provided for @authFullName.
+  ///
+  /// In bn, this message translates to:
+  /// **'পুরো নাম'**
+  String get authFullName;
+
+  /// No description provided for @authMobileNumber.
+  ///
+  /// In bn, this message translates to:
+  /// **'মোবাইল নম্বর'**
+  String get authMobileNumber;
+
+  /// No description provided for @authTermsNote.
+  ///
+  /// In bn, this message translates to:
+  /// **'চালিয়ে গেলে আপনি আমাদের শর্তাবলি ও গোপনীয়তা নীতিতে সম্মত হচ্ছেন।'**
+  String get authTermsNote;
+
+  /// No description provided for @googleSignInUnavailable.
+  ///
+  /// In bn, this message translates to:
+  /// **'গুগল সাইন-ইন এখনো চালু হয়নি। ইমেইল দিয়ে চালিয়ে যান।'**
+  String get googleSignInUnavailable;
+
+  /// No description provided for @googleSignInCancelled.
+  ///
+  /// In bn, this message translates to:
+  /// **'গুগল সাইন-ইন বাতিল করা হয়েছে।'**
+  String get googleSignInCancelled;
+
+  /// No description provided for @filterMinPrice.
+  ///
+  /// In bn, this message translates to:
+  /// **'সর্বনিম্ন ৳'**
+  String get filterMinPrice;
+
+  /// No description provided for @filterMaxPrice.
+  ///
+  /// In bn, this message translates to:
+  /// **'সর্বোচ্চ ৳'**
+  String get filterMaxPrice;
+
+  /// No description provided for @offlineBanner.
+  ///
+  /// In bn, this message translates to:
+  /// **'ইন্টারনেট সংযোগ নেই — আগের তথ্য দেখানো হচ্ছে'**
+  String get offlineBanner;
+
+  /// No description provided for @shareListing.
+  ///
+  /// In bn, this message translates to:
+  /// **'শেয়ার করুন'**
+  String get shareListing;
+
+  /// No description provided for @callFailed.
+  ///
+  /// In bn, this message translates to:
+  /// **'কল করা যাচ্ছে না'**
+  String get callFailed;
 }
 
 class _AppLocalizationsDelegate

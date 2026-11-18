@@ -58,11 +58,29 @@ void main() {
       await tester.pumpAndSettle();
 
       final loginButton = find.widgetWithText(ElevatedButton, 'লগইন');
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
       await tester.tap(loginButton);
       await tester.pumpAndSettle();
 
-      expect(find.text('প্রদত্ত তথ্য সঠিক নয়। অনুগ্রহ করে সংশোধন করুন।'), findsWidgets);
+      // Field-specific validation messages (no generic error any more)
+      expect(find.text('ইমেইল লিখুন'), findsOneWidget);
+      expect(find.text('পাসওয়ার্ড লিখুন'), findsOneWidget);
       verifyNever(() => mockAuthBloc.add(any()));
+    });
+
+    testWidgets('shows Google button and dispatches Google sign-in on tap', (tester) async {
+      await tester.pumpWidget(_buildTestableLoginPage(authBloc: mockAuthBloc));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('google_sign_in_button')), findsOneWidget);
+      expect(find.text('গুগল দিয়ে চালিয়ে যান'), findsOneWidget);
+      expect(find.text('অথবা'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('google_sign_in_button')));
+      await tester.pump();
+
+      verify(() => mockAuthBloc.add(const AuthGoogleSignInRequested())).called(1);
     });
 
     testWidgets('shows SnackBar on AuthFailure', (tester) async {

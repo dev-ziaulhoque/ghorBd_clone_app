@@ -10,7 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUpAll(() async {
-    SharedPreferences.setMockInitialValues({});
+    // Onboarding already seen, so the splash routes straight to Home.
+    SharedPreferences.setMockInitialValues({
+      'ghorbd_pref_onboarding_seen': true,
+    });
     await configureDependencies();
   });
 
@@ -22,6 +25,9 @@ void main() {
 
     testWidgets('initial route renders GhorBD Home screen', (tester) async {
       await tester.pumpWidget(const App());
+      await tester.pump();
+      // Splash dwell is 1800ms; advance past it to reach Home.
+      await tester.pump(const Duration(milliseconds: 1900));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 

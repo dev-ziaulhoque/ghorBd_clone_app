@@ -30,6 +30,10 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
 
+  Future<AuthSessionModel> loginWithGoogle({
+    required String idToken,
+  });
+
   Future<void> logout();
 
   Future<UserModel?> getCurrentUser();
@@ -143,6 +147,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'email': email,
           'password': password,
         },
+        options: _noAuthOptions,
+      );
+
+      final data = _extractData(response.data);
+      return AuthSessionModel.fromJson(data);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  @override
+  Future<AuthSessionModel> loginWithGoogle({
+    required String idToken,
+  }) async {
+    try {
+      final response = await _client.post(
+        ApiEndpoints.googleLogin,
+        data: {'idToken': idToken},
         options: _noAuthOptions,
       );
 

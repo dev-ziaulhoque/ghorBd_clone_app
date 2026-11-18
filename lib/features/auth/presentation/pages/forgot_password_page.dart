@@ -117,10 +117,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 prefixIcon: const Icon(Icons.email_outlined),
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
-                                    return l10n.error_validation;
+                                    return l10n.validationEmailRequired;
                                   }
                                   if (!value.contains('@')) {
-                                    return l10n.error_validation;
+                                    return l10n.validationEmailInvalid;
                                   }
                                   return null;
                                 },

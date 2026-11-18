@@ -29,11 +29,16 @@ import '../../features/content/presentation/pages/profile_settings_page.dart';
 import '../../features/content/presentation/pages/qa_page.dart';
 import '../../features/content/presentation/pages/question_detail_page.dart';
 import '../../features/content/presentation/pages/static_content_page.dart';
+import '../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../features/onboarding/presentation/pages/splash_page.dart';
 import '../../features/plans/presentation/pages/pricing_page.dart';
 import '../../l10n/app_localizations.dart';
+import '../../shared/widgets/app_motion.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
+  static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
   static const String home = '/';
   static const String listings = '/listings';
   static const String listingDetail = '/listings/:slug';
@@ -73,6 +78,41 @@ class AppRoutes {
   };
 }
 
+/// Shared page transition (Round 3, strengthened Round 4): every
+/// route fades in with a more pronounced upward slide (7% of the
+/// page height, was 4%) over the shared entrance duration —
+/// opacity/transform only, and disabled entirely when the OS
+/// reduce-motion setting is on.
+CustomTransitionPage<void> _animatedPage({
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: AppMotion.medium,
+    reverseTransitionDuration: AppMotion.fast,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      if (MediaQuery.disableAnimationsOf(context)) return child;
+      final curved = CurvedAnimation(
+        parent: animation,
+        curve: AppMotion.curve,
+        reverseCurve: AppMotion.reverseCurve,
+      );
+      return FadeTransition(
+        opacity: curved,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.07),
+            end: Offset.zero,
+          ).animate(curved),
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
 class AppRouter {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'rootNav');
@@ -100,6 +140,13 @@ class AppRouter {
 
   static String? authGuard(BuildContext context, GoRouterState state) {
     final destination = state.matchedLocation;
+
+    // Splash/onboarding are always reachable; SplashPage itself decides
+    // the next destination (first run -> onboarding, returning -> home).
+    if (destination == AppRoutes.splash ||
+        destination == AppRoutes.onboarding) {
+      return null;
+    }
     final isProtected = AppRoutes.protectedRoutes.any(
       (route) => destination == route || destination.startsWith('$route/'),
     );
@@ -119,32 +166,42 @@ class AppRouter {
 
   static final GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.splash,
     refreshListenable: authRefreshListenable,
     redirect: authGuard,
     routes: [
       GoRoute(
+        path: AppRoutes.splash,
+        name: 'splash',
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const SplashPage()),
+      ),
+      GoRoute(
+        path: AppRoutes.onboarding,
+        name: 'onboarding',
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const OnboardingPage()),
+      ),
+      GoRoute(
         path: AppRoutes.home,
         name: 'home',
-        builder: (context, state) => const HomePage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const HomePage()),
       ),
       GoRoute(
         path: AppRoutes.createListing,
         name: 'create_listing',
-        builder: (context, state) => const CreateEditListingPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const CreateEditListingPage()),
       ),
       GoRoute(
         path: AppRoutes.editListing,
         name: 'edit_listing',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = DeepLinkValidator.sanitizeId(state.pathParameters['id']);
-          return CreateEditListingPage(listingId: id);
+          return _animatedPage(state: state, child: CreateEditListingPage(listingId: id));
         },
       ),
       GoRoute(
         path: AppRoutes.listings,
         name: 'listings',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final query = DeepLinkValidator.sanitizeQueryParams(state.uri.queryParameters);
           final params = ListingFilterParams(
             purpose: query['purpose'],
@@ -154,236 +211,240 @@ class AppRouter {
             featured: query['featured'] == 'true',
             search: query['search'],
           );
-          return ListingsPage(initialParams: params);
+          return _animatedPage(state: state, child: ListingsPage(initialParams: params));
         },
       ),
       GoRoute(
         path: '/listings/sale',
-        builder: (context, state) => const ListingsPage(
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const ListingsPage(
           initialParams: ListingFilterParams(purpose: 'sale'),
-        ),
+        )),
       ),
       GoRoute(
         path: '/listings/verified',
-        builder: (context, state) => const ListingsPage(
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const ListingsPage(
           initialParams: ListingFilterParams(verified: true),
-        ),
+        )),
       ),
       GoRoute(
         path: '/listings/division/:slug',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final slug = DeepLinkValidator.sanitizeSlug(state.pathParameters['slug']);
-          return ListingsPage(
+          return _animatedPage(state: state, child: ListingsPage(
             initialParams: ListingFilterParams(division: slug),
-          );
+          ));
         },
       ),
       GoRoute(
         path: '/rent/dhaka/:area',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final area = DeepLinkValidator.sanitizeSlug(state.pathParameters['area']);
-          return ListingsPage(
+          return _animatedPage(state: state, child: ListingsPage(
             initialParams: ListingFilterParams(purpose: 'rent', areaSlug: area),
-          );
+          ));
         },
       ),
       GoRoute(
         path: AppRoutes.listingDetail,
         name: 'listing_detail',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final rawSlug = state.pathParameters['slug'] ?? '';
           final idParam = state.uri.queryParameters['id'];
           final sanitizedSlug = DeepLinkValidator.sanitizeSlug(rawSlug);
           final slug = (sanitizedSlug != null && sanitizedSlug.isNotEmpty)
               ? sanitizedSlug
               : (idParam ?? rawSlug);
-          return ListingDetailPage(
+          return _animatedPage(state: state, child: ListingDetailPage(
             idOrSlug: slug,
             fallbackId: idParam,
-          );
+          ));
         },
       ),
       GoRoute(
         path: AppRoutes.map,
         name: 'map',
-        builder: (context, state) => const MapPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const MapPage()),
       ),
       GoRoute(
         path: AppRoutes.land,
         name: 'land',
-        builder: (context, state) => const LandPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const LandPage()),
       ),
       GoRoute(
         path: AppRoutes.login,
         name: 'login',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final redirect = DeepLinkValidator.sanitizeRedirectUrl(state.uri.queryParameters['redirect']);
-          return BlocProvider<AuthBloc>(
+          return _animatedPage(state: state, child: BlocProvider<AuthBloc>(
             create: (_) => sl<AuthBloc>(),
             child: LoginPage(redirect: redirect),
-          );
+          ));
         },
       ),
       GoRoute(
         path: AppRoutes.register,
         name: 'register',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final role = state.uri.queryParameters['role'];
-          return BlocProvider<RegisterBloc>(
+          return _animatedPage(state: state, child: BlocProvider<RegisterBloc>(
             create: (_) => sl<RegisterBloc>(),
             child: RegisterPage(initialRole: role),
-          );
+          ));
         },
       ),
       GoRoute(
         path: AppRoutes.verifyOtp,
         name: 'verify_otp',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
           final rawEmail = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
           final email = InputSanitizer.normalizeEmail(rawEmail);
           final devOtp = extra['devOtp'] as String?;
-          return BlocProvider<RegisterBloc>(
+          return _animatedPage(state: state, child: BlocProvider<RegisterBloc>(
             create: (_) => sl<RegisterBloc>(),
             child: VerifyOtpPage(email: email, devOtp: devOtp),
-          );
+          ));
         },
       ),
       GoRoute(
         path: AppRoutes.verifyOtpAlt,
         name: 'verify_otp_alt',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
           final rawEmail = extra['email'] as String? ?? state.uri.queryParameters['email'] ?? '';
           final email = InputSanitizer.normalizeEmail(rawEmail);
           final devOtp = extra['devOtp'] as String?;
-          return BlocProvider<RegisterBloc>(
+          return _animatedPage(state: state, child: BlocProvider<RegisterBloc>(
             create: (_) => sl<RegisterBloc>(),
             child: VerifyOtpPage(email: email, devOtp: devOtp),
-          );
+          ));
         },
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
         name: 'forgot_password',
-        builder: (context, state) => const ForgotPasswordPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const ForgotPasswordPage()),
       ),
       GoRoute(
         path: AppRoutes.resetPassword,
         name: 'reset_password',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final rawToken = state.uri.queryParameters['token'] ?? '';
           final token = InputSanitizer.sanitizeSearchQuery(rawToken);
-          return ResetPasswordPage(initialToken: token.isEmpty ? null : token);
+          return _animatedPage(state: state, child: ResetPasswordPage(initialToken: token.isEmpty ? null : token));
         },
       ),
       GoRoute(
         path: AppRoutes.dashboard,
         name: 'dashboard',
-        builder: (context, state) => const OwnerDashboardPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const OwnerDashboardPage()),
       ),
       GoRoute(
         path: AppRoutes.favorites,
         name: 'favorites',
-        builder: (context, state) => const FavoritesPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const FavoritesPage()),
       ),
       GoRoute(
         path: AppRoutes.blog,
         name: 'blog',
-        builder: (context, state) => const BlogPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const BlogPage()),
       ),
       GoRoute(
         path: AppRoutes.blogDetail,
         name: 'blog_detail',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final rawSlug = state.pathParameters['slug'] ?? '';
           final slug = DeepLinkValidator.sanitizeSlug(rawSlug) ?? rawSlug;
-          return BlogDetailPage(slug: slug);
+          return _animatedPage(state: state, child: BlogDetailPage(slug: slug));
         },
       ),
       GoRoute(
         path: AppRoutes.qa,
         name: 'qa',
-        builder: (context, state) => const QaPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const QaPage()),
       ),
       GoRoute(
         path: AppRoutes.qaAsk,
         name: 'qa_ask',
-        builder: (context, state) => const AskQuestionPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const AskQuestionPage()),
       ),
       GoRoute(
         path: AppRoutes.qaDetail,
         name: 'qa_detail',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final rawId = state.pathParameters['id'] ?? '';
           final id = DeepLinkValidator.sanitizeId(rawId) ?? rawId;
-          return QuestionDetailPage(id: id);
+          return _animatedPage(state: state, child: QuestionDetailPage(id: id));
         },
       ),
       GoRoute(
         path: AppRoutes.guides,
         name: 'guides',
-        builder: (context, state) => const GuidesPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const GuidesPage()),
       ),
       GoRoute(
         path: AppRoutes.guideDetail,
         name: 'guide_detail',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final rawSlug = state.pathParameters['slug'] ?? '';
           final slug = DeepLinkValidator.sanitizeSlug(rawSlug) ?? rawSlug;
-          return GuideDetailPage(slug: slug);
+          return _animatedPage(state: state, child: GuideDetailPage(slug: slug));
         },
       ),
       GoRoute(
         path: AppRoutes.about,
         name: 'about',
-        builder: (context, state) => const StaticContentPage(slug: 'about'),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const StaticContentPage(slug: 'about')),
       ),
       GoRoute(
         path: AppRoutes.contact,
         name: 'contact',
-        builder: (context, state) => const StaticContentPage(slug: 'contact'),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const StaticContentPage(slug: 'contact')),
       ),
       GoRoute(
         path: AppRoutes.privacy,
         name: 'privacy',
-        builder: (context, state) => const StaticContentPage(slug: 'privacy'),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const StaticContentPage(slug: 'privacy')),
       ),
       GoRoute(
         path: AppRoutes.terms,
         name: 'terms',
-        builder: (context, state) => const StaticContentPage(slug: 'terms'),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const StaticContentPage(slug: 'terms')),
       ),
       GoRoute(
         path: AppRoutes.help,
         name: 'help',
-        builder: (context, state) => const StaticContentPage(slug: 'help'),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const StaticContentPage(slug: 'help')),
       ),
       GoRoute(
         path: AppRoutes.pricing,
         name: 'pricing',
-        builder: (context, state) => const PricingPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const PricingPage()),
       ),
       GoRoute(
         path: AppRoutes.settings,
         name: 'settings',
-        builder: (context, state) => const ProfileSettingsPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const ProfileSettingsPage()),
       ),
       GoRoute(
         path: AppRoutes.profile,
         name: 'profile',
-        builder: (context, state) => const ProfileSettingsPage(),
+        pageBuilder: (context, state) => _animatedPage(state: state, child: const ProfileSettingsPage()),
       ),
     ],
     errorBuilder: (context, state) {
       final l10n = AppLocalizations.of(context);
       return Scaffold(
-        appBar: AppBar(title: Text(l10n?.error_not_found ?? 'Resource not found')),
+        appBar: AppBar(title: Text(l10n?.error_not_found ?? 'পৃষ্ঠাটি পাওয়া যায়নি')),
         body: Center(
-          child: Text(
-            l10n != null
-                ? '${l10n.error_not_found}: ${state.uri}'
-                : '404: No route defined for ${state.uri}',
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Text(
+              l10n != null
+                  ? '${l10n.error_not_found}: ${state.uri}'
+                  : 'পৃষ্ঠাটি পাওয়া যায়নি: ${state.uri}',
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       );

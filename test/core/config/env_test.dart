@@ -90,8 +90,8 @@ void main() {
       expect(Env.isDevelopment, isTrue);
     });
 
-    test('Env timeouts are properly configured to 15 seconds', () {
-      expect(Env.connectTimeout, const Duration(seconds: 15));
+    test('Env timeouts: connect 10s, receive/send 15s (Round 2)', () {
+      expect(Env.connectTimeout, const Duration(seconds: 10));
       expect(Env.receiveTimeout, const Duration(seconds: 15));
       expect(Env.sendTimeout, const Duration(seconds: 15));
     });

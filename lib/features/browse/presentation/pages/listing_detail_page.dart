@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../app/di/injection.dart';
@@ -11,6 +14,7 @@ import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_card.dart';
+import '../../../../shared/widgets/app_motion.dart';
 import '../../../../shared/widgets/error_view.dart';
 import '../../../../shared/widgets/loading_view.dart';
 import '../../domain/entities/listing_entity.dart';
@@ -98,11 +102,28 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                       ? contactState.phone
                       : l10n.noPhoneAvailable,
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 actions: [
+                  if (contactState.phone.isNotEmpty)
+                    TextButton.icon(
+                      icon: const Icon(Icons.call, size: 18),
+                      label: Text(l10n.callOwner),
+                      onPressed: () async {
+                        final uri = Uri(
+                          scheme: 'tel',
+                          path: contactState.phone.replaceAll(' ', ''),
+                        );
+                        final launched = await launchUrl(uri);
+                        if (!launched && dialogCtx.mounted) {
+                          ScaffoldMessenger.of(dialogCtx).showSnackBar(
+                            SnackBar(content: Text(l10n.callFailed)),
+                          );
+                        }
+                      },
+                    ),
                   TextButton(
                     onPressed: () => Navigator.of(dialogCtx).pop(),
                     child: Text(MaterialLocalizations.of(dialogCtx).okButtonLabel),
@@ -129,6 +150,9 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                   final isAuth = AppRouter.isAuthenticated;
 
                   return Scaffold(
+                    // Premium gradient scaffold (Round 4); the body
+                    // paints the decoration, so the scaffold is clear.
+                    backgroundColor: Colors.transparent,
                     appBar: AppBar(
                       title: Text(l10n.propertyOverview),
                       actions: [
@@ -149,11 +173,20 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                           ),
                         IconButton(
                           icon: const Icon(Icons.share_outlined),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('https://ghorbd.com/listings')),
-                            );
-                          },
+                          tooltip: l10n.shareListing,
+                          onPressed: listing == null
+                              ? null
+                              : () {
+                                  final target = listing.slug.isNotEmpty
+                                      ? listing.slug
+                                      : listing.id;
+                                  SharePlus.instance.share(
+                                    ShareParams(
+                                      text: '${listing.title}\nhttps://ghorbd.com/listings/$target',
+                                      subject: listing.title,
+                                    ),
+                                  );
+                                },
                         ),
                         IconButton(
                           icon: const Icon(Icons.favorite_border),
@@ -175,8 +208,15 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                         ),
                       ],
                     ),
-                body: Builder(
-                  builder: (context) {
+                body: Container(
+                  // Premium gradient scaffold (Round 4) + a state
+                  // crossfade (loading → content no longer hard-cuts).
+                  decoration: AppColors.scaffoldDecoration(isDark),
+                  child: CrossfadeSwitcher(
+                    child: KeyedSubtree(
+                      key: ValueKey(state.runtimeType.toString()),
+                      child: Builder(
+                        builder: (context) {
                     if (state is ListingDetailLoading) {
                       return const AppLoadingView();
                     }
@@ -203,8 +243,10 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // 1. Photo Gallery Carousel
-                          _buildGallery(listing, isDark),
+                          // 1. Photo Gallery Carousel (Round 4: the
+                          // gallery and the price/title block below it
+                          // enter with the shared motion system)
+                          FadeSlideIn(child: _buildGallery(listing, isDark)),
                           const SizedBox(height: AppSpacing.md),
 
                           Padding(
@@ -214,24 +256,32 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Price & Purpose Badge
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                // Price & Purpose Badge (wraps instead of
+                                // overflowing on narrow screens / large text)
+                                Wrap(
+                                  alignment: WrapAlignment.spaceBetween,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: AppSpacing.sm,
+                                  runSpacing: AppSpacing.xs,
                                   children: [
                                     Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.baseline,
                                       textBaseline: TextBaseline.alphabetic,
                                       children: [
-                                        Text(
-                                          formattedPrice,
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: isDark
-                                                ? AppColors.primaryLight
-                                                : AppColors.priceTag,
+                                        Flexible(
+                                          child: Text(
+                                            formattedPrice,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: isDark
+                                                  ? AppColors.accentMint
+                                                  : AppColors.priceTag,
+                                            ),
                                           ),
                                         ),
                                         if (listing.purpose == 'rent') ...[
@@ -317,8 +367,10 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                     if (listing.viewCount > 0)
                                       Text(
                                         l10n.viewCount(
-                                          AppFormatters.toBanglaDigits(
+                                          AppFormatters.formatNumber(
                                             listing.viewCount,
+                                            isBangla:
+                                                l10n.localeName == 'bn',
                                           ),
                                         ),
                                         style: Theme.of(context)
@@ -332,7 +384,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                       ),
                                   ],
                                 ),
-                                const SizedBox(height: AppSpacing.lg),
+                                const SizedBox(height: AppSpacing.md),
 
                                 // Safety Notice (REQ-015)
                                 Container(
@@ -366,11 +418,11 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: AppSpacing.lg),
+                                const SizedBox(height: AppSpacing.md),
 
                                 // Key Property Attributes Grid
                                 _buildSpecsGrid(listing, l10n, isDark),
-                                const SizedBox(height: AppSpacing.lg),
+                                const SizedBox(height: AppSpacing.md),
 
                                 // Description
                                 if (listing.description.isNotEmpty) ...[
@@ -386,7 +438,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                     listing.description,
                                     style: Theme.of(context).textTheme.bodyMedium,
                                   ),
-                                  const SizedBox(height: AppSpacing.lg),
+                                  const SizedBox(height: AppSpacing.md),
                                 ],
 
                                 // Amenities
@@ -413,7 +465,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                         )
                                         .toList(),
                                   ),
-                                  const SizedBox(height: AppSpacing.lg),
+                                  const SizedBox(height: AppSpacing.md),
                                 ],
 
                                 // Report listing link
@@ -444,7 +496,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                     }
                                   },
                                 ),
-                                const SizedBox(height: AppSpacing.xl),
+                                const SizedBox(height: AppSpacing.lg),
 
                                 // Similar Listings (REQ-021)
                                 if (state.similar.isNotEmpty) ...[
@@ -458,17 +510,60 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                                         ),
                                   ),
                                   const SizedBox(height: AppSpacing.sm),
-                                  Column(
-                                    children: state.similar
-                                        .map(
-                                          (item) => Padding(
-                                            padding: const EdgeInsets.only(
-                                              bottom: AppSpacing.md,
+                                  LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      final columns =
+                                          AppSpacing.listingColumns(
+                                        constraints.maxWidth,
+                                      );
+                                      if (columns == 1) {
+                                        return Column(
+                                          children: state.similar
+                                              .asMap()
+                                              .entries
+                                              .map(
+                                                (entry) => Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    bottom: AppSpacing.md,
+                                                  ),
+                                                  child:
+                                                      FadeSlideIn.staggered(
+                                                    index: entry.key,
+                                                    child: PressScale(
+                                                      child: ListingCard(
+                                                        listing: entry.value,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                        );
+                                      }
+                                      return GridView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: columns,
+                                          crossAxisSpacing: AppSpacing.md,
+                                          mainAxisSpacing: AppSpacing.md,
+                                          mainAxisExtent: 430,
+                                        ),
+                                        itemCount: state.similar.length,
+                                        itemBuilder: (context, index) =>
+                                            FadeSlideIn.staggered(
+                                          index: index,
+                                          child: PressScale(
+                                            child: ListingCard(
+                                              listing: state.similar[index],
                                             ),
-                                            child: ListingCard(listing: item),
                                           ),
-                                        )
-                                        .toList(),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ],
                               ],
@@ -549,7 +644,10 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
             }
 
                     return const SizedBox.shrink();
-                  },
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               );
             },
@@ -563,30 +661,43 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
 
   Widget _buildGallery(ListingEntity listing, bool isDark) {
     if (listing.images.isEmpty) {
-      return Container(
-        height: 240,
-        color: isDark ? AppColors.surfaceDark : Colors.grey[200],
-        child: const Center(
-          child: Icon(Icons.home_outlined, size: 64, color: Colors.grey),
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Container(
+          color: isDark ? AppColors.surfaceDark : Colors.grey[200],
+          child: const Center(
+            child: Icon(Icons.home_outlined, size: 64, color: Colors.grey),
+          ),
         ),
       );
     }
 
     return Column(
       children: [
-        SizedBox(
-          height: 260,
+        AspectRatio(
+          aspectRatio: 16 / 9,
           child: PageView.builder(
             itemCount: listing.images.length,
             onPageChanged: (index) => setState(() => _activeImageIndex = index),
             itemBuilder: (context, index) {
-              return Image.network(
-                listing.images[index],
+              return CachedNetworkImage(
+                imageUrl: listing.images[index],
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
+                // Round 4: fade photos in and decode near display
+                // size (16:9 hero, capped at 1080px wide).
+                fadeInDuration: const Duration(milliseconds: 300),
+                fadeOutDuration: const Duration(milliseconds: 120),
+                memCacheWidth: 1080,
+                errorWidget: (_, __, ___) => Container(
                   color: isDark ? AppColors.surfaceDark : Colors.grey[200],
                   child: const Center(
                     child: Icon(Icons.broken_image, size: 48, color: Colors.grey),
+                  ),
+                ),
+                placeholder: (_, __) => Container(
+                  color: isDark ? AppColors.surfaceDark : Colors.grey[200],
+                  child: const Center(
+                    child: Icon(Icons.home_outlined, size: 48, color: Colors.grey),
                   ),
                 ),
               );
@@ -598,7 +709,7 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              listing.images.length,
+              listing.images.length > 10 ? 10 : listing.images.length,
               (index) => Container(
                 margin: const EdgeInsets.symmetric(horizontal: 3),
                 width: 8,
@@ -628,28 +739,28 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
       specs.add((
         Icons.king_bed_outlined,
         l10n.filterBedrooms,
-        l10n.bedroomsCount(listing.bed),
+        l10n.bedroomsCount(AppFormatters.formatNumber(listing.bed, isBangla: l10n.localeName == 'bn')),
       ));
     }
     if (listing.bath > 0) {
       specs.add((
         Icons.bathtub_outlined,
-        'বাথরুম',
-        l10n.bathroomsCount(listing.bath),
+        l10n.bathrooms,
+        l10n.bathroomsCount(AppFormatters.formatNumber(listing.bath, isBangla: l10n.localeName == 'bn')),
       ));
     }
     if (listing.size > 0) {
       specs.add((
         Icons.square_foot_outlined,
-        'আয়তন',
-        l10n.sizeSqft(listing.size),
+        l10n.sizeLabel,
+        l10n.sizeSqft(AppFormatters.formatNumber(listing.size, isBangla: l10n.localeName == 'bn')),
       ));
     }
     if (listing.floor != null) {
       specs.add((
         Icons.stairs_outlined,
         l10n.floorNumber,
-        AppFormatters.toBanglaDigits(listing.floor!),
+        AppFormatters.formatNumber(listing.floor!, isBangla: l10n.localeName == 'bn'),
       ));
     }
     if (listing.landAreaValue != null) {
@@ -683,20 +794,24 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
 
     if (specs.isEmpty) return const SizedBox.shrink();
 
+    // Round 4 smoothness: the specs are a small bounded set (≤ 8), so
+    // they render as a Wrap of fixed-width cells instead of a nested
+    // shrink-wrapped GridView inside the scroll view.
     return AppCard(
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 2.8,
-          crossAxisSpacing: AppSpacing.md,
-          mainAxisSpacing: AppSpacing.sm,
-        ),
-        itemCount: specs.length,
-        itemBuilder: (context, index) {
-          final (icon, title, value) = specs[index];
-          return Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final columns = AppSpacing.specColumns(constraints.maxWidth);
+          final cellWidth =
+              (constraints.maxWidth - AppSpacing.md * (columns - 1)) / columns;
+          return Wrap(
+            spacing: AppSpacing.md,
+            runSpacing: AppSpacing.sm,
+            children: [
+              for (final (icon, title, value) in specs)
+                SizedBox(
+                  width: cellWidth,
+                  height: 56,
+                  child: Row(
             children: [
               CircleAvatar(
                 radius: 18,
@@ -721,14 +836,19 @@ class _ListingDetailPageState extends State<ListingDetailPage> {
                     ),
                     Text(
                       value,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
             ],
+          ),
+                ),
+            ],
           );
-        },
+        }
       ),
     );
   }

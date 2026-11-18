@@ -15,9 +15,9 @@ class AppOfflineView extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final displayTitle = l10n?.offlineTitle ?? 'Offline Mode';
-    final displayMessage = message ?? l10n?.offlineMessage ?? 'Please check your internet connection.';
-    final displayRetry = l10n?.btnRetry ?? 'Retry';
+    final displayTitle = l10n?.offlineTitle ?? 'অফলাইন মোড';
+    final displayMessage = message ?? l10n?.offlineMessage ?? 'ইন্টারনেট সংযোগ চালু করুন।';
+    final displayRetry = l10n?.btnRetry ?? 'আবার চেষ্টা করুন';
 
     return Center(
       child: Padding(

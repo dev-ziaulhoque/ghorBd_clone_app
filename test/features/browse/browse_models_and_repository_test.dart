@@ -163,7 +163,10 @@ void main() {
       expect(query['perPage'], 15);
       expect(query['sort'], 'price_asc');
       expect(query['purpose'], 'rent');
-      expect(query['propertyType'], 'apartment');
+      // Round 3: the backend filters on `type`; `propertyType` as a
+      // query key is silently ignored by the API (verified live).
+      expect(query['type'], 'apartment');
+      expect(query.containsKey('propertyType'), isFalse);
       expect(query['bedrooms'], 3);
       expect(query['minPrice'], 15000);
       expect(query['maxPrice'], 30000);

@@ -58,6 +58,26 @@ class PricingPlanModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slug': slug,
+      'name': name,
+      'nameEn': nameEn,
+      'description': description,
+      'priceMinor': priceMinor,
+      'price': price,
+      'currency': currency,
+      'interval': interval,
+      'features': features,
+      'popular': popular,
+      'ctaLabel': ctaLabel,
+      'published': published,
+      'order': order,
+      'isFree': isFree,
+    };
+  }
+
   PricingPlanEntity toEntity() => PricingPlanEntity(
         id: id,
         slug: slug,

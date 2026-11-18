@@ -30,7 +30,7 @@ class MapControlsOverlay extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final bgColor = isDark ? AppColors.surfaceDark : Colors.white;
-    final iconColor = isDark ? Colors.white : const Color(0xFF1E293B);
+    final iconColor = isDark ? Colors.white : AppColors.textPrimaryLight;
 
     return Container(
       decoration: BoxDecoration(

@@ -9,6 +9,8 @@ import '../../../../core/security/session_manager.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/colors.dart';
 import '../../../../shared/theme/spacing.dart';
+import '../../../../shared/widgets/app_motion.dart';
+import '../../../../shared/widgets/user_avatar.dart';
 import '../../../auth/domain/usecases/get_current_user_usecase.dart';
 
 /// Profile & Settings page.
@@ -25,6 +27,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   String? _userEmail;
   String? _userRole;
   String? _userPhone;
+  String? _userPhotoUrl;
   bool _isVerified = false;
 
   @override
@@ -65,6 +68,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 _userEmail = user.email;
                 _userRole = user.role;
                 _userPhone = user.phone;
+                _userPhotoUrl = user.profilePhotoUrl;
                 _isVerified = user.verified;
               });
             }
@@ -168,17 +172,23 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     final isAuth = AppRouter.isAuthenticated || (_userEmail != null && _userEmail!.isNotEmpty);
 
     return Scaffold(
+      // Premium gradient scaffold (Round 4).
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
           l10n.localeName == 'bn' ? 'প্রোফাইল ও সেটিংস' : 'Profile & Settings',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: ListView(
+      body: Container(
+        decoration: AppColors.scaffoldDecoration(
+          Theme.of(context).brightness == Brightness.dark,
+        ),
+        child: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
           // Account Status Card
-          Card(
+          FadeSlideIn.staggered(index: 0, child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSpacing.sm),
             ),
@@ -186,18 +196,18 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               padding: const EdgeInsets.all(AppSpacing.md),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                    child: Text(
-                      isAuth && _userName != null && _userName!.isNotEmpty
-                          ? _userName!.substring(0, 1).toUpperCase()
-                          : (isAuth ? 'U' : 'G'),
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
-                      ),
+                  // Real profile photo when available, initial-letter
+                  // avatar otherwise, login icon for guests (Round 3) —
+                  // the same UserAvatar the Home header uses.
+                  // Round 4: the avatar scales in with a gentle pop.
+                  FadeSlideIn(
+                    offsetY: 0,
+                    scaleFrom: 0.8,
+                    child: UserAvatar(
+                      isGuest: !isAuth,
+                      name: _userName,
+                      photoUrl: _userPhotoUrl,
+                      radius: 28,
                     ),
                   ),
                   const SizedBox(width: AppSpacing.md),
@@ -261,10 +271,10 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 ],
               ),
             ),
-          ),
+          )),
           if (isAuth) ...[
             const SizedBox(height: AppSpacing.sm),
-            Card(
+            FadeSlideIn.staggered(index: 1, child: Card(
               child: ListTile(
                 leading: const Icon(Icons.dashboard_outlined, color: AppColors.primary),
                 title: Text(
@@ -280,22 +290,22 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 trailing: const Icon(Icons.arrow_forward_ios, size: 14),
                 onTap: () => context.push(AppRoutes.dashboard),
               ),
-            ),
+            )),
           ],
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
 
           // Section 1: Language Switcher (REQ-041)
           Text(
-            l10n.localeName == 'bn' ? 'ভাষা নির্বাচন (Language)' : 'Language Selection',
+            l10n.settingsLanguageTitle,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
           const SizedBox(height: AppSpacing.sm),
-          Card(
+          FadeSlideIn.staggered(index: 2, child: Card(
             child: Column(
               children: [
                 RadioListTile<String>(
                   title: const Text('বাংলা (Bangla) - ডিফল্ট'),
-                  subtitle: const Text('বাংলায় অ্যাপ ব্যবহার করুন'),
+                  subtitle: Text(l10n.langOptionBanglaSub),
                   value: 'bn',
                   groupValue: prefs?.locale.languageCode ?? 'bn',
                   onChanged: (val) {
@@ -307,7 +317,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 const Divider(height: 1),
                 RadioListTile<String>(
                   title: const Text('English (ইংরেজি)'),
-                  subtitle: const Text('Use app in English'),
+                  subtitle: Text(l10n.langOptionEnglishSub),
                   value: 'en',
                   groupValue: prefs?.locale.languageCode ?? 'bn',
                   onChanged: (val) {
@@ -318,48 +328,48 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
+          )),
+          const SizedBox(height: AppSpacing.md),
 
           // Section 2: Theme Mode (REQ-043)
           Text(
-            l10n.localeName == 'bn' ? 'থিম মুড (Appearance)' : 'Theme (Appearance)',
+            l10n.settingsThemeTitle,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
           const SizedBox(height: AppSpacing.sm),
-          Card(
+          FadeSlideIn.staggered(index: 3, child: Card(
             child: Column(
               children: [
                 RadioListTile<ThemeMode>(
-                  title: Text(l10n.localeName == 'bn' ? 'সিস্টেম ডিফল্ট' : 'System Default'),
+                  title: Text(l10n.themeOptionSystem),
                   value: ThemeMode.system,
-                  groupValue: prefs?.themeMode ?? ThemeMode.system,
+                  groupValue: prefs?.themeMode ?? ThemeMode.light,
                   onChanged: (mode) {
                     if (mode != null) prefs?.setThemeMode(mode);
                   },
                 ),
                 const Divider(height: 1),
                 RadioListTile<ThemeMode>(
-                  title: Text(l10n.localeName == 'bn' ? 'লাইট মোড' : 'Light Mode'),
+                  title: Text(l10n.themeOptionLight),
                   value: ThemeMode.light,
-                  groupValue: prefs?.themeMode ?? ThemeMode.system,
+                  groupValue: prefs?.themeMode ?? ThemeMode.light,
                   onChanged: (mode) {
                     if (mode != null) prefs?.setThemeMode(mode);
                   },
                 ),
                 const Divider(height: 1),
                 RadioListTile<ThemeMode>(
-                  title: Text(l10n.localeName == 'bn' ? 'ডার্ক মোড (#0B1017)' : 'Dark Mode (#0B1017)'),
+                  title: Text(l10n.themeOptionDark),
                   value: ThemeMode.dark,
-                  groupValue: prefs?.themeMode ?? ThemeMode.system,
+                  groupValue: prefs?.themeMode ?? ThemeMode.light,
                   onChanged: (mode) {
                     if (mode != null) prefs?.setThemeMode(mode);
                   },
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
+          )),
+          const SizedBox(height: AppSpacing.md),
 
           // Section 3: Legal & Support links
           Text(
@@ -367,7 +377,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
           const SizedBox(height: AppSpacing.sm),
-          Card(
+          FadeSlideIn.staggered(index: 4, child: Card(
             child: Column(
               children: [
                 ListTile(
@@ -399,8 +409,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
+          )),
+          const SizedBox(height: AppSpacing.md),
 
           // Section 4: Account Actions (Logout, Delete Account)
           if (isAuth) ...[
@@ -409,7 +419,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             ),
             const SizedBox(height: AppSpacing.sm),
-            Card(
+            FadeSlideIn.staggered(index: 5, child: Card(
               child: Column(
                 children: [
                   ListTile(
@@ -437,8 +447,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
+            )),
+            const SizedBox(height: AppSpacing.md),
           ],
 
           // Footer: App version
@@ -451,8 +461,9 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
         ],
+        ),
       ),
     );
   }

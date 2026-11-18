@@ -4,6 +4,7 @@ import '../core/config/app_preferences.dart';
 import '../core/security/session_manager.dart';
 import '../l10n/app_localizations.dart';
 import '../shared/theme/theme.dart';
+import '../shared/widgets/app_motion.dart';
 import 'di/injection.dart';
 import 'router/app_router.dart';
 
@@ -27,6 +28,10 @@ class App extends StatelessWidget {
           return MaterialApp.router(
             title: 'GhorBD',
             debugShowCheckedModeBanner: false,
+            // Theme changes crossfade (AnimatedTheme) instead of
+            // snapping when the user switches Light/Dark (Round 3).
+            themeAnimationDuration: AppMotion.medium,
+            themeAnimationCurve: AppMotion.curve,
             routerConfig: AppRouter.router,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
@@ -56,6 +61,8 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: 'GhorBD',
       debugShowCheckedModeBanner: false,
+      themeAnimationDuration: AppMotion.medium,
+      themeAnimationCurve: AppMotion.curve,
       routerConfig: AppRouter.router,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../theme/colors.dart';
 import '../theme/spacing.dart';
 
@@ -20,6 +21,7 @@ class AppTextField extends StatefulWidget {
   final int maxLines;
   final bool readOnly;
   final VoidCallback? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AppTextField({
     super.key,
@@ -39,6 +41,7 @@ class AppTextField extends StatefulWidget {
     this.maxLines = 1,
     this.readOnly = false,
     this.onTap,
+    this.inputFormatters,
   });
 
   @override
@@ -98,6 +101,7 @@ class _AppTextFieldState extends State<AppTextField> {
           validator: widget.validator,
           maxLines: widget.isPassword ? 1 : widget.maxLines,
           readOnly: widget.readOnly,
+          inputFormatters: widget.inputFormatters,
           enableInteractiveSelection: widget.isPassword ? false : null,
           onTap: widget.onTap,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(

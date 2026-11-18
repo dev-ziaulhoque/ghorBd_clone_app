@@ -52,8 +52,9 @@ void main() {
     expect(find.text('প্রোফাইল ও সেটিংস'), findsOneWidget);
     expect(find.text('বাংলা (Bangla) - ডিফল্ট'), findsOneWidget);
     expect(find.text('English (ইংরেজি)'), findsOneWidget);
-    expect(find.text('সিস্টেম ডিফল্ট'), findsOneWidget);
-    expect(find.text('ডার্ক মোড (#0B1017)'), findsOneWidget);
+    expect(find.text('সিস্টেম'), findsOneWidget);
+    expect(find.text('লাইট'), findsOneWidget);
+    expect(find.text('ডার্ক'), findsOneWidget);
   });
 
   testWidgets('ProfileSettingsPage renders Login button when unauthenticated without layout exception', (tester) async {

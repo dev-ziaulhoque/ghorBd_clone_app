@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/usecases/login_with_google_usecase.dart';
 import '../../domain/usecases/register_usecase.dart';
 import '../../domain/usecases/resend_email_otp_usecase.dart';
 import '../../domain/usecases/verify_email_otp_usecase.dart';
@@ -9,16 +10,20 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final RegisterUseCase _registerUseCase;
   final VerifyEmailOtpUseCase _verifyEmailOtpUseCase;
   final ResendEmailOtpUseCase _resendEmailOtpUseCase;
+  final LoginWithGoogleUseCase? _loginWithGoogleUseCase;
 
   RegisterBloc({
     required RegisterUseCase registerUseCase,
     required VerifyEmailOtpUseCase verifyEmailOtpUseCase,
     required ResendEmailOtpUseCase resendEmailOtpUseCase,
+    LoginWithGoogleUseCase? loginWithGoogleUseCase,
   })  : _registerUseCase = registerUseCase,
         _verifyEmailOtpUseCase = verifyEmailOtpUseCase,
         _resendEmailOtpUseCase = resendEmailOtpUseCase,
+        _loginWithGoogleUseCase = loginWithGoogleUseCase,
         super(const RegisterInitial()) {
     on<RegisterSubmitted>(_onRegisterSubmitted);
+    on<GoogleSignInRequested>(_onGoogleSignInRequested);
     on<VerifyOtpSubmitted>(_onVerifyOtpSubmitted);
     on<ResendOtpRequested>(_onResendOtpRequested);
   }
@@ -47,6 +52,31 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         email: regResult.email,
         devEmailOtp: regResult.devEmailOtp,
       )),
+    );
+  }
+
+  Future<void> _onGoogleSignInRequested(
+    GoogleSignInRequested event,
+    Emitter<RegisterState> emit,
+  ) async {
+    final useCase = _loginWithGoogleUseCase;
+    if (useCase == null) {
+      emit(const RegisterFailure(
+        message: 'Google sign-in is not available yet',
+        messageKey: 'error_google_unavailable',
+        code: 'GOOGLE_UNAVAILABLE',
+      ));
+      return;
+    }
+    emit(const RegisterLoading());
+    final result = await useCase();
+    result.fold(
+      (failure) => emit(RegisterFailure(
+        message: failure.message,
+        messageKey: failure.messageKey,
+        code: failure.code,
+      )),
+      (session) => emit(RegisterSuccess(session.user)),
     );
   }
 

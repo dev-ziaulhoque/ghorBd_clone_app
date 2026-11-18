@@ -51,7 +51,7 @@ class ListingFilterParams extends Equatable {
   final int perPage;
   final String sort; // newest, price_asc, price_desc, popular
   final String? purpose; // rent, sale
-  final String? propertyType; // apartment, room, house, building, shop, office, land, hostel
+  final String? propertyType; // backend enum: apartment, room, house, hotel, shop, office, land
   final String? division;
   final String? district;
   final String? areaSlug;
@@ -133,7 +133,12 @@ class ListingFilterParams extends Equatable {
     };
     if (purpose != null && purpose!.isNotEmpty) params['purpose'] = purpose;
     if (propertyType != null && propertyType!.isNotEmpty) {
-      params['propertyType'] = propertyType;
+      // The backend filters on `type` (verified live in Round 3 against
+      // /listings and /search): a `propertyType` query key is silently
+      // ignored and returns unfiltered results. Valid values are the
+      // backend enum: apartment, room, house, hotel, shop, office, land
+      // (anything else is a 422 — e.g. there is NO 'sublet' type yet).
+      params['type'] = propertyType;
     }
     if (division != null && division!.isNotEmpty) params['division'] = division;
     if (district != null && district!.isNotEmpty) params['district'] = district;

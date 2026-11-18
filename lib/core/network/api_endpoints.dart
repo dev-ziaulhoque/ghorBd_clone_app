@@ -10,6 +10,10 @@ class ApiEndpoints {
   static const String verifyEmail = '/auth/verify-email';
   static const String resendEmail = '/auth/resend-email';
   static const String login = '/auth/login';
+  // Google sign-in token exchange. NOTE: the backend must expose this
+  // endpoint; until it does, the app surfaces a graceful
+  // "Google sign-in is not available yet" error (never a fake success).
+  static const String googleLogin = '/auth/google';
   static const String refresh = '/auth/refresh';
   static const String logout = '/auth/logout';
   static const String me = '/auth/me';

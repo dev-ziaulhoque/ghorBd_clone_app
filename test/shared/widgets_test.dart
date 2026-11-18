@@ -77,7 +77,7 @@ void main() {
       ));
 
       expect(find.byIcon(Icons.wifi_off_rounded), findsOneWidget);
-      expect(find.text('অফলাইন মোড'), findsOneWidget);
+      expect(find.text('ইন্টারনেট সংযোগ নেই'), findsOneWidget);
 
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump();

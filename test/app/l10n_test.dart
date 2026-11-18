@@ -21,12 +21,12 @@ void main() {
         ),
       );
 
-      expect(l10n.appName, 'ঘরবিডি');
+      expect(l10n.appName, 'GhorBD');
       expect(l10n.heroTitle, 'আপনার পছন্দের ঘর খুঁজুন সহজেই');
       expect(l10n.searchHint, 'এলাকা, ধরন বা বাজেট দিয়ে খুঁজুন');
       expect(l10n.loginToViewPhone, 'নম্বর দেখতে লগইন করুন');
       expect(l10n.loginToSendMessage, 'মেসেজ পাঠাতে লগইন করুন');
-      expect(l10n.safetyNotice, contains('বাসাটি সরাসরি দেখে নিন'));
+      expect(l10n.safetyNotice, contains('সরেজমিনে'));
 
       // Error keys
       expect(l10n.error_network, contains('ইন্টারনেট সংযোগ নেই'));
@@ -56,7 +56,7 @@ void main() {
       );
 
       expect(l10n.appName, 'GhorBD');
-      expect(l10n.heroTitle, 'Find your preferred home easily');
+      expect(l10n.heroTitle, 'Find your next home with ease');
       expect(l10n.searchHint, 'Search by area, type or budget');
       expect(l10n.loginToViewPhone, 'Login to view phone number');
 
